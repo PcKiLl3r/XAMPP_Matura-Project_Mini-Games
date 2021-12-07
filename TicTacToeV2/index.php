@@ -1,6 +1,12 @@
 <?php
 session_start();
 
+if(!isset($_SESSION['lastSign'])){
+    $_SESSION['lastSign'] = "false";
+}
+
+
+
 // Check if form was submitted
 if(filter_has_var(INPUT_POST, 'process')) {
 
@@ -8,22 +14,40 @@ if(filter_has_var(INPUT_POST, 'process')) {
     // Start of Insert Tic/Tac
     if($_POST['process'] == "add_tic_tac") {
 
-        if(isset($_POST['position']) && isset($_POST['tic_tac'])) {
+        if(isset($_POST['position']) && isset($_SESSION['lastSign'])) {
+
+            if(isset($_SESSION['isOver'])){
+                if($_SESSION['isOver'] == true) {
+                    header('Location: ./index.php');
+                    exit;
+                }
+            }
 
             $position = trim(htmlspecialchars($_POST['position']));
-            $tic_tac = trim(htmlspecialchars($_POST['tic_tac']));
+            $lastSign = trim(htmlspecialchars($_SESSION['lastSign']));
 
-            if(!empty($position) && !empty($tic_tac)) {
+            if(isset($_SESSION['tictacs'][$position])){
+                header('Location: ./index.php');
+                exit;
+            }
 
-                if($position > 0 && $position < 10) {
+            if(!empty($position) && !empty($lastSign)) {
 
-                    if($tic_tac == "true") {
+                if($position > 0 && $position <= 9) {
+
+                    if($lastSign == "false") {
 
                         $_SESSION['tictacs'][$position] = true;
+                        $_SESSION['lastSign'] = "true";
 
-                    } else if($tic_tac == "false") {
+                        header('Location: ./index.php');
+
+                    } else if($lastSign == "true") {
 
                         $_SESSION['tictacs'][$position] = false;
+                        $_SESSION['lastSign'] = "false";
+
+                        header('Location: ./index.php');
 
                     } else {
 
@@ -45,7 +69,7 @@ if(filter_has_var(INPUT_POST, 'process')) {
 
         } else {
 
-            $msg = "Some data was not sent!";
+            $msg = "Some data was not sent/set in session!";
 
         }
     }
@@ -56,6 +80,9 @@ if(filter_has_var(INPUT_POST, 'process')) {
     if($_POST['process'] == "reset") {
 
         unset($_SESSION['tictacs']);
+        unset($_SESSION['lastSign']);
+        $_SESSION['lastSign'] = "false";
+        unset($_SESSION['isOver']);
 
     }
     // End of Reset
@@ -67,7 +94,7 @@ $winnerMsg = null;
 
 if(isset($_SESSION['tictacs'])){
     $isFull = true;
-    for($i = 1; $i < 10; $i++) {
+    for($i = 1; $i <= 9; $i++) {
         if(!isset($_SESSION['tictacs'][$i])){
             $isFull = false;
         }
@@ -99,10 +126,11 @@ if(!isset($msg)) { $msg = "No Error messages..."; }
 
     <div class="tic-tac-container">
         <div class="tic-tac-row">
-            <div style="<?php 
+        <form style="display: inline-block;" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+            <button type="submit" style="<?php 
             if(isset($_SESSION['tictacs'])) {
                 if(isset($_SESSION['tictacs'][1])){
-                    if($_SESSION['tictacs'][1] == true) {
+                    if($_SESSION['tictacs'][1] == "true") {
                         //Check for true
 
                         //Check vertical
@@ -110,20 +138,23 @@ if(!isset($msg)) { $msg = "No Error messages..."; }
                             if($_SESSION['tictacs'][2] == true && $_SESSION['tictacs'][3] == true) {
                                 echo "text-decoration: line-through;";
                                 $winnerMsg = "X Is The Winner!!!";
+                                $_SESSION['isOver'] = true;
                             }
 
                         //Check horizontal
-                        } else if(isset($_SESSION['tictacs'][4]) && isset($_SESSION['tictacs'][7])) {
+                        } if(isset($_SESSION['tictacs'][4]) && isset($_SESSION['tictacs'][7])) {
                             if($_SESSION['tictacs'][4] == true && $_SESSION['tictacs'][7] == true) {
                                 echo "text-decoration: line-through;";
                                 $winnerMsg = "X Is The Winner!!!";
+                                $_SESSION['isOver'] = true;
                             }
 
                         //Check digonal
-                        } else if(isset($_SESSION['tictacs'][5]) && isset($_SESSION['tictacs'][9])) {
-                            if($_SESSION['tictacs'][5] == true && $_SESSION['tictacs'][9] == true) {
+                        } if(isset($_SESSION['tictacs'][5]) && isset($_SESSION['tictacs'][9])) {
+                            if($_SESSION['tictacs'][5] == "true" && $_SESSION['tictacs'][9] == "true") {
                                 echo "text-decoration: line-through;";
                                 $winnerMsg = "X Is The Winner!!!";
+                                $_SESSION['isOver'] = true;
                             }
                         }
                     } else {
@@ -134,71 +165,43 @@ if(!isset($msg)) { $msg = "No Error messages..."; }
                             if($_SESSION['tictacs'][2] == false && $_SESSION['tictacs'][3] == false) {
                                 echo "text-decoration: line-through;";
                                 $winnerMsg = "O Is The Winner!!!";
+                                $_SESSION['isOver'] = true;
                             }
 
                         //Check for horizontal
-                        } else if(isset($_SESSION['tictacs'][4]) && isset($_SESSION['tictacs'][7])) {
+                        } if(isset($_SESSION['tictacs'][4]) && isset($_SESSION['tictacs'][7])) {
                             if($_SESSION['tictacs'][4] == false && $_SESSION['tictacs'][7] == false) {
                                 echo "text-decoration: line-through;";
                                 $winnerMsg = "O Is The Winner!!!";
+                                $_SESSION['isOver'] = true;
                             }
 
                         //Check for diagonal
-                        } else if(isset($_SESSION['tictacs'][5]) && isset($_SESSION['tictacs'][9])) {
+                        } if(isset($_SESSION['tictacs'][5]) && isset($_SESSION['tictacs'][9])) {
                             if($_SESSION['tictacs'][5] == false && $_SESSION['tictacs'][9] == false) {
                                 echo "text-decoration: line-through;";
                                 $winnerMsg = "O Is The Winner!!!";
+                                $_SESSION['isOver'] = true;
                             }
                         }
                     }
                 }
-            } ?>" type="button" data-bs-toggle="modal" data-bs-target="#addTicToe1" class="tic-tac-col">
+            } ?>" class="tic-tac-col">
                 <?php
         if(isset($_SESSION['tictacs'][1])){
             if($_SESSION['tictacs'][1] == true){echo "X";}
             else {echo "O";}
         }else{echo "&nbsp;";}
             ?>
-            </div>
+            </button>
 
-            <div class="modal fade" id="addTicToe1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div style="width: fit-content; height: fit-content; margin: auto; margin-top: 40vh;"
-                        class="modal-content p-1">
-
-
-                        <div class="tic-tac-row d-flex flex-row">
-                            <form class="d-flex flex-row" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-
-                                <button type="submit" class="tic-tac-col">
-                                    X
-                                </button>
-
-                                <input type="hidden" name="process" value="add_tic_tac">
+            <input type="hidden" name="process" value="add_tic_tac">
                                 <input type="hidden" name="position" value="1">
-                                <input type="hidden" name="tic_tac" value="true">
 
                             </form>
 
-                            <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-
-                                <button type="submit" class="tic-tac-col">
-                                    O
-                                </button>
-
-                                <input type="hidden" name="process" value="add_tic_tac">
-                                <input type="hidden" name="position" value="1">
-                                <input type="hidden" name="tic_tac" value="false">
-
-                            </form>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-
-            <div style="<?php 
+                            <form style="display: inline-block;" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+            <button type="submit" style="<?php
             if(isset($_SESSION['tictacs'])) {
                 if(isset($_SESSION['tictacs'][2])){
                     if($_SESSION['tictacs'][2] == true) {
@@ -207,11 +210,13 @@ if(!isset($msg)) { $msg = "No Error messages..."; }
                             if($_SESSION['tictacs'][1] == true && $_SESSION['tictacs'][3] == true) {
                                 echo "text-decoration: line-through;";
                                 $winnerMsg = "X Is The Winner!!!";
+                                $_SESSION['isOver'] = true;
                             }
-                        } else if(isset($_SESSION['tictacs'][5]) && isset($_SESSION['tictacs'][8])) {
+                        } if(isset($_SESSION['tictacs'][5]) && isset($_SESSION['tictacs'][8])) {
                             if($_SESSION['tictacs'][5] == true && $_SESSION['tictacs'][8] == true) {
                                 echo "text-decoration: line-through;";
                                 $winnerMsg = "X Is The Winner!!!";
+                                $_SESSION['isOver'] = true;
                             }
                         } 
                     } else {
@@ -220,11 +225,13 @@ if(!isset($msg)) { $msg = "No Error messages..."; }
                             if($_SESSION['tictacs'][1] == false && $_SESSION['tictacs'][3] == false) {
                                 echo "text-decoration: line-through;";
                                 $winnerMsg = "O Is The Winner!!!";
+                                $_SESSION['isOver'] = true;
                             }
-                        }else if(isset($_SESSION['tictacs'][5]) && isset($_SESSION['tictacs'][8])) {
+                        } if(isset($_SESSION['tictacs'][5]) && isset($_SESSION['tictacs'][8])) {
                             if($_SESSION['tictacs'][5] == false && $_SESSION['tictacs'][8] == false) {
                                 echo "text-decoration: line-through;";
                                 $winnerMsg = "O Is The Winner!!!";
+                                $_SESSION['isOver'] = true;
                             }
                         }
                     }
@@ -236,46 +243,15 @@ if(!isset($msg)) { $msg = "No Error messages..."; }
             else{echo "O";}
         }else{echo "&nbsp;";}
             ?>
-            </div>
+            </button>
 
-            <div class="modal fade" id="addTicToe2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div style="background: black; width: fit-content; height: fit-content; margin: auto; margin-top: 40vh;"
-                        class="modal-content p-1">
-                        <div class="tic-tac-row d-flex flex-row">
+<input type="hidden" name="process" value="add_tic_tac">
+                    <input type="hidden" name="position" value="2">
 
-                            <form class="d-flex flex-row" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+                </form>
 
-                                <button type="submit" class="tic-tac-col tic-tac-black">
-                                    X
-                                </button>
-
-                                <input type="hidden" name="process" value="add_tic_tac">
-                                <input type="hidden" name="position" value="2">
-                                <input type="hidden" name="tic_tac" value="true">
-
-                            </form>
-
-                            <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-
-                                <button type="submit" class="tic-tac-col tic-tac-black">
-                                    O
-                                </button>
-
-                                <input type="hidden" name="process" value="add_tic_tac">
-                                <input type="hidden" name="position" value="2">
-                                <input type="hidden" name="tic_tac" value="false">
-
-                            </form>
-
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-
-            <div style="<?php 
+                <form style="display: inline-block;" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+            <button type="submit" style="<?php
             if(isset($_SESSION['tictacs'])) {
                 if(isset($_SESSION['tictacs'][3])){
                     if($_SESSION['tictacs'][3] == true) {
@@ -284,16 +260,19 @@ if(!isset($msg)) { $msg = "No Error messages..."; }
                             if($_SESSION['tictacs'][1] == true && $_SESSION['tictacs'][2] == true) {
                                 echo "text-decoration: line-through;";
                                 $winnerMsg = "X Is The Winner!!!";
+                                $_SESSION['isOver'] = true;
                             }
-                        } else if(isset($_SESSION['tictacs'][6]) && isset($_SESSION['tictacs'][9])) {
+                        } if(isset($_SESSION['tictacs'][6]) && isset($_SESSION['tictacs'][9])) {
                             if($_SESSION['tictacs'][6] == true && $_SESSION['tictacs'][9] == true) {
                                 echo "text-decoration: line-through;";
                                 $winnerMsg = "X Is The Winner!!!";
+                                $_SESSION['isOver'] = true;
                             }
-                        } else if(isset($_SESSION['tictacs'][5]) && isset($_SESSION['tictacs'][7])) {
+                        } if(isset($_SESSION['tictacs'][5]) && isset($_SESSION['tictacs'][7])) {
                             if($_SESSION['tictacs'][5] == true && $_SESSION['tictacs'][7] == true) {
                                 echo "text-decoration: line-through;";
                                 $winnerMsg = "X Is The Winner!!!";
+                                $_SESSION['isOver'] = true;
                             }
                         }
                     } else {
@@ -302,16 +281,19 @@ if(!isset($msg)) { $msg = "No Error messages..."; }
                             if($_SESSION['tictacs'][1] == false && $_SESSION['tictacs'][2] == false) {
                                 echo "text-decoration: line-through;";
                                 $winnerMsg = "O Is The Winner!!!";
+                                $_SESSION['isOver'] = true;
                             }
-                        } else if(isset($_SESSION['tictacs'][6]) && isset($_SESSION['tictacs'][9])) {
+                        } if(isset($_SESSION['tictacs'][6]) && isset($_SESSION['tictacs'][9])) {
                             if($_SESSION['tictacs'][6] == false && $_SESSION['tictacs'][9] == false) {
                                 echo "text-decoration: line-through;";
                                 $winnerMsg = "O Is The Winner!!!";
+                                $_SESSION['isOver'] = true;
                             }
-                        } else if(isset($_SESSION['tictacs'][5]) && isset($_SESSION['tictacs'][7])) {
+                        } if(isset($_SESSION['tictacs'][5]) && isset($_SESSION['tictacs'][7])) {
                             if($_SESSION['tictacs'][5] == false && $_SESSION['tictacs'][7] == false) {
                                 echo "text-decoration: line-through;";
                                 $winnerMsg = "O Is The Winner!!!";
+                                $_SESSION['isOver'] = true;
                             }
                         }
                     }
@@ -323,47 +305,17 @@ if(!isset($msg)) { $msg = "No Error messages..."; }
             else{echo "O";}
         }else{echo "&nbsp;";}
             ?>
-            </div>
+            </button>
 
-            <div class="modal fade" id="addTicToe3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div style="width: fit-content; height: fit-content; margin: auto; margin-top: 40vh;"
-                        class="modal-content p-1">
+<input type="hidden" name="process" value="add_tic_tac">
+                    <input type="hidden" name="position" value="3">
 
+                </form>
 
-                        <div class="tic-tac-row d-flex flex-row">
-                            <form class="d-flex flex-row" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-
-                                <button type="submit" class="tic-tac-col">
-                                    X
-                                </button>
-
-                                <input type="hidden" name="process" value="add_tic_tac">
-                                <input type="hidden" name="position" value="3">
-                                <input type="hidden" name="tic_tac" value="true">
-
-                            </form>
-
-                            <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-
-                                <button type="submit" class="tic-tac-col">
-                                    O
-                                </button>
-
-                                <input type="hidden" name="process" value="add_tic_tac">
-                                <input type="hidden" name="position" value="3">
-                                <input type="hidden" name="tic_tac" value="false">
-
-                            </form>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
         </div>
         <div class="tic-tac-row">
-            <div style="<?php 
+            <form style="display: inline-block;" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+            <button type="submit" style="<?php
             if(isset($_SESSION['tictacs'])) {
                 if(isset($_SESSION['tictacs'][4])){
                     if($_SESSION['tictacs'][4] == true) {
@@ -372,11 +324,13 @@ if(!isset($msg)) { $msg = "No Error messages..."; }
                             if($_SESSION['tictacs'][1] == true && $_SESSION['tictacs'][7] == true) {
                                 echo "text-decoration: line-through;";
                                 $winnerMsg = "X Is The Winner!!!";
+                                $_SESSION['isOver'] = true;
                             }
-                        } else if(isset($_SESSION['tictacs'][5]) && isset($_SESSION['tictacs'][6])) {
+                        } if(isset($_SESSION['tictacs'][5]) && isset($_SESSION['tictacs'][6])) {
                             if($_SESSION['tictacs'][5] == true && $_SESSION['tictacs'][6] == true) {
                                 echo "text-decoration: line-through;";
                                 $winnerMsg = "X Is The Winner!!!";
+                                $_SESSION['isOver'] = true;
                             }
                         }
                     } else {
@@ -385,11 +339,13 @@ if(!isset($msg)) { $msg = "No Error messages..."; }
                             if($_SESSION['tictacs'][1] == false && $_SESSION['tictacs'][7] == false) {
                                 echo "text-decoration: line-through;";
                                 $winnerMsg = "O Is The Winner!!!";
+                                $_SESSION['isOver'] = true;
                             }
-                        }else if(isset($_SESSION['tictacs'][5]) && isset($_SESSION['tictacs'][6])) {
+                        } if(isset($_SESSION['tictacs'][5]) && isset($_SESSION['tictacs'][6])) {
                             if($_SESSION['tictacs'][5] == false && $_SESSION['tictacs'][6] == false) {
                                 echo "text-decoration: line-through;";
                                 $winnerMsg = "O Is The Winner!!!";
+                                $_SESSION['isOver'] = true;
                             }
                         }
                     }
@@ -401,46 +357,15 @@ if(!isset($msg)) { $msg = "No Error messages..."; }
             else{echo "O";}
         }else{echo "&nbsp;";}
             ?>
-            </div>
+            </button>
 
-            <div class="modal fade" id="addTicToe4" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div style="background: black; width: fit-content; height: fit-content; margin: auto; margin-top: 40vh;"
-                        class="modal-content p-1">
+<input type="hidden" name="process" value="add_tic_tac">
+                    <input type="hidden" name="position" value="4">
 
-                        <div class="tic-tac-row d-flex flex-row">
+                </form>
 
-                            <form class="d-flex flex-row" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-
-                                <button type="submit" class="tic-tac-col tic-tac-black">
-                                    X
-                                </button>
-
-                                <input type="hidden" name="process" value="add_tic_tac">
-                                <input type="hidden" name="position" value="4">
-                                <input type="hidden" name="tic_tac" value="true">
-
-                            </form>
-
-                            <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-
-                                <button type="submit" class="tic-tac-col tic-tac-black">
-                                    O
-                                </button>
-
-                                <input type="hidden" name="process" value="add_tic_tac">
-                                <input type="hidden" name="position" value="4">
-                                <input type="hidden" name="tic_tac" value="false">
-
-                            </form>
-
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-            <div style="<?php 
+                <form style="display: inline-block;" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+            <button type="submit" style="<?php
             if(isset($_SESSION['tictacs'])) {
                 if(isset($_SESSION['tictacs'][5])){
                     if($_SESSION['tictacs'][5] == true) {
@@ -449,11 +374,25 @@ if(!isset($msg)) { $msg = "No Error messages..."; }
                             if($_SESSION['tictacs'][2] == true && $_SESSION['tictacs'][8] == true) {
                                 echo "text-decoration: line-through;";
                                 $winnerMsg = "X Is The Winner!!!";
+                                $_SESSION['isOver'] = true;
                             }
-                        } else if(isset($_SESSION['tictacs'][4]) && isset($_SESSION['tictacs'][6])) {
+                        } if(isset($_SESSION['tictacs'][4]) && isset($_SESSION['tictacs'][6])) {
                             if($_SESSION['tictacs'][4] == true && $_SESSION['tictacs'][6] == true) {
                                 echo "text-decoration: line-through;";
                                 $winnerMsg = "X Is The Winner!!!";
+                                $_SESSION['isOver'] = true;
+                            }
+                        } if(isset($_SESSION['tictacs'][1]) && isset($_SESSION['tictacs'][9])) {
+                            if($_SESSION['tictacs'][1] == true && $_SESSION['tictacs'][9] == true) {
+                                echo "text-decoration: line-through;";
+                                $winnerMsg = "X Is The Winner!!!";
+                                $_SESSION['isOver'] = true;
+                            }
+                        } if(isset($_SESSION['tictacs'][3]) && isset($_SESSION['tictacs'][7])) {
+                            if($_SESSION['tictacs'][3] == true && $_SESSION['tictacs'][7] == true) {
+                                echo "text-decoration: line-through;";
+                                $winnerMsg = "X Is The Winner!!!";
+                                $_SESSION['isOver'] = true;
                             }
                         }
                     } else {
@@ -462,11 +401,25 @@ if(!isset($msg)) { $msg = "No Error messages..."; }
                             if($_SESSION['tictacs'][2] == false && $_SESSION['tictacs'][8] == false) {
                                 echo "text-decoration: line-through;";
                                 $winnerMsg = "O Is The Winner!!!";
+                                $_SESSION['isOver'] = true;
                             }
-                        }else if(isset($_SESSION['tictacs'][4]) && isset($_SESSION['tictacs'][6])) {
+                        } if(isset($_SESSION['tictacs'][4]) && isset($_SESSION['tictacs'][6])) {
                             if($_SESSION['tictacs'][4] == false && $_SESSION['tictacs'][6] == false) {
                                 echo "text-decoration: line-through;";
                                 $winnerMsg = "O Is The Winner!!!";
+                                $_SESSION['isOver'] = true;
+                            }
+                        } if(isset($_SESSION['tictacs'][1]) && isset($_SESSION['tictacs'][9])) {
+                            if($_SESSION['tictacs'][1] == false && $_SESSION['tictacs'][9] == false) {
+                                echo "text-decoration: line-through;";
+                                $winnerMsg = "O Is The Winner!!!";
+                                $_SESSION['isOver'] = true;
+                            }
+                        } if(isset($_SESSION['tictacs'][3]) && isset($_SESSION['tictacs'][7])) {
+                            if($_SESSION['tictacs'][3] == false && $_SESSION['tictacs'][7] == false) {
+                                echo "text-decoration: line-through;";
+                                $winnerMsg = "O Is The Winner!!!";
+                                $_SESSION['isOver'] = true;
                             }
                         }
                     }
@@ -478,46 +431,15 @@ if(!isset($msg)) { $msg = "No Error messages..."; }
             else{echo "O";}
         }else{echo "&nbsp;";}
             ?>
-            </div>
+            </button>
 
-            <div class="modal fade" id="addTicToe5" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div style="width: fit-content; height: fit-content; margin: auto; margin-top: 40vh;"
-                        class="modal-content p-1">
+<input type="hidden" name="process" value="add_tic_tac">
+                    <input type="hidden" name="position" value="5">
 
+                </form>
 
-                        <div class="tic-tac-row d-flex flex-row">
-                            <form class="d-flex flex-row" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-
-                                <button type="submit" class="tic-tac-col">
-                                    X
-                                </button>
-
-                                <input type="hidden" name="process" value="add_tic_tac">
-                                <input type="hidden" name="position" value="5">
-                                <input type="hidden" name="tic_tac" value="true">
-
-                            </form>
-
-                            <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-
-                                <button type="submit" class="tic-tac-col">
-                                    O
-                                </button>
-
-                                <input type="hidden" name="process" value="add_tic_tac">
-                                <input type="hidden" name="position" value="5">
-                                <input type="hidden" name="tic_tac" value="false">
-
-                            </form>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-
-            <div style="<?php 
+                <form style="display: inline-block;" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+            <button type="submit" style="<?php
             if(isset($_SESSION['tictacs'])) {
                 if(isset($_SESSION['tictacs'][6])){
                     if($_SESSION['tictacs'][6] == true) {
@@ -526,11 +448,13 @@ if(!isset($msg)) { $msg = "No Error messages..."; }
                             if($_SESSION['tictacs'][3] == true && $_SESSION['tictacs'][9] == true) {
                                 echo "text-decoration: line-through;";
                                 $winnerMsg = "X Is The Winner!!!";
+                                $_SESSION['isOver'] = true;
                             }
-                        } else if(isset($_SESSION['tictacs'][4]) && isset($_SESSION['tictacs'][5])) {
+                        } if(isset($_SESSION['tictacs'][4]) && isset($_SESSION['tictacs'][5])) {
                             if($_SESSION['tictacs'][4] == true && $_SESSION['tictacs'][5] == true) {
                                 echo "text-decoration: line-through;";
                                 $winnerMsg = "X Is The Winner!!!";
+                                $_SESSION['isOver'] = true;
                             }
                         }
                     } else {
@@ -539,11 +463,13 @@ if(!isset($msg)) { $msg = "No Error messages..."; }
                             if($_SESSION['tictacs'][3] == false && $_SESSION['tictacs'][9] == false) {
                                 echo "text-decoration: line-through;";
                                 $winnerMsg = "O Is The Winner!!!";
+                                $_SESSION['isOver'] = true;
                             }
-                        }else if(isset($_SESSION['tictacs'][4]) && isset($_SESSION['tictacs'][5])) {
+                        } if(isset($_SESSION['tictacs'][4]) && isset($_SESSION['tictacs'][5])) {
                             if($_SESSION['tictacs'][4] == false && $_SESSION['tictacs'][5] == false) {
                                 echo "text-decoration: line-through;";
                                 $winnerMsg = "O Is The Winner!!!";
+                                $_SESSION['isOver'] = true;
                             }
                         }
                     }
@@ -555,48 +481,17 @@ if(!isset($msg)) { $msg = "No Error messages..."; }
             else{echo "O";}
         }else{echo "&nbsp;";}
             ?>
-            </div>
+            </button>
 
-            <div class="modal fade" id="addTicToe6" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div style="background: black; width: fit-content; height: fit-content; margin: auto; margin-top: 40vh;"
-                        class="modal-content p-1">
+<input type="hidden" name="process" value="add_tic_tac">
+                    <input type="hidden" name="position" value="6">
 
-                        <div class="tic-tac-row d-flex flex-row">
+                </form>
 
-                            <form class="d-flex flex-row" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-
-                                <button type="submit" class="tic-tac-col tic-tac-black">
-                                    X
-                                </button>
-
-                                <input type="hidden" name="process" value="add_tic_tac">
-                                <input type="hidden" name="position" value="6">
-                                <input type="hidden" name="tic_tac" value="true">
-
-                            </form>
-
-                            <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-
-                                <button type="submit" class="tic-tac-col tic-tac-black">
-                                    O
-                                </button>
-
-                                <input type="hidden" name="process" value="add_tic_tac">
-                                <input type="hidden" name="position" value="6">
-                                <input type="hidden" name="tic_tac" value="false">
-
-                            </form>
-
-                        </div>
-
-                    </div>
-                </div>
-            </div>
         </div>
         <div class="tic-tac-row">
-            <div style="<?php 
+        <form style="display: inline-block;" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+            <button type="submit" style="<?php
             if(isset($_SESSION['tictacs'])) {
                 if(isset($_SESSION['tictacs'][7])){
                     if($_SESSION['tictacs'][7] == true) {
@@ -605,16 +500,19 @@ if(!isset($msg)) { $msg = "No Error messages..."; }
                             if($_SESSION['tictacs'][1] == true && $_SESSION['tictacs'][4] == true) {
                                 echo "text-decoration: line-through;";
                                 $winnerMsg = "X Is The Winner!!!";
+                                $_SESSION['isOver'] = true;
                             }
-                        } else if(isset($_SESSION['tictacs'][8]) && isset($_SESSION['tictacs'][9])) {
+                        } if(isset($_SESSION['tictacs'][8]) && isset($_SESSION['tictacs'][9])) {
                             if($_SESSION['tictacs'][8] == true && $_SESSION['tictacs'][9] == true) {
                                 echo "text-decoration: line-through;";
                                 $winnerMsg = "X Is The Winner!!!";
+                                $_SESSION['isOver'] = true;
                             }
-                        } else if(isset($_SESSION['tictacs'][5]) && isset($_SESSION['tictacs'][3])) {
+                        } if(isset($_SESSION['tictacs'][5]) && isset($_SESSION['tictacs'][3])) {
                             if($_SESSION['tictacs'][5] == true && $_SESSION['tictacs'][3] == true) {
                                 echo "text-decoration: line-through;";
                                 $winnerMsg = "X Is The Winner!!!";
+                                $_SESSION['isOver'] = true;
                             }
                         }
                     } else {
@@ -623,16 +521,19 @@ if(!isset($msg)) { $msg = "No Error messages..."; }
                             if($_SESSION['tictacs'][1] == false && $_SESSION['tictacs'][4] == false) {
                                 echo "text-decoration: line-through;";
                                 $winnerMsg = "O Is The Winner!!!";
+                                $_SESSION['isOver'] = true;
                             }
-                        } else if(isset($_SESSION['tictacs'][8]) && isset($_SESSION['tictacs'][9])) {
+                        } if(isset($_SESSION['tictacs'][8]) && isset($_SESSION['tictacs'][9])) {
                             if($_SESSION['tictacs'][8] == false && $_SESSION['tictacs'][9] == false) {
                                 echo "text-decoration: line-through;";
                                 $winnerMsg = "O Is The Winner!!!";
+                                $_SESSION['isOver'] = true;
                             }
-                        } else if(isset($_SESSION['tictacs'][5]) && isset($_SESSION['tictacs'][3])) {
+                        } if(isset($_SESSION['tictacs'][5]) && isset($_SESSION['tictacs'][3])) {
                             if($_SESSION['tictacs'][5] == false && $_SESSION['tictacs'][3] == false) {
                                 echo "text-decoration: line-through;";
                                 $winnerMsg = "O Is The Winner!!!";
+                                $_SESSION['isOver'] = true;
                             }
                         }
                     }
@@ -644,46 +545,15 @@ if(!isset($msg)) { $msg = "No Error messages..."; }
             else{echo "O";}
         }else{echo "&nbsp;";}
             ?>
-            </div>
+            </button>
 
-            <div class="modal fade" id="addTicToe7" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div style="width: fit-content; height: fit-content; margin: auto; margin-top: 40vh;"
-                        class="modal-content p-1">
+<input type="hidden" name="process" value="add_tic_tac">
+                    <input type="hidden" name="position" value="7">
 
+                </form>
 
-                        <div class="tic-tac-row d-flex flex-row">
-                            <form class="d-flex flex-row" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-
-                                <button type="submit" class="tic-tac-col">
-                                    X
-                                </button>
-
-                                <input type="hidden" name="process" value="add_tic_tac">
-                                <input type="hidden" name="position" value="7">
-                                <input type="hidden" name="tic_tac" value="true">
-
-                            </form>
-
-                            <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-
-                                <button type="submit" class="tic-tac-col">
-                                    O
-                                </button>
-
-                                <input type="hidden" name="process" value="add_tic_tac">
-                                <input type="hidden" name="position" value="7">
-                                <input type="hidden" name="tic_tac" value="false">
-
-                            </form>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-
-            <div style="<?php 
+                <form style="display: inline-block;" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+            <button type="submit" style="<?php
             if(isset($_SESSION['tictacs'])) {
                 if(isset($_SESSION['tictacs'][8])){
                     if($_SESSION['tictacs'][8] == true) {
@@ -692,11 +562,13 @@ if(!isset($msg)) { $msg = "No Error messages..."; }
                             if($_SESSION['tictacs'][2] == true && $_SESSION['tictacs'][5] == true) {
                                 echo "text-decoration: line-through;";
                                 $winnerMsg = "X Is The Winner!!!";
+                                $_SESSION['isOver'] = true;
                             }
-                        } else if(isset($_SESSION['tictacs'][7]) && isset($_SESSION['tictacs'][9])) {
+                        } if(isset($_SESSION['tictacs'][7]) && isset($_SESSION['tictacs'][9])) {
                             if($_SESSION['tictacs'][7] == true && $_SESSION['tictacs'][9] == true) {
                                 echo "text-decoration: line-through;";
                                 $winnerMsg = "X Is The Winner!!!";
+                                $_SESSION['isOver'] = true;
                             }
                         }
                     } else {
@@ -705,11 +577,13 @@ if(!isset($msg)) { $msg = "No Error messages..."; }
                             if($_SESSION['tictacs'][2] == false && $_SESSION['tictacs'][5] == false) {
                                 echo "text-decoration: line-through;";
                                 $winnerMsg = "O Is The Winner!!!";
+                                $_SESSION['isOver'] = true;
                             }
-                        }else if(isset($_SESSION['tictacs'][7]) && isset($_SESSION['tictacs'][9])) {
+                        } if(isset($_SESSION['tictacs'][7]) && isset($_SESSION['tictacs'][9])) {
                             if($_SESSION['tictacs'][7] == false && $_SESSION['tictacs'][9] == false) {
                                 echo "text-decoration: line-through;";
                                 $winnerMsg = "O Is The Winner!!!";
+                                $_SESSION['isOver'] = true;
                             }
                         }
                     }
@@ -721,47 +595,15 @@ if(!isset($msg)) { $msg = "No Error messages..."; }
             else{echo "O";}
         }else{echo "&nbsp;";}
             ?>
-            </div>
+            </button>
 
-            <div class="modal fade" id="addTicToe8" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div style="background: black; width: fit-content; height: fit-content; margin: auto; margin-top: 40vh;"
-                        class="modal-content p-1">
+<input type="hidden" name="process" value="add_tic_tac">
+                    <input type="hidden" name="position" value="8">
 
-                        <div class="tic-tac-row d-flex flex-row">
+                </form>
 
-                            <form class="d-flex flex-row" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-
-                                <button type="submit" class="tic-tac-col tic-tac-black">
-                                    X
-                                </button>
-
-                                <input type="hidden" name="process" value="add_tic_tac">
-                                <input type="hidden" name="position" value="8">
-                                <input type="hidden" name="tic_tac" value="true">
-
-                            </form>
-
-                            <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-
-                                <button type="submit" class="tic-tac-col tic-tac-black">
-                                    O
-                                </button>
-
-                                <input type="hidden" name="process" value="add_tic_tac">
-                                <input type="hidden" name="position" value="8">
-                                <input type="hidden" name="tic_tac" value="false">
-
-                            </form>
-
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-
-            <div style="<?php 
+                <form style="display: inline-block;" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+            <button type="submit" style="<?php
             if(isset($_SESSION['tictacs'])) {
                 if(isset($_SESSION['tictacs'][9])){
                     if($_SESSION['tictacs'][9] == true) {
@@ -770,11 +612,19 @@ if(!isset($msg)) { $msg = "No Error messages..."; }
                             if($_SESSION['tictacs'][3] == true && $_SESSION['tictacs'][6] == true) {
                                 echo "text-decoration: line-through;";
                                 $winnerMsg = "X Is The Winner!!!";
+                                $_SESSION['isOver'] = true;
                             }
-                        } else if(isset($_SESSION['tictacs'][7]) && isset($_SESSION['tictacs'][8])) {
+                        } if(isset($_SESSION['tictacs'][7]) && isset($_SESSION['tictacs'][8])) {
                             if($_SESSION['tictacs'][7] == true && $_SESSION['tictacs'][8] == true) {
                                 echo "text-decoration: line-through;";
                                 $winnerMsg = "X Is The Winner!!!";
+                                $_SESSION['isOver'] = true;
+                            }
+                        } if(isset($_SESSION['tictacs'][1]) && isset($_SESSION['tictacs'][5])) {
+                            if($_SESSION['tictacs'][1] == true && $_SESSION['tictacs'][5] == true) {
+                                echo "text-decoration: line-through;";
+                                $winnerMsg = "X Is The Winner!!!";
+                                $_SESSION['isOver'] = true;
                             }
                         }
                     } else {
@@ -783,11 +633,19 @@ if(!isset($msg)) { $msg = "No Error messages..."; }
                             if($_SESSION['tictacs'][3] == false && $_SESSION['tictacs'][6] == false) {
                                 echo "text-decoration: line-through;";
                                 $winnerMsg = "O Is The Winner!!!";
+                                $_SESSION['isOver'] = true;
                             }
-                        }else if(isset($_SESSION['tictacs'][7]) && isset($_SESSION['tictacs'][8])) {
+                        } if(isset($_SESSION['tictacs'][7]) && isset($_SESSION['tictacs'][8])) {
                             if($_SESSION['tictacs'][7] == false && $_SESSION['tictacs'][8] == false) {
                                 echo "text-decoration: line-through;";
                                 $winnerMsg = "O Is The Winner!!!";
+                                $_SESSION['isOver'] = true;
+                            }
+                        } if(isset($_SESSION['tictacs'][1]) && isset($_SESSION['tictacs'][5])) {
+                            if($_SESSION['tictacs'][1] == false && $_SESSION['tictacs'][5] == false) {
+                                echo "text-decoration: line-through;";
+                                $winnerMsg = "O Is The Winner!!!";
+                                $_SESSION['isOver'] = true;
                             }
                         }
                     }
@@ -799,44 +657,13 @@ if(!isset($msg)) { $msg = "No Error messages..."; }
             else{echo "O";}
         }else{echo "&nbsp;";}
             ?>
-            </div>
+            </button>
 
-            <div class="modal fade" id="addTicToe9" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div style="width: fit-content; height: fit-content; margin: auto; margin-top: 40vh;"
-                        class="modal-content p-1">
+<input type="hidden" name="process" value="add_tic_tac">
+                    <input type="hidden" name="position" value="9">
 
+                </form>
 
-                        <div class="tic-tac-row d-flex flex-row">
-                            <form class="d-flex flex-row" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-
-                                <button type="submit" class="tic-tac-col">
-                                    X
-                                </button>
-
-                                <input type="hidden" name="process" value="add_tic_tac">
-                                <input type="hidden" name="position" value="9">
-                                <input type="hidden" name="tic_tac" value="true">
-
-                            </form>
-
-                            <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-
-                                <button type="submit" class="tic-tac-col">
-                                    O
-                                </button>
-
-                                <input type="hidden" name="process" value="add_tic_tac">
-                                <input type="hidden" name="position" value="9">
-                                <input type="hidden" name="tic_tac" value="false">
-
-                            </form>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 
