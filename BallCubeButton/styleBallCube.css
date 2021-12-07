@@ -1,0 +1,230 @@
+:root {
+    --boxColor: #0ff7;
+    --rotateSpeed: 30s;
+    --bounceSpeed: 1.5s;
+}
+
+body {
+    background-color: #000;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 75px;
+
+    overflow: hidden;
+
+    perspective: 10em;
+    perspective-origin: 50% calc(50% - 2em);
+}
+
+.scene {
+    position: relative;
+    transform-style: preserve-3d;
+    animation: sceneRotate var(--rotateSpeed) infinite linear;
+}
+
+@keyframes sceneRotate {
+    to { transform: rotateY(360deg); }
+}
+
+.ball {
+    width: 1em;
+    height: 1em;
+    border-radius: 50%;
+    background-color: lightblue;
+
+    position: absolute;
+    left: -0.5em;
+    bottom: 1em;
+    background-image: radial-gradient(
+        circle at top,
+        lightblue,
+        50%,
+        #000
+    );
+    animation:
+    ballBounce var(--bounceSpeed) infinite ease-out,
+    sceneRotate var(--rotateSpeed) infinite linear reverse;
+}
+
+@keyframes ballBounce {
+    0%, 100% { bottom: 0.5em; }
+    50% { bottom: 3em; animation-timing-function: ease-in; }    
+}
+
+.ballShadow {
+    pointer-events: none;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image:
+    radial-gradient(#0007, #0000 50%);
+    animation: ballShadow var(--bounceSpeed) infinite ease-out;
+}
+
+@keyframes ballShadow {
+    0%, 8%, 93.5%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(2); opacity: 0.5; animation-timing-function: ease-in; }    
+}
+
+.cube {
+    outline: none;
+    pointer-events: all;
+    cursor: pointer;
+    width: 2em;
+    height: 2em;
+    transform-style: preserve-3d;
+    position: absolute;
+    bottom: -1em;
+    left: -1em;
+
+    animation: cubeSquish var(--bounceSpeed) infinite linear;
+}
+
+@keyframes cubeSquish {
+    0%, 100% { height: 1.5em; }
+    12%, 93.75% { height: 2em; }
+}
+
+
+.cube > .left, .right, .front, .back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: var(--boxColor);
+    box-shadow: 0 0 2em #000a inset;
+}
+
+.cube > .top {
+    position: absolute;
+    width: 2em;
+    height: 2em;
+    background-color: var(--boxColor);
+    transform:
+    translateY(-50%)
+    rotateX(90deg);
+    box-shadow: 0 0 2em #000a inset;
+}
+
+.cube > .bottom {
+    position: absolute;
+    width: 2em;
+    height: 2em;
+    background-color: #0007;
+    bottom: 0;
+    transform:
+    translateY(50%)
+    rotateX(90deg);
+    box-shadow: 0 0 2em #000;
+}
+
+.cube > .front {
+    transform: translateZ(1em);
+}
+
+.cube > .right {
+    transform:
+    rotateY(90deg)
+    translateZ(1em);
+}
+
+.cube > .back {
+    transform:
+    rotateY(180deg)
+    translateZ(1em);
+}
+
+.cube > .left {
+    transform:
+    rotateY(270deg)
+    translateZ(1em);
+}
+
+.cube:hover > .front,
+.cube:focus > .front {
+    box-shadow:
+    0 0 0.25em #000a inset,
+    0 0 0.05em var(--boxColor);
+}
+
+.cube:hover > .top,
+.cube:focus > .top {
+    box-shadow:
+    0 0 0.25em #000a inset,
+    0 0 0.05em var(--boxColor);
+}
+
+/* .cube:hover,
+.cube:focus{
+    box-shadow:
+    0 0 5.5em var(--boxColor)
+} */
+
+.cube:hover > .right,
+.cube:focus > .right {
+    box-shadow:
+    0 0 0.25em #000a inset,
+    0 0 0.05em var(--boxColor);
+}
+
+.cube:hover > .back,
+.cube:focus > .back {
+    box-shadow:
+    0 0 0.25em #000a inset,
+    0 0 0.05em var(--boxColor);
+}
+
+.cube:hover > .left,
+.cube:focus > .left {
+    box-shadow:
+    0 0 0.25em #000a inset,
+    0 0 0.05em var(--boxColor);
+}
+
+.cube:hover > .bottom,
+.cube:focus > .bottom {
+    box-shadow:
+    0 0 0.25em #000a inset,
+    0 0 0.5em var(--boxColor);
+}
+
+.floor {
+    position: absolute;
+    top: 1em;
+    transform:
+    translate(-50%, -50%)
+    rotateX(90deg);
+
+    width: 15em;
+    height: 15em;
+    background-image:
+    radial-gradient(#0000, #000 75%),
+    repeating-conic-gradient(
+        from 45deg,
+        #111 0deg 90deg,
+        #222 90deg 180deg);
+    background-size: 100%, 1em 1em;
+}
+
+.btnText {
+    font-family: "Balsamiq Sans", cursive;
+    font-size: 50px;
+    text-align: center;
+    padding: 15px;
+    color:rgba(75, 0, 130, 0.5);
+
+    animation: textSquish var(--bounceSpeed) infinite linear;
+}
+
+@keyframes textSquish {
+    0%, 100% { font-size: 30px; }
+    12%, 93.75% { font-size: 50px; }
+}
+
+.cube:hover .btnText {
+    color:rgba(75, 0, 130, 1);
+    /* text-shadow:
+    0 0 0.125em hsl(0 0% 100% / 0.3),
+    0 0 0.45em indigo; */
+}

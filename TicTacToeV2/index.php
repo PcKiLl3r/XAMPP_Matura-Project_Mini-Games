@@ -117,17 +117,22 @@ if(!isset($msg)) { $msg = "No Error messages..."; }
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"
+        integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
 
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body style="display: grid;">
 
-    <div class="tic-tac-container">
-        <div class="tic-tac-row">
-        <form style="display: inline-block;" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-            <button type="submit" style="<?php 
+    <div class="tic-tac-container-out mt-5">
+        <div class="tic-tac-container">
+            <div class="tic-tac-row">
+
+                <div class="tic-button tic-button-hoverable-lt">
+                    <div class="tic-button-front">
+                        <form style="display: inline-block;" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+                            <button type="submit" style="<?php 
             if(isset($_SESSION['tictacs'])) {
                 if(isset($_SESSION['tictacs'][1])){
                     if($_SESSION['tictacs'][1] == "true") {
@@ -186,22 +191,36 @@ if(!isset($msg)) { $msg = "No Error messages..."; }
                         }
                     }
                 }
-            } ?>" class="tic-tac-col">
-                <?php
+            } ?>" class="tic-tac-col   tic-tac-white">
+                                <?php
         if(isset($_SESSION['tictacs'][1])){
             if($_SESSION['tictacs'][1] == true){echo "X";}
             else {echo "O";}
         }else{echo "&nbsp;";}
             ?>
-            </button>
+                            </button>
 
-            <input type="hidden" name="process" value="add_tic_tac">
-                                <input type="hidden" name="position" value="1">
+                            <input type="hidden" name="process" value="add_tic_tac">
+                            <input type="hidden" name="position" value="1">
 
-                            </form>
+                        </form>
+                    </div>
+                    <div class="tic-button-left">
+                    </div>
+                    <div class="tic-button-bot">
+                    </div>
+                    <div class="tic-button-right">
+                    </div>
+                    <div class="tic-button-back">
+                    </div>
+                    <div class="tic-button-top">
+                    </div>
+                </div>
 
-                            <form style="display: inline-block;" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-            <button type="submit" style="<?php
+                <div class="tic-button tic-button-hoverable-t">
+                    <div class="tic-button-front">
+                        <form style="display: inline-block;" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+                            <button type="submit" style="<?php
             if(isset($_SESSION['tictacs'])) {
                 if(isset($_SESSION['tictacs'][2])){
                     if($_SESSION['tictacs'][2] == true) {
@@ -237,21 +256,35 @@ if(!isset($msg)) { $msg = "No Error messages..."; }
                     }
                 }
             } ?>" type="button" data-bs-toggle="modal" data-bs-target="#addTicToe2" class="tic-tac-col tic-tac-black">
-                <?php
+                                <?php
         if(isset($_SESSION['tictacs'][2])){
             if($_SESSION['tictacs'][2] == true){echo "X";}
             else{echo "O";}
         }else{echo "&nbsp;";}
             ?>
-            </button>
+                            </button>
 
-<input type="hidden" name="process" value="add_tic_tac">
-                    <input type="hidden" name="position" value="2">
+                            <input type="hidden" name="process" value="add_tic_tac">
+                            <input type="hidden" name="position" value="2">
 
-                </form>
+                        </form>
+                    </div>
+                    <div class="tic-button-left">
+                    </div>
+                    <div class="tic-button-bot">
+                    </div>
+                    <div class="tic-button-right">
+                    </div>
+                    <div class="tic-button-back">
+                    </div>
+                    <div class="tic-button-top">
+                    </div>
+                </div>
 
-                <form style="display: inline-block;" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-            <button type="submit" style="<?php
+                <div class="tic-button tic-button-hoverable-rt">
+                    <div class="tic-button-front">
+                        <form style="display: inline-block;" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+                            <button type="submit" style="<?php
             if(isset($_SESSION['tictacs'])) {
                 if(isset($_SESSION['tictacs'][3])){
                     if($_SESSION['tictacs'][3] == true) {
@@ -298,24 +331,41 @@ if(!isset($msg)) { $msg = "No Error messages..."; }
                         }
                     }
                 }
-            } ?>" type="button" data-bs-toggle="modal" data-bs-target="#addTicToe3" class="tic-tac-col">
-                <?php
+            } ?>" type="button" data-bs-toggle="modal" data-bs-target="#addTicToe3" class="tic-tac-col  tic-tac-white">
+                                <?php
         if(isset($_SESSION['tictacs'][3])){
             if($_SESSION['tictacs'][3] == true){echo "X";}
             else{echo "O";}
         }else{echo "&nbsp;";}
             ?>
-            </button>
+                            </button>
 
-<input type="hidden" name="process" value="add_tic_tac">
-                    <input type="hidden" name="position" value="3">
+                            <input type="hidden" name="process" value="add_tic_tac">
+                            <input type="hidden" name="position" value="3">
 
-                </form>
+                        </form>
+                    </div>
+                    <div class="tic-button-left">
+                    </div>
+                    <div class="tic-button-bot">
+                    </div>
+                    <div class="tic-button-right">
+                    </div>
+                    <div class="tic-button-back">
+                    </div>
+                    <div class="tic-button-top">
+                    </div>
+                </div>
 
-        </div>
-        <div class="tic-tac-row">
-            <form style="display: inline-block;" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-            <button type="submit" style="<?php
+
+
+            </div>
+            <div class="tic-tac-row">
+
+                <div class="tic-button tic-button-hoverable-l">
+                    <div class="tic-button-front">
+                        <form style="display: inline-block;" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+                            <button type="submit" style="<?php
             if(isset($_SESSION['tictacs'])) {
                 if(isset($_SESSION['tictacs'][4])){
                     if($_SESSION['tictacs'][4] == true) {
@@ -351,21 +401,35 @@ if(!isset($msg)) { $msg = "No Error messages..."; }
                     }
                 }
             } ?>" type="button" data-bs-toggle="modal" data-bs-target="#addTicToe4" class="tic-tac-col tic-tac-black">
-                <?php
+                                <?php
         if(isset($_SESSION['tictacs'][4])){
             if($_SESSION['tictacs'][4] == true){echo "X";}
             else{echo "O";}
         }else{echo "&nbsp;";}
             ?>
-            </button>
+                            </button>
 
-<input type="hidden" name="process" value="add_tic_tac">
-                    <input type="hidden" name="position" value="4">
+                            <input type="hidden" name="process" value="add_tic_tac">
+                            <input type="hidden" name="position" value="4">
 
-                </form>
+                        </form>
+                    </div>
+                    <div class="tic-button-left">
+                    </div>
+                    <div class="tic-button-bot">
+                    </div>
+                    <div class="tic-button-right">
+                    </div>
+                    <div class="tic-button-back">
+                    </div>
+                    <div class="tic-button-top">
+                    </div>
+                </div>
 
-                <form style="display: inline-block;" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-            <button type="submit" style="<?php
+                <div class="tic-button tic-button-hoverable-m">
+                    <div class="tic-button-front">
+                        <form style="display: inline-block;" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+                            <button type="submit" style="<?php
             if(isset($_SESSION['tictacs'])) {
                 if(isset($_SESSION['tictacs'][5])){
                     if($_SESSION['tictacs'][5] == true) {
@@ -424,22 +488,36 @@ if(!isset($msg)) { $msg = "No Error messages..."; }
                         }
                     }
                 }
-            } ?>" type="button" data-bs-toggle="modal" data-bs-target="#addTicToe5" class="tic-tac-col">
-                <?php
+            } ?>" type="button" data-bs-toggle="modal" data-bs-target="#addTicToe5" class="tic-tac-col   tic-tac-white">
+                                <?php
         if(isset($_SESSION['tictacs'][5])){
             if($_SESSION['tictacs'][5] == true){echo "X";}
             else{echo "O";}
         }else{echo "&nbsp;";}
             ?>
-            </button>
+                            </button>
 
-<input type="hidden" name="process" value="add_tic_tac">
-                    <input type="hidden" name="position" value="5">
+                            <input type="hidden" name="process" value="add_tic_tac">
+                            <input type="hidden" name="position" value="5">
 
-                </form>
+                        </form>
+                    </div>
+                    <div class="tic-button-left">
+                    </div>
+                    <div class="tic-button-bot">
+                    </div>
+                    <div class="tic-button-right">
+                    </div>
+                    <div class="tic-button-back">
+                    </div>
+                    <div class="tic-button-top">
+                    </div>
+                </div>
 
-                <form style="display: inline-block;" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-            <button type="submit" style="<?php
+                <div class="tic-button tic-button-hoverable-r">
+                    <div class="tic-button-front">
+                        <form style="display: inline-block;" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+                            <button type="submit" style="<?php
             if(isset($_SESSION['tictacs'])) {
                 if(isset($_SESSION['tictacs'][6])){
                     if($_SESSION['tictacs'][6] == true) {
@@ -475,23 +553,40 @@ if(!isset($msg)) { $msg = "No Error messages..."; }
                     }
                 }
             } ?>" type="button" data-bs-toggle="modal" data-bs-target="#addTicToe6" class="tic-tac-col tic-tac-black">
-                <?php
+                                <?php
         if(isset($_SESSION['tictacs'][6])){
             if($_SESSION['tictacs'][6] == true){echo "X";}
             else{echo "O";}
         }else{echo "&nbsp;";}
             ?>
-            </button>
+                            </button>
 
-<input type="hidden" name="process" value="add_tic_tac">
-                    <input type="hidden" name="position" value="6">
+                            <input type="hidden" name="process" value="add_tic_tac">
+                            <input type="hidden" name="position" value="6">
 
-                </form>
+                        </form>
+                    </div>
+                    <div class="tic-button-left">
+                    </div>
+                    <div class="tic-button-bot">
+                    </div>
+                    <div class="tic-button-right">
+                    </div>
+                    <div class="tic-button-back">
+                    </div>
+                    <div class="tic-button-top">
+                    </div>
+                </div>
 
-        </div>
-        <div class="tic-tac-row">
-        <form style="display: inline-block;" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-            <button type="submit" style="<?php
+
+
+            </div>
+            <div class="tic-tac-row">
+
+                <div class="tic-button tic-button-hoverable-lb">
+                    <div class="tic-button-front">
+                        <form style="display: inline-block;" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+                            <button type="submit" style="<?php
             if(isset($_SESSION['tictacs'])) {
                 if(isset($_SESSION['tictacs'][7])){
                     if($_SESSION['tictacs'][7] == true) {
@@ -538,22 +633,36 @@ if(!isset($msg)) { $msg = "No Error messages..."; }
                         }
                     }
                 }
-            } ?>" type="button" data-bs-toggle="modal" data-bs-target="#addTicToe7" class="tic-tac-col">
-                <?php
+            } ?>" type="button" data-bs-toggle="modal" data-bs-target="#addTicToe7" class="tic-tac-col   tic-tac-white">
+                                <?php
         if(isset($_SESSION['tictacs'][7])){
             if($_SESSION['tictacs'][7] == true){echo "X";}
             else{echo "O";}
         }else{echo "&nbsp;";}
             ?>
-            </button>
+                            </button>
 
-<input type="hidden" name="process" value="add_tic_tac">
-                    <input type="hidden" name="position" value="7">
+                            <input type="hidden" name="process" value="add_tic_tac">
+                            <input type="hidden" name="position" value="7">
 
-                </form>
+                        </form>
+                    </div>
+                    <div class="tic-button-left">
+                    </div>
+                    <div class="tic-button-bot">
+                    </div>
+                    <div class="tic-button-right">
+                    </div>
+                    <div class="tic-button-back">
+                    </div>
+                    <div class="tic-button-top">
+                    </div>
+                </div>
 
-                <form style="display: inline-block;" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-            <button type="submit" style="<?php
+                <div class="tic-button tic-button-hoverable-b">
+                    <div class="tic-button-front">
+                        <form style="display: inline-block;" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+                            <button type="submit" style="<?php
             if(isset($_SESSION['tictacs'])) {
                 if(isset($_SESSION['tictacs'][8])){
                     if($_SESSION['tictacs'][8] == true) {
@@ -589,21 +698,35 @@ if(!isset($msg)) { $msg = "No Error messages..."; }
                     }
                 }
             } ?>" type="button" data-bs-toggle="modal" data-bs-target="#addTicToe8" class="tic-tac-col tic-tac-black">
-                <?php
+                                <?php
         if(isset($_SESSION['tictacs'][8])){
             if($_SESSION['tictacs'][8] == true){echo "X";}
             else{echo "O";}
         }else{echo "&nbsp;";}
             ?>
-            </button>
+                            </button>
 
-<input type="hidden" name="process" value="add_tic_tac">
-                    <input type="hidden" name="position" value="8">
+                            <input type="hidden" name="process" value="add_tic_tac">
+                            <input type="hidden" name="position" value="8">
 
-                </form>
+                        </form>
+                    </div>
+                    <div class="tic-button-left">
+                    </div>
+                    <div class="tic-button-bot">
+                    </div>
+                    <div class="tic-button-right">
+                    </div>
+                    <div class="tic-button-back">
+                    </div>
+                    <div class="tic-button-top">
+                    </div>
+                </div>
 
-                <form style="display: inline-block;" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-            <button type="submit" style="<?php
+                <div class="tic-button tic-button-hoverable-rb">
+                    <div class="tic-button-front">
+                        <form style="display: inline-block;" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+                            <button type="submit" style="<?php
             if(isset($_SESSION['tictacs'])) {
                 if(isset($_SESSION['tictacs'][9])){
                     if($_SESSION['tictacs'][9] == true) {
@@ -650,21 +773,37 @@ if(!isset($msg)) { $msg = "No Error messages..."; }
                         }
                     }
                 }
-            } ?>" type="button" data-bs-toggle="modal" data-bs-target="#addTicToe9" class="tic-tac-col">
-                <?php
+            } ?>" type="button" data-bs-toggle="modal" data-bs-target="#addTicToe9" class="tic-tac-col   tic-tac-white">
+                                <?php
         if(isset($_SESSION['tictacs'][9])){
             if($_SESSION['tictacs'][9] == true){echo "X";}
             else{echo "O";}
         }else{echo "&nbsp;";}
             ?>
-            </button>
+                            </button>
 
-<input type="hidden" name="process" value="add_tic_tac">
-                    <input type="hidden" name="position" value="9">
+                            <input type="hidden" name="process" value="add_tic_tac">
+                            <input type="hidden" name="position" value="9">
 
-                </form>
+                        </form>
+                    </div>
+                    <div class="tic-button-left">
+                    </div>
+                    <div class="tic-button-bot">
+                    </div>
+                    <div class="tic-button-right">
+                    </div>
+                    <div class="tic-button-back">
+                    </div>
+                    <div class="tic-button-top">
+                    </div>
+                </div>
 
+
+
+            </div>
         </div>
+
     </div>
 
     <div class="container text-center mt-2">
@@ -678,22 +817,20 @@ if(!isset($msg)) { $msg = "No Error messages..."; }
     <?php
     if($winnerMsg != null) {
 ?>
-        <div class="container text-center mt-3">
+    <div class="container text-center mt-3">
         <form style="justify-content: center;" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-    
-    <button type="submit" class="tic-tac-col">
-    <i class="fas fa-biohazard"></i>
-    </button>
-    
-    <input type="hidden" name="process" value="reset">
-    
-    </form>
-        </div>
-<?php
+
+            <button type="submit" class="tic-tac-col">
+                <i class="fas fa-biohazard"></i>
+            </button>
+
+            <input type="hidden" name="process" value="reset">
+
+        </form>
+    </div>
+    <?php
     }
     ?>
-
-
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous">

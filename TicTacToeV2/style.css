@@ -1,8 +1,35 @@
+.tic-tac-container-out{
+    justify-self: center;
+    border: 15px solid #ccc;
+    padding: 100px;
+    border-radius: 5px;
+    background-color: #999;
+    box-shadow: 10px 10px 5px #555;
+
+    /* animation: slideInFromTop 2s ease-out; */
+}
+
+@keyframes slideInFromTop {
+    0% {
+      transform: translateY(-100%);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+
+body{
+    background-color: #eee;
+}
+
 .tic-tac-container{
-    display: table;
+background-color: #444;
+display: table;
 justify-self: center;
 border: 5px solid #666;
 border-radius: 5px;
+padding-right: 4px;
+padding-bottom: 4px;
 }
 
 .tic-tac-row{
@@ -17,8 +44,8 @@ border-radius: 5px;
     height: 100px;
     border-radius: 5px;
     text-align: center;
-    font-size: 75px;
-    line-height: 1.2em;
+    font-size: 70px;
+    line-height: 0;
 
         -webkit-touch-callout: none; /* iOS Safari */
           -webkit-user-select: none; /* Safari */
@@ -35,7 +62,225 @@ border-radius: 5px;
     color: #fff;
 }
 
-.tic-tac-col:hover,
-.tic-tac-col:focus{
+.tic-tac-white:hover,
+.tic-tac-white:focus{
+    background-color: #bbb !important;
+}
+
+.tic-tac-black:hover,
+.tic-tac-black:focus{
     background-color: #666 !important;
 }
+
+
+.tic-button {
+    display: table-cell;
+    margin: 5px;
+    position: relative;
+    -webkit-transform-style: preserve-3d;
+    width: 99px;
+    height: 99px;
+    transform: perspective(40000); 
+    -webkit-perspective: 40000;
+}
+
+.tic-button-left {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 10px;
+    height: 100px;
+    border: 3px solid black;
+    background-color: #aaa;
+    border-radius: 5px;
+    -webkit-transform: rotateY(-90deg) translateZ(4px) translateX(15px);
+}
+
+.tic-button-front{
+    display: table-cell;
+    position: absolute;
+    left: -5px;
+    top: -5px;
+    margin: 5px;
+    width: 100px;
+    height: 100px;
+    border: 3px solid black;
+    background-color: #aaa;
+    border-radius: 5px;
+    -webkit-transform: translateZ(18px);
+
+    font-size: 85px;
+    line-height: 85px;
+    text-align: center;
+}
+
+.tic-button-back{
+    position: absolute;
+    left: -5px;
+    top: -5px;
+    margin: 5px;
+    width: 100px;
+    height: 100px;
+    border: 3px solid black;
+    background-color: #aaa;
+    border-radius: 5px;
+    -webkit-transform: translateZ(12px) rotateY(180deg);
+    text-align: center;
+    font-size: 85px;
+    line-height: 85px;
+}
+
+.tic-button-right{
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 10px;
+    height: 100px;
+    border: 3px solid black;
+    background-color: #aaa;
+    border-radius: 5px;
+    -webkit-transform: rotateY(-90deg) translateZ(-94px) translateX(15px);
+}
+
+.tic-button-top{
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100px;
+    height: 10px;
+    border: 3px solid black;
+    background-color: #aaa;
+    border-radius: 5px;
+    -webkit-transform: rotateX(-90deg) translateZ(-4px) translateY(-15px);
+}
+
+.tic-button-bot{
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100px;
+    height: 10px;
+    border: 3px solid black;
+    background-color: #aaa;
+    border-radius: 5px;
+    -webkit-transform: rotateX(-90deg) translateZ(94px) translateY(-15px);
+}
+
+.tic-buttons {
+    display: table-row;
+    margin: 50px;
+    padding: 5px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-content: space-between;
+}
+
+.tic-button-hoverable-lt:hover,
+.tic-button-hoverable-lt:focus {
+    animation: sneakPeakLT 1s alternate infinite;
+}
+
+.tic-button-hoverable-t:hover,
+.tic-button-hoverable-t:focus {
+    animation: sneakPeakT 1s alternate infinite;
+}
+
+.tic-button-hoverable-rt:hover,
+.tic-button-hoverable-rt:focus {
+    animation: sneakPeakRT 1s alternate infinite;
+}
+
+.tic-button-hoverable-l:hover,
+.tic-button-hoverable-l:focus {
+    animation: sneakPeakL 1s alternate infinite;
+}
+
+.tic-button-hoverable-m:hover,
+.tic-button-hoverable-m:focus {
+    animation: sneakPeakM 1s alternate infinite;
+}
+
+.tic-button-hoverable-r:hover,
+.tic-button-hoverable-r:focus {
+    animation: sneakPeakR 1s alternate infinite;
+}
+
+.tic-button-hoverable-lb:hover,
+.tic-button-hoverable-lb:focus {
+    animation: sneakPeakLB 1s alternate infinite;
+}
+
+.tic-button-hoverable-b:hover,
+.tic-button-hoverable-b:focus {
+    animation: sneakPeakB 1s alternate infinite;
+}
+
+.tic-button-hoverable-rb:hover,
+.tic-button-hoverable-rb:focus {
+    animation: sneakPeakRB 1s alternate infinite;
+}
+
+.tic-button:hover > .tic-button-front,
+.tic-button:focus > .tic-button-front,
+.tic-button:hover > .tic-button-back,
+.tic-button:focus > .tic-button-back,
+.tic-button:hover > .tic-button-left,
+.tic-button:focus > .tic-button-left,
+.tic-button:hover > .tic-button-right,
+.tic-button:focus > .tic-button-right,
+.tic-button:hover > .tic-button-top,
+.tic-button:focus > .tic-button-top,
+.tic-button:hover > .tic-button-bot,
+.tic-button:focus > .tic-button-bot {
+    background-color: #bbb;
+}
+
+@keyframes sneakPeakLT {
+    from {transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);}
+    to {transform: rotateX(15deg) rotateY(-15deg) rotateZ(3deg);}
+  }
+
+  @keyframes sneakPeakT {
+    from {transform: rotateX(0deg) rotateY(0deg);}
+    to {transform: rotateX(25deg) rotateY(0deg);}
+  }
+
+  @keyframes sneakPeakRT {
+    from {transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);}
+    to {transform: rotateX(15deg) rotateY(15deg) rotateZ(-3deg);}
+  }
+
+  @keyframes sneakPeakL {
+    from {transform: rotateX(0deg) rotateY(0deg);}
+    to {transform: rotateX(0deg) rotateY(-25deg);}
+  }
+
+  @keyframes sneakPeakM {
+/*     from {transform: rotateZ(0deg);}
+    to {transform: rotateZ(90deg);}
+    from {transform: rotateZ(90deg);}
+    to {transform: rotateZ(-90deg);} */
+    from {transform: scale(1);}
+    to {transform: scale(0.9);}
+  }
+
+  @keyframes sneakPeakR {
+    from {transform: rotateX(0deg) rotateY(0deg);}
+    to {transform: rotateX(0deg) rotateY(25deg);}
+  }
+
+  @keyframes sneakPeakLB {
+    from {transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);}
+    to {transform: rotateX(-15deg) rotateY(-15deg) rotateZ(-3deg);}
+  }
+
+  @keyframes sneakPeakB {
+    from {transform: rotateX(0deg) rotateY(0deg);}
+    to {transform: rotateX(-25deg) rotateY(0deg);}
+  }
+
+  @keyframes sneakPeakRB {
+    from {transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);}
+    to {transform: rotateX(-15deg) rotateY(15deg) rotateZ(3deg);}
+  }

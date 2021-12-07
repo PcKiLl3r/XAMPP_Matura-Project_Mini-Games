@@ -13,7 +13,7 @@
     left: 0px;
     top: 0px;
     width: 10px;
-    height: 100px;
+    height: 150px;
     border: 3px solid black;
     background-color: #aaa;
     border-radius: 5px;
@@ -26,7 +26,7 @@
     top: -5px;
     margin: 5px;
     width: 100px;
-    height: 100px;
+    height: 150px;
     border: 3px solid black;
     background-color: #aaa;
     border-radius: 5px;
@@ -43,7 +43,7 @@
     top: -5px;
     margin: 5px;
     width: 100px;
-    height: 100px;
+    height: 150px;
     border: 3px solid black;
     background-color: #aaa;
     border-radius: 5px;
@@ -58,7 +58,7 @@
     left: 0px;
     top: 0px;
     width: 10px;
-    height: 100px;
+    height: 150px;
     border: 3px solid black;
     background-color: #aaa;
     border-radius: 5px;
@@ -86,7 +86,7 @@
     border: 3px solid black;
     background-color: #aaa;
     border-radius: 5px;
-    -webkit-transform: rotateX(-90deg) translateZ(94px) translateY(-15px);
+    -webkit-transform: rotateX(-90deg) translateZ(144px) translateY(-15px);
 }
 
 .memory-cards {
@@ -121,5 +121,5 @@
 
 @keyframes sneakPeak {
     from {transform: rotateY(0deg);}
-    to {transform: rotateY(45deg);}
+    to {transform: rotateX(45deg) rotateY(-45deg);}
   }

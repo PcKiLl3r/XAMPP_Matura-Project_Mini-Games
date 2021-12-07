@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ball Cube</title>
+
+    <!-- Google fonts -->
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Balsamiq+Sans:wght@700&display=swap" rel="stylesheet">
+
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="./styleBallCube.css">
+    
+</head>
+<body>
+    <div class="scene">
+        <div class="floor"></div>
+        <div onkeydown = "if (event.keyCode == 13)
+        document.getElementsByClassName('cube')[0].click()"
+        tabindex="1"
+        class="cube">
+            <div class="front">
+                <div class="btnText">
+                    Click Me!
+                </div>
+            </div>
+            <div class="back">
+                <div class="btnText">
+                    Click Me!
+                </div>
+            </div>
+            <div class="left">
+                <div class="btnText">
+                    Click Me!
+                </div>
+            </div>
+            <div class="right">
+                <div class="btnText">
+                    Click Me!
+                </div>
+            </div>
+            <div class="top">
+                <div class="ballShadow"></div>
+            </div>
+            <div class="bottom"></div>
+        </div>
+        <div class="ball"></div>
+    </div>
+    <script>
+        let cube = document.getElementsByClassName('cube');
+        cube[0].addEventListener("click", () => {
+            let url = "http://google.com";
+            window.open(url,'_blank');
+        })
+    </script>
+</body>
+</html>
