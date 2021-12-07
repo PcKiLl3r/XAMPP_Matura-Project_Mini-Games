@@ -34,33 +34,51 @@
 </div>
 
 <div class="memory-card">
+    <div class="memory-card-front">
+        ?
+    </div>
+    <div class="memory-card-left">
+    </div>
+    <div class="memory-card-bot">
+    </div>
+    <div class="memory-card-right">
+    </div>
+    <div class="memory-card-back">
+    </div>
+    <div class="memory-card-top">
+    </div>
 </div>
 
 <div class="memory-card">
+    <div class="memory-card-front">
+        ?
+    </div>
+    <div class="memory-card-left">
+    </div>
+    <div class="memory-card-bot">
+    </div>
+    <div class="memory-card-right">
+    </div>
+    <div class="memory-card-back">
+    </div>
+    <div class="memory-card-top">
+    </div>
 </div>
 
 <div class="memory-card">
-</div>
-
-<div class="memory-card">
-</div>
-
-<div class="memory-card">
-</div>
-
-<div class="memory-card">
-</div>
-
-<div class="memory-card">
-</div>
-
-<div class="memory-card">
-</div>
-
-<div class="memory-card">
-</div>
-
-<div class="memory-card">
+    <div class="memory-card-front">
+        ?
+    </div>
+    <div class="memory-card-left">
+    </div>
+    <div class="memory-card-bot">
+    </div>
+    <div class="memory-card-right">
+    </div>
+    <div class="memory-card-back">
+    </div>
+    <div class="memory-card-top">
+    </div>
 </div>
 
 </div>
