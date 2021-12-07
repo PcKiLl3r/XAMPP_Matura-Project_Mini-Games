@@ -1,4 +1,5 @@
 .memory-card {
+    margin: 5px;
     position: relative;
     -webkit-transform-style: preserve-3d;
     width: 100px;
@@ -92,7 +93,6 @@
     flex-wrap: wrap;
     justify-content: space-between;
     align-content: space-between;
-
 }
 
 .memory-card:hover,
