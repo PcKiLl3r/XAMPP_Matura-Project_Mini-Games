@@ -17,6 +17,13 @@ $_SESSION['lvl1Icons'][3] = '<i class="fas fa-award"></i>';
 $_SESSION['lvl1Icons'][4] = '<i class="fas fa-bell"></i>';
 $_SESSION['lvl1Icons'][5] = '<i class="fas fa-bolt"></i>';
 
+$_SESSION['lvl1IconNum'][0] = 0;
+$_SESSION['lvl1IconNum'][1] = 1;
+$_SESSION['lvl1IconNum'][2] = 2;
+$_SESSION['lvl1IconNum'][3] = 3;
+$_SESSION['lvl1IconNum'][4] = 4;
+$_SESSION['lvl1IconNum'][5] = 5;
+
 /* $lvl1Icons[0] = '<i class="fas fa-ambulance"></i>';
 $lvl1Icons[1] = '<i class="fas fa-ankh"></i>';
 $lvl1Icons[2] = '<i class="fab fa-apple"></i>';
@@ -56,6 +63,7 @@ function Start6 () {
 
         $randomNums[$i] = $randomN;
         $_SESSION['board'][$i] = $_SESSION['lvl1Icons'][$randomN];
+        $_SESSION['boardNums'][$i] = $_SESSION['lvl1IconNum'][$randomN];
         $isChecked = false;
         $badNumber = true;
     }
@@ -88,6 +96,7 @@ for($i = 0; $i < 6; $i++){
 
         $randomNums2[$i] = $randomN;
         $_SESSION['board'][$i + 6] = $_SESSION['lvl1Icons'][$randomN];
+        $_SESSION['boardNums'][$i + 6] = $_SESSION['lvl1IconNum'][$randomN];
         $isChecked = false;
         $badNumber = true;
     }
@@ -246,75 +255,76 @@ if(filter_has_var(INPUT_POST, 'process')) {
             }
             // End of Choose GameMode
 
-    // Start of Insert Tic/Tac
-    if($_POST['process'] == "add_tic_tac") {
+// Start of PickCard
+if($_POST['process'] == "pickCard") {
 
-/*         if(isset($_POST['position']) && isset($_SESSION['lastSign'])) {
+    if(isset($_POST['cardNumber'])) {
 
-            if(isset($_SESSION['isOver'])){
-                if($_SESSION['isOver'] == true) {
-                    header('Location: ./index.php');
-                    exit;
-                }
-            }
+        $cardNumber = trim(htmlspecialchars($_POST['cardNumber']));
 
-            $position = trim(htmlspecialchars($_POST['position']));
-            $lastSign = trim(htmlspecialchars($_SESSION['lastSign']));
+        if(!empty($cardNumber)) {
 
-            if(isset($_SESSION['tictacs'][$position])){
-                header('Location: ./index.php');
-                exit;
-            }
+            if(isset($_SESSION['first-pick'])){
+                if($_SESSION['first-pick'] == "true") {
 
-            if(!empty($position) && !empty($lastSign)) {
+                    $_SESSION['pick1'] = $cardNumber;
 
-                if($position > 0 && $position <= 9) {
-
-                    if($lastSign == "false") {
-
-                        $_SESSION['tictacs'][$position] = true;
-                        $_SESSION['lastSign'] = "true";
-
-                        header('Location: ./index.php');
-
-                    } else if($lastSign == "true") {
-
-                        $_SESSION['tictacs'][$position] = false;
-                        $_SESSION['lastSign'] = "false";
-
-                        header('Location: ./index.php');
-
-                    } else {
-
-                        $msg = "Error: Wrong symbol data!";
-                    
-                    }
-
+                    $_SESSION['first-pick'] = "false";
                 } else {
 
-                    $msg = "Error: Wrong position data!";
+                    $_SESSION['pick2'] = $cardNumber;
 
+                    $pick1 = $_SESSION['pick1'];
+                    $pick2 = $_SESSION['pick2'];
+
+                        if($_SESSION['boardNums'][$pick1] == $_SESSION['boardNums'][$pick2]){
+                            if(isset($_SESSION['won-cards'])){
+                                if(!is_array($_SESSION['won-cards'])){
+                                    $_SESSION['won-cards'] = array();
+                                }
+                            } else {
+                                $_SESSION['won-cards'] = array();
+                            }
+
+                            array_push($_SESSION['won-cards'], $_SESSION['boardNums'][$pick1]);
+                            $_SESSION['pick1'] = null;
+                            $_SESSION['pick2'] = null;
+                        } else {
+                            $_SESSION['pick1'] = null;
+                            $_SESSION['pick2'] = null;
+                        }
+
+                    $_SESSION['first-pick'] = "true";
                 }
-
             } else {
-
-                $msg = "Some data was empty!";
-
+                $_SESSION['pick1'] = $cardNumber;
+                $_SESSION['first-pick'] = "false";
             }
 
+           
         } else {
 
-            $msg = "Some data was not sent/set in session!";
+            $msg = "Some data was empty!";
 
-        } */
+        }
+
+    } else {
+
+        $msg = "Some data was not sent/set in session!";
+
     }
-    // End of Insert Tic/Tac
-
+}
+// End of PickCard
     
     // Start of Reset
     if($_POST['process'] == "reset") {
         unset($_SESSION['board']);
+        unset($_SESSION['boardNums']);
         unset($_SESSION['hasStarted']);
+        unset($_SESSION['won-cards']);
+        unset($_SESSION['first-pick']);
+        unset($_SESSION['pick1']);
+        unset($_SESSION['pick2']);
     }
     // End of Reset
 
@@ -354,7 +364,9 @@ if(!isset($msg)) { $msg = "No Error messages..."; }
 
 <body>
 
-<?php
+    <div class="container mt-5">
+
+        <?php
 if(isset($_SESSION['hasStarted'])){
     if($_SESSION['hasStarted'] == false) {
         echo '<button data-bs-toggle="modal" data-bs-target="#gameMode">Start</button>
@@ -536,10 +548,7 @@ if(isset($_SESSION['hasStarted'])){
 }
 ?>
 
-    <div class="container">
-        <?php
-        echo $msg;
-        ?>
+
 
         <div class="memory-cards">
 
@@ -547,22 +556,33 @@ if(isset($_SESSION['hasStarted'])){
 
 if(isset($_SESSION['board'])){
     if(!empty($_SESSION['board'])){
-        foreach($_SESSION['board'] as $key) {
-            echo '<div class="memory-card memory-card-hoverable">
-    <div class="memory-card-front">
+        for ($i=0; $i < count($_SESSION['board']); $i++) { 
+            if(isset($_SESSION['pick1'])){
+                if($_SESSION['pick1'] == $i){
+                    $class = 'revealed-card';
+                } else {
+                    $class = '';
+                }
+            } else {
+                $class = '';
+            }
+            echo '<form action="' . $_SERVER['PHP_SELF'] . '" method="post" id="mc-' . $i . '" class="memory-card memory-card-hoverable' . $class . '">
+            <input type="hidden" name="process" value="pickCard">
+            <input type="hidden" name="cardNumber" value="' . $i . '">
+    <button type="submit" class="memory-card-front">
     ' . '?' .
-    '</div>
+    '</button>
     <div class="memory-card-left">
     </div>
     <div class="memory-card-bot">
     </div>
     <div class="memory-card-right">
     </div>
-    <div class="memory-card-back iconCard">' . $key .
+    <div class="memory-card-back iconCard">' . $_SESSION['board'][$i] .
     '</div>
     <div class="memory-card-top">
     </div>
-</div>
+</form>
             ';
         }
     }
@@ -638,22 +658,54 @@ if(isset($_SESSION['board'])){
 
         </div>
 
-        
+        <p>        <?php
+        echo $msg;
+        ?></p>
+ <p>
+                won cards: <?php
+            if(isset($_SESSION['won-cards'])){
+                print_r($_SESSION['won-cards']);
+            }
+            ?>
+                </p>
+                <p>
+                1stPick?: <?php
+            if(isset($_SESSION['first-pick'])){
+                echo $_SESSION['first-pick'];
+            }
+            ?>
+                </p>
+                <p>
+                pick1: <?php
+            if(isset($_SESSION['pick1'])){
+                echo $_SESSION['pick1'];
+            }
+            ?>
+                </p>
+                <p>
+                pick2: <?php
+            if(isset($_SESSION['pick2'])){
+                echo $_SESSION['pick2'];
+            }
+            ?>
+                </p>
 
         <?php
-print_r($_SESSION['board']);
+        if(isset($_SESSION['board'])) {
+            print_r($_SESSION['board']);
+        }
 ?>
+    <form class="" action="<?php $_SERVER['PHP_SELF']; ?>" method="post">
+        <button type="submit" class="button">
+            Reset
+        </button>
 
+        <input type="hidden" name="process" value="reset">
+
+    </form>
     </div>
 
-    <form class="" action="<?php $_SERVER['PHP_SELF']; ?>" method="post">
-                                <button type="submit" class="button">
-                                    Reset
-                                </button>
-    
-                                <input type="hidden" name="process" value="reset">
-    
-                            </form>
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous">
