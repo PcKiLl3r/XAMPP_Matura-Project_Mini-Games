@@ -8,6 +8,10 @@
     -webkit-perspective: 40000;
 }
 
+.iconCard{
+    font-size: 65px !important;
+}
+
 .memory-card-left {
     position: absolute;
     left: 0px;
@@ -21,6 +25,7 @@
 }
 
 .memory-card-front{
+    padding: 0;
     position: absolute;
     left: -5px;
     top: -5px;
@@ -33,7 +38,22 @@
     -webkit-transform: translateZ(18px);
 
     font-size: 85px;
-    line-height: 85px;
+    line-height: 0.95em;
+    text-align: center;
+}
+
+.memory-card-front > .button{
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    border: 2px solid black;
+    background-color: #aaa;
+    border-radius: 5px;
+    line-height: inherit;
+    font-size: 75px;
     text-align: center;
 }
 
