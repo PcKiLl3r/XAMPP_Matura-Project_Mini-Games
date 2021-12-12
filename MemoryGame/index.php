@@ -31,6 +31,11 @@ $lvl1Icons[3] = '<i class="fas fa-award"></i>';
 $lvl1Icons[4] = '<i class="fas fa-bell"></i>';
 $lvl1Icons[5] = '<i class="fas fa-bolt"></i>'; */
 
+if(isset($_SESSION['gameMode'])){
+
+} else {
+    $_SESSION['gameMode'] = 0;
+}
 
 function Start6 () {
     $isChecked = false;
@@ -101,6 +106,7 @@ for($i = 0; $i < 6; $i++){
         $badNumber = true;
     }
     $_SESSION['hasStarted'] = true;
+    $_SESSION['gameMode'] = 6;
 }
 
 /* $lvl1Icons = Array (
@@ -262,7 +268,7 @@ if($_POST['process'] == "pickCard") {
 
         $cardNumber = trim(htmlspecialchars($_POST['cardNumber']));
 
-        if(!empty($cardNumber)) {
+        if(!empty($cardNumber) || $cardNumber == 0) {
 
             if(isset($_SESSION['first-pick'])){
                 if($_SESSION['first-pick'] == "true") {
@@ -591,26 +597,55 @@ if(isset($_SESSION['hasStarted'])){
 
 
 
-        <div class="memory-cards">
+        <div class="memory-cards-main">
 
             <?php
 
 if(isset($_SESSION['board'])){
     if(!empty($_SESSION['board'])){
         for ($i=0; $i < count($_SESSION['board']); $i++) { 
-            if(isset($_SESSION['pick1'])){
-                if($_SESSION['pick1'] == $i){
-                    $class = 'revealed-card';
+
+$class = '';
+
+            if(isset($_SESSION['won-cards'])){
+                if(is_array($_SESSION['won-cards'])){
+                    for ($j=0; $j < count($_SESSION['won-cards']); $j++) { 
+                        if($_SESSION['won-cards'][$j] == $_SESSION['boardNums'][$i]){
+                            $class = 'revealed-card';
+                        break;
+                        } else {
+                            $class = 'memory-card-hoverable';
+                        }
+                    }
                 } else {
                     $class = 'memory-card-hoverable';
                 }
             } else {
                 $class = 'memory-card-hoverable';
             }
+
+            if(isset($_SESSION['pick1'])){
+                if($_SESSION['pick1'] == $i){
+                    $class = 'revealed-card';
+                } else {
+                    if($class == 'revealed-card'){
+
+                    } else {
+                        $class = 'memory-card-hoverable';
+                    }
+                }
+            } else {
+                if($class == 'revealed-card'){
+
+                } else {
+                    $class = 'memory-card-hoverable';
+                }
+            }
+
             echo '<form action="' . $_SERVER['PHP_SELF'] . '" method="post" id="mc-' . $i . '" class="memory-card ' . $class . '">
             <input type="hidden" name="process" value="pickCard">
             <input type="hidden" name="cardNumber" value="' . $i . '">
-    <button type="submit" class="memory-card-front">
+    <button type="button" class="memory-card-front">
     ' . '?' .
     '</button>
     <div class="memory-card-left">
@@ -706,6 +741,7 @@ if(isset($_SESSION['board'])){
                 won cards: <?php
             if(isset($_SESSION['won-cards'])){
                 print_r($_SESSION['won-cards']);
+                echo 'won: ' . count($_SESSION['won-cards']) . '/' . $_SESSION['gameMode'];
             }
             ?>
                 </p>
