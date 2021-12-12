@@ -269,10 +269,29 @@ if($_POST['process'] == "pickCard") {
 
                     $_SESSION['pick1'] = $cardNumber;
 
+                    if(isset($_SESSION['won-cards'])){
+                        if(is_array($_SESSION['won-cards'])) {
+                            for ($i=0; $i < count($_SESSION['won-cards']); $i++) { 
+                                if($_SESSION['won-cards'][$i] == $_SESSION['boardNums'][$_SESSION['pick1']]){
+                                    $_SESSION['pick1'] = null;
+                                    $_SESSION['pick2'] = null;
+                                    header('Location: ./index.php');
+                                    exit;
+                                }
+                            }
+                        } else {
+                            $_SESSION['won-cards'] = array();
+                        }
+                    } else {
+                        $_SESSION['won-cards'] = array();
+                    }
+
                     $_SESSION['first-pick'] = "false";
                 } else {
 
                     $_SESSION['pick2'] = $cardNumber;
+
+                    if($_SESSION['pick1'] == $_SESSION['pick2']) { header('Location: ./index.php'); $_SESSION['pick2'] = null; exit; }
 
                     $pick1 = $_SESSION['pick1'];
                     $pick2 = $_SESSION['pick2'];
@@ -281,10 +300,14 @@ if($_POST['process'] == "pickCard") {
                             if(isset($_SESSION['won-cards'])){
                                 if(!is_array($_SESSION['won-cards'])){
                                     $_SESSION['won-cards'] = array();
+                                } else {
+                                    
                                 }
                             } else {
                                 $_SESSION['won-cards'] = array();
                             }
+
+
 
                             array_push($_SESSION['won-cards'], $_SESSION['boardNums'][$pick1]);
                             $_SESSION['pick1'] = null;
@@ -298,6 +321,24 @@ if($_POST['process'] == "pickCard") {
                 }
             } else {
                 $_SESSION['pick1'] = $cardNumber;
+
+                if(isset($_SESSION['won-cards'])){
+                    if(is_array($_SESSION['won-cards'])) {
+                        for ($i=0; $i < count($_SESSION['won-cards']); $i++) { 
+                            if($_SESSION['won-cards'][$i] == $_SESSION['boardNums'][$_SESSION['pick1']]){
+                                $_SESSION['pick1'] = null;
+                                $_SESSION['pick2'] = null;
+                                header('Location: ./index.php');
+                                exit;
+                            }
+                        }
+                    } else {
+                        $_SESSION['won-cards'] = array();
+                    }
+                } else {
+                    $_SESSION['won-cards'] = array();
+                }
+
                 $_SESSION['first-pick'] = "false";
             }
 
@@ -561,12 +602,12 @@ if(isset($_SESSION['board'])){
                 if($_SESSION['pick1'] == $i){
                     $class = 'revealed-card';
                 } else {
-                    $class = '';
+                    $class = 'memory-card-hoverable';
                 }
             } else {
-                $class = '';
+                $class = 'memory-card-hoverable';
             }
-            echo '<form action="' . $_SERVER['PHP_SELF'] . '" method="post" id="mc-' . $i . '" class="memory-card memory-card-hoverable' . $class . '">
+            echo '<form action="' . $_SERVER['PHP_SELF'] . '" method="post" id="mc-' . $i . '" class="memory-card ' . $class . '">
             <input type="hidden" name="process" value="pickCard">
             <input type="hidden" name="cardNumber" value="' . $i . '">
     <button type="submit" class="memory-card-front">

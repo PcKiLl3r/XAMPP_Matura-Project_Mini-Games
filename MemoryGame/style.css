@@ -6,10 +6,24 @@
     height: 99px;
     transform: perspective(40000); 
     -webkit-perspective: 40000;
+    
+    display: flex;
+    flex-basis: 19.2%;
+}
+
+.d-lvl1{
+    display: flex;
+    flex-basis: 19.2%;
 }
 
 .iconCard{
     font-size: 65px !important;
+}
+
+.revealed-card{
+    -webkit-transform: rotateY(180deg);
+    transform: rotateY(180deg);
+
 }
 
 .memory-card-left {
