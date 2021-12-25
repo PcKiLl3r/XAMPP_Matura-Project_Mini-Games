@@ -806,9 +806,9 @@ if(!isset($msg)) { $msg = "No Error messages..."; }
 
     </div>
 
-    <div class="container text-center mt-2">
+    <!-- <div class="container text-center mt-2">
         <?php echo $msg; ?>
-    </div>
+    </div> -->
 
     <div class="container text-center mt-2">
         <?php echo $winnerMsg; ?>
