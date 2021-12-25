@@ -117,7 +117,7 @@ nav > ul > li {
 
 header {
     height: 75px;
-	padding-left: 15px !important;
+	padding-left: 0px !important;
 	border-radius: 5px;
 }
 
@@ -296,6 +296,17 @@ button::before {
 /*     -webkit-transform: translateY(-25px) scale(1.25);
             transform: translateY(-25px) scale(1.25); */
             animation: sneakPeak 2s alternate ease-in-out infinite;
+}
+
+.nav-link{
+    text-decoration: none;
+    color: #ddd;
+    border-radius: 5px;
+}
+
+.nav-link:hover {
+    color: #fff;
+    background-color: #444;
 }
 
 @keyframes sneakPeak {

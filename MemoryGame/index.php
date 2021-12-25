@@ -611,8 +611,8 @@ $class = '';
                 if(is_array($_SESSION['won-cards'])){
                     for ($j=0; $j < count($_SESSION['won-cards']); $j++) { 
                         if($_SESSION['won-cards'][$j] == $_SESSION['boardNums'][$i]){
-                            $class = 'revealed-card';
-                        break;
+                            $class = 'won-card';
+                            break;
                         } else {
                             $class = 'memory-card-hoverable';
                         }
@@ -628,18 +628,22 @@ $class = '';
                 if($_SESSION['pick1'] == $i){
                     $class = 'revealed-card';
                 } else {
-                    if($class == 'revealed-card'){
+                    if($class == 'won-card'){
 
                     } else {
                         $class = 'memory-card-hoverable';
                     }
                 }
             } else {
-                if($class == 'revealed-card'){
+                if($class == 'won-card'){
 
                 } else {
                     $class = 'memory-card-hoverable';
                 }
+            }
+
+            if($i == 0 || $i == 4 || $i == 8 || $i == 12 || $i == 16 || $i == 20 || $i == 24 || $i == 28 || $i == 32){
+                echo '<div class="row">';
             }
 
             echo '<form action="' . $_SERVER['PHP_SELF'] . '" method="post" id="mc-' . $i . '" class="memory-card d-lvl1 ' . $class . '">
@@ -660,6 +664,11 @@ $class = '';
     </div>
 </form>
             ';
+
+            if($i == 3 || $i == 7 || $i == 11 || $i == 15 || $i == 19 || $i == 23 || $i == 27 || $i == 31 || $i == 35){
+                echo '</div>';
+            }
+
         }
     }
 }

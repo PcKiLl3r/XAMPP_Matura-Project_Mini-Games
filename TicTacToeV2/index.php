@@ -882,8 +882,10 @@ if(!isset($msg)) { $msg = "No Error messages..."; }
         <?php echo $msg; ?>
     </div> -->
 
-    <div class="container text-center mt-2">
+    <div class="container text-center text-white mt-5">
+        <h4>
         <?php echo $winnerMsg; ?>
+        </h4>
     </div>
 
     <?php
@@ -892,8 +894,12 @@ if(!isset($msg)) { $msg = "No Error messages..."; }
     <div class="container text-center mt-3">
         <form style="justify-content: center;" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
 
-            <button type="submit" class="tic-tac-col">
-                <i class="fas fa-biohazard"></i>
+            <button type="submit" class="tic-tac-col win-btn mt-1">
+            <i class="fas fa-sync-alt"></i>
+            <div class="win-btn-bot">
+            </div>
+            <div class="win-btn-right">
+            </div>
             </button>
 
             <input type="hidden" name="process" value="reset">

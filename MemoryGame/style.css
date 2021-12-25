@@ -1,20 +1,28 @@
 .memory-card {
-    margin: 5px;
     position: relative;
+    margin-top: 10px;
+    margin-bottom: 10px;
+/*     margin-left: auto;
+    margin-right: auto; */
     -webkit-transform-style: preserve-3d;
-    width: 99px;
-    height: 99px;
+    width: 99px !important;
+    height: 99px !important;
     -webkit-perspective: 40000;
-    
+    grid-column-start: 1;
+    grid-column-end: 3;
+
+    transform: rotateX(45deg) rotateZ(45deg);
 }
 
 .d-lvl1{
-    display: flex;
     flex-basis: 19.2%;
 }
 
 .d-menu{
     display: flex;
+    margin-left: 25px;
+    margin-right: 25px;
+    flex-direction: row !important;
     flex-basis: 30%;
 }
 
@@ -23,6 +31,7 @@
     top: 0px !important;
     right: 0px !important;
     bottom: 0px !important;
+    font-size: 50px !important;
 }
 
 .iconCard{
@@ -30,9 +39,14 @@
 }
 
 .revealed-card{
-    -webkit-transform: rotateY(180deg);
-    transform: rotateY(180deg);
+    -webkit-transform: rotateY(180deg) translateY(-25px) translateX(40px);
+    transform: rotateY(180deg) translateY(-25px) translateX(40px);
 
+}
+
+.won-card{
+    -webkit-transform: rotateY(180deg) rotateX(-45deg) rotateZ(-45deg) translateY(-20px) translateX(65px);
+    transform: rotateY(180deg) rotateX(-45deg) rotateZ(-45deg) translateY(-20px) translateX(65px);
 }
 
 .memory-card-left {
@@ -141,7 +155,6 @@
     margin: 50px;
     padding: 5px;
     display: flex;
-    flex-wrap: wrap;
     justify-content: space-between;
     align-content: space-between;
 }
@@ -149,20 +162,19 @@
 .memory-cards-main {
     margin: 50px;
     padding: 5px;
-    display: flex;
-    flex-wrap: wrap;
+    /* display: grid; */
     justify-content: space-between;
     align-content: space-between;
 }
 
 .memory-card-hoverable:hover,
 .memory-card-hoverable:focus {
-    animation: sneakPeak 0.75s alternate ease-in-out infinite;
+    animation: sneakPeak 2s alternate ease-in-out infinite;
 }
 
 .memory-card-menu-hover:hover,
 .memory-card-menu-hover:focus {
-    animation: sneakPeakMenu 1s alternate ease-in-out infinite;
+    animation: sneakPeakMenu 2s /* alternate */ ease-in-out infinite;
 }
 
 .memory-card:hover > .memory-card-front,
@@ -181,13 +193,20 @@
 }
 
 @keyframes sneakPeak {
-    from {transform: rotateY(0deg);}
-    to {transform: rotateY(25deg);}
+    0% {transform: rotateX(45deg) rotateZ(45deg) rotateY(0deg);}
+    50% {transform: rotateX(45deg) rotateZ(45deg) rotateY(25deg);}
   }
 
+/* @keyframes sneakPeak {
+    0% {transform: rotateX(45deg) rotateZ(45deg) rotateY(0deg);}
+    25% {transform: rotateX(0deg) rotateZ(0deg) rotateY(0deg);}
+    50% {transform: rotateX(0deg) rotateZ(0deg) rotateY(25deg);}
+    75% {transform: rotateX(0deg) rotateZ(0deg) rotateY(0deg);}
+  } */
+
   @keyframes sneakPeakMenu {
-    0% {transform: rotateZ(0deg);}
-    33% {transform: rotateZ(-10deg);}
-    66% {transform: rotateZ(10deg);}
-    100% {transform: rotateZ(0deg);}
+    0% {transform: rotateX(45deg) rotateZ(45deg) rotateY(0deg);}
+    25% {transform: rotateX(0deg) rotateZ(0deg) rotateY(0deg);}
+    50% {transform: rotateX(45deg) rotateZ(-45deg) rotateY(0deg);}
+    75% {transform: rotateX(0deg) rotateZ(0deg) rotateY(0deg);}
   }
