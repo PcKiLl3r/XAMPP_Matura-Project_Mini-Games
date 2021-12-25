@@ -1,0 +1,6 @@
+naredi testno igro, ki beleži score
+
+    - igralec jo igra 1x,
+    - vmes igra mini igre,
+    - igralec se spet preveri,
+    - primerjava rezultatov

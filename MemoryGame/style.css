@@ -6,13 +6,23 @@
     height: 99px;
     -webkit-perspective: 40000;
     
-    display: flex;
-    flex-basis: 19.2%;
 }
 
 .d-lvl1{
     display: flex;
     flex-basis: 19.2%;
+}
+
+.d-menu{
+    display: flex;
+    flex-basis: 30%;
+}
+
+.d-side-menu{
+    left: 0px !important;
+    top: 0px !important;
+    right: 0px !important;
+    bottom: 0px !important;
 }
 
 .iconCard{
@@ -147,8 +157,12 @@
 
 .memory-card-hoverable:hover,
 .memory-card-hoverable:focus {
-    animation: sneakPeak 1s alternate infinite;
+    animation: sneakPeak 0.75s alternate ease-in-out infinite;
+}
 
+.memory-card-menu-hover:hover,
+.memory-card-menu-hover:focus {
+    animation: sneakPeakMenu 1s alternate ease-in-out infinite;
 }
 
 .memory-card:hover > .memory-card-front,
@@ -168,5 +182,12 @@
 
 @keyframes sneakPeak {
     from {transform: rotateY(0deg);}
-    to {transform: rotateY(45deg);}
+    to {transform: rotateY(25deg);}
+  }
+
+  @keyframes sneakPeakMenu {
+    0% {transform: rotateZ(0deg);}
+    33% {transform: rotateZ(-10deg);}
+    66% {transform: rotateZ(10deg);}
+    100% {transform: rotateZ(0deg);}
   }

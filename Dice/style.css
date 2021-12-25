@@ -7,6 +7,9 @@
     transform: perspective(40000); 
     -webkit-perspective: 40000;
     background-color: rgba(0, 0, 0, 0);
+
+    display: flex;
+    flex-basis: 9%;
 }
 
 .dice-left {
@@ -118,7 +121,7 @@
 
 .dice-hoverable:hover,
 .dice-hoverable:focus {
-    animation: sneakPeak 2s alternate ease-in-out infinite;
+    animation: sneakPeak 3s alternate /* ease-in-out */ infinite;
 
 }
 
@@ -137,7 +140,23 @@
     background-color: #bbb;
 }
 
-@keyframes sneakPeak {
+/* @keyframes sneakPeak {
     from {transform: rotateY(0deg) rotateX(0deg) rotateZ(0deg);}
     to {transform: rotateY(360deg) rotateX(360deg) rotateZ(360deg);}
+  } */
+
+  @keyframes sneakPeak {
+    /* Default number: 1 */
+    0% {transform: rotateY(0deg) rotateX(0deg) rotateZ(0deg);}
+    /* Number: 2 */
+    20% {transform: rotateY(90deg) rotateX(0deg) rotateZ(0deg);}
+    /* Number: 3 */
+    40% {transform: rotateY(0deg) rotateX(90deg) rotateZ(0deg);}
+    /* Number: 4 */
+    60% {transform: rotateY(0deg) rotateX(-90deg) rotateZ(0deg);}
+    /* Number: 5 */
+    80% {transform: rotateY(-90deg) rotateX(0deg) rotateZ(0deg);}
+    /* Number: 6 */
+    100% {transform: rotateY(-180deg) rotateX(0deg) rotateZ(0deg);}
+    
   }

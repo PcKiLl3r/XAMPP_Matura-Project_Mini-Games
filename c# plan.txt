@@ -1,0 +1,29 @@
+Sesalec
+    čas_sesanja
+    max_mladičev
+
+Pes
+    dolžina_dlake
+
+Dalmatinec
+    število_pik
+
+
+
+
+
+Sesalec
+
+Človek
+
+Pes
+
+
+
+
+
+Oseba
+
+Stranka
+
+Zaposleni

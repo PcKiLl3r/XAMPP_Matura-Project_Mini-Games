@@ -1,3 +1,8 @@
+<?php
+session_start();
+
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -36,6 +41,455 @@
     </div>
     <div class="dice-top">
         6
+    </div>
+</div>
+
+<div class="dice dice-hoverable">
+    <div class="dice-front">
+        1
+    </div>
+    <div class="dice-left">
+        2
+    </div>
+    <div class="dice-bot">
+        3
+    </div>
+    <div class="dice-right">
+        4
+    </div>
+    <div class="dice-back">
+        5
+    </div>
+    <div class="dice-top">
+        6
+    </div>
+</div>
+
+<div class="dice dice-hoverable">
+    <div class="dice-front">
+        1
+    </div>
+    <div class="dice-left">
+        2
+    </div>
+    <div class="dice-bot">
+        3
+    </div>
+    <div class="dice-right">
+        4
+    </div>
+    <div class="dice-back">
+        5
+    </div>
+    <div class="dice-top">
+        6
+    </div>
+</div>
+
+<div class="dice dice-hoverable">
+    <div class="dice-front">
+        1
+    </div>
+    <div class="dice-left">
+        2
+    </div>
+    <div class="dice-bot">
+        3
+    </div>
+    <div class="dice-right">
+        4
+    </div>
+    <div class="dice-back">
+        5
+    </div>
+    <div class="dice-top">
+        6
+    </div>
+</div>
+
+<div class="dice dice-hoverable">
+    <div class="dice-front">
+        1
+    </div>
+    <div class="dice-left">
+        2
+    </div>
+    <div class="dice-bot">
+        3
+    </div>
+    <div class="dice-right">
+        4
+    </div>
+    <div class="dice-back">
+        5
+    </div>
+    <div class="dice-top">
+        6
+    </div>
+</div>
+
+<div class="dice dice-hoverable">
+    <div class="dice-front">
+        1
+    </div>
+    <div class="dice-left">
+        2
+    </div>
+    <div class="dice-bot">
+        3
+    </div>
+    <div class="dice-right">
+        4
+    </div>
+    <div class="dice-back">
+        5
+    </div>
+    <div class="dice-top">
+        6
+    </div>
+</div>
+
+<div class="dice dice-hoverable">
+    <div class="dice-front">
+        1
+    </div>
+    <div class="dice-left">
+        2
+    </div>
+    <div class="dice-bot">
+        3
+    </div>
+    <div class="dice-right">
+        4
+    </div>
+    <div class="dice-back">
+        5
+    </div>
+    <div class="dice-top">
+        6
+    </div>
+</div>
+
+<div class="dice dice-hoverable">
+    <div class="dice-front">
+        1
+    </div>
+    <div class="dice-left">
+        2
+    </div>
+    <div class="dice-bot">
+        3
+    </div>
+    <div class="dice-right">
+        4
+    </div>
+    <div class="dice-back">
+        5
+    </div>
+    <div class="dice-top">
+        6
+    </div>
+</div>
+
+<div class="dice dice-hoverable">
+    <div class="dice-front">
+        1
+    </div>
+    <div class="dice-left">
+        2
+    </div>
+    <div class="dice-bot">
+        3
+    </div>
+    <div class="dice-right">
+        4
+    </div>
+    <div class="dice-back">
+        5
+    </div>
+    <div class="dice-top">
+        6
+    </div>
+</div>
+
+<div class="dice dice-hoverable">
+    <div class="dice-front">
+        1
+    </div>
+    <div class="dice-left">
+        2
+    </div>
+    <div class="dice-bot">
+        3
+    </div>
+    <div class="dice-right">
+        4
+    </div>
+    <div class="dice-back">
+        5
+    </div>
+    <div class="dice-top">
+        6
+    </div>
+</div>
+
+<div class="dice dice-hoverable">
+    <div class="dice-front">
+        1
+    </div>
+    <div class="dice-left">
+        2
+    </div>
+    <div class="dice-bot">
+        3
+    </div>
+    <div class="dice-right">
+        4
+    </div>
+    <div class="dice-back">
+        5
+    </div>
+    <div class="dice-top">
+        6
+    </div>
+</div>
+
+<div class="dice dice-hoverable">
+    <div class="dice-front">
+        1
+    </div>
+    <div class="dice-left">
+        2
+    </div>
+    <div class="dice-bot">
+        3
+    </div>
+    <div class="dice-right">
+        4
+    </div>
+    <div class="dice-back">
+        5
+    </div>
+    <div class="dice-top">
+        6
+    </div>
+</div>
+
+<div class="dice dice-hoverable">
+    <div class="dice-front">
+        1
+    </div>
+    <div class="dice-left">
+        2
+    </div>
+    <div class="dice-bot">
+        3
+    </div>
+    <div class="dice-right">
+        4
+    </div>
+    <div class="dice-back">
+        5
+    </div>
+    <div class="dice-top">
+        6
+    </div>
+</div>
+
+<div class="dice dice-hoverable">
+    <div class="dice-front">
+        1
+    </div>
+    <div class="dice-left">
+        2
+    </div>
+    <div class="dice-bot">
+        3
+    </div>
+    <div class="dice-right">
+        4
+    </div>
+    <div class="dice-back">
+        5
+    </div>
+    <div class="dice-top">
+        6
+    </div>
+</div>
+
+<div class="dice dice-hoverable">
+    <div class="dice-front">
+        1
+    </div>
+    <div class="dice-left">
+        2
+    </div>
+    <div class="dice-bot">
+        3
+    </div>
+    <div class="dice-right">
+        4
+    </div>
+    <div class="dice-back">
+        5
+    </div>
+    <div class="dice-top">
+        6
+    </div>
+</div>
+
+<div class="dice dice-hoverable">
+    <div class="dice-front">
+        1
+    </div>
+    <div class="dice-left">
+        2
+    </div>
+    <div class="dice-bot">
+        3
+    </div>
+    <div class="dice-right">
+        4
+    </div>
+    <div class="dice-back">
+        5
+    </div>
+    <div class="dice-top">
+        6
+    </div>
+</div>
+
+<div class="dice dice-hoverable">
+    <div class="dice-front">
+        1
+    </div>
+    <div class="dice-left">
+        2
+    </div>
+    <div class="dice-bot">
+        3
+    </div>
+    <div class="dice-right">
+        4
+    </div>
+    <div class="dice-back">
+        5
+    </div>
+    <div class="dice-top">
+        6
+    </div>
+</div>
+
+<div class="dice dice-hoverable">
+    <div class="dice-front">
+        1
+    </div>
+    <div class="dice-left">
+        2
+    </div>
+    <div class="dice-bot">
+        3
+    </div>
+    <div class="dice-right">
+        4
+    </div>
+    <div class="dice-back">
+        5
+    </div>
+    <div class="dice-top">
+        6
+    </div>
+</div>
+
+<div class="dice dice-hoverable">
+    <div class="dice-front">
+        1
+    </div>
+    <div class="dice-left">
+        2
+    </div>
+    <div class="dice-bot">
+        3
+    </div>
+    <div class="dice-right">
+        4
+    </div>
+    <div class="dice-back">
+        5
+    </div>
+    <div class="dice-top">
+        6
+    </div>
+</div>
+
+<div class="dice dice-hoverable">
+    <div class="dice-front">
+        1
+    </div>
+    <div class="dice-left">
+        2
+    </div>
+    <div class="dice-bot">
+        3
+    </div>
+    <div class="dice-right">
+        4
+    </div>
+    <div class="dice-back">
+        5
+    </div>
+    <div class="dice-top">
+        6
+    </div>
+</div>
+
+</div>
+
+</div>
+
+<div class="container">
+
+<div class="dices">
+
+<div class="dice dice-hoverable">
+    <div class="dice-front">
+        1
+    </div>
+    <div class="dice-left">
+        2
+    </div>
+    <div class="dice-bot">
+        3
+    </div>
+    <div class="dice-right">
+        5
+    </div>
+    <div class="dice-back">
+        6
+    </div>
+    <div class="dice-top">
+        4
+    </div>
+</div>
+
+<div class="dice dice-hoverable">
+    <div class="dice-front">
+        1
+    </div>
+    <div class="dice-left">
+        2
+    </div>
+    <div class="dice-bot">
+        3
+    </div>
+    <div class="dice-right">
+        5
+    </div>
+    <div class="dice-back">
+        6
+    </div>
+    <div class="dice-top">
+        4
     </div>
 </div>
 

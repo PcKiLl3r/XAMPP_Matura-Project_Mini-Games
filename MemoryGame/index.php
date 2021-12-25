@@ -428,9 +428,9 @@ if(isset($_SESSION['hasStarted'])){
     
                     <div class="memory-cards">
     
-                        <div class="memory-card memory-card-hoverable">
+                        <div class="memory-card d-menu memory-card-menu-hover">
     
-                            <form class="memory-card-front" action="' . $_SERVER['PHP_SELF'] . '" method="post">
+                            <form class="memory-card-front d-side-menu" action="' . $_SERVER['PHP_SELF'] . '" method="post">
                                 <button type="submit" class="button">
                                     6
                                 </button>
@@ -440,21 +440,21 @@ if(isset($_SESSION['hasStarted'])){
     
                             </form>
     
-                            <div class="memory-card-left">
+                            <div class="memory-card-left d-side-menu">
                             </div>
-                            <div class="memory-card-bot">
+                            <div class="memory-card-bot d-side-menu">
                             </div>
-                            <div class="memory-card-right">
+                            <div class="memory-card-right d-side-menu">
                             </div>
-                            <div class="memory-card-back">
+                            <div class="memory-card-back d-side-menu">
                                 <i class="fab fa-apple"></i>
                             </div>
-                            <div class="memory-card-top">
+                            <div class="memory-card-top d-side-menu">
                             </div>
                         </div>
     
-                        <div class="memory-card memory-card-hoverable">
-                            <form class="memory-card-front" action="' . $_SERVER['PHP_SELF'] . '" method="post">
+                        <div class="memory-card d-menu memory-card-menu-hover">
+                            <form class="memory-card-front d-side-menu" action="' . $_SERVER['PHP_SELF'] . '" method="post">
                                 <button type="submit" class="button">
                                     12
                                 </button>
@@ -463,20 +463,20 @@ if(isset($_SESSION['hasStarted'])){
                                 <input type="hidden" name="cardNumber" value="12">
     
                             </form>
-                            <div class="memory-card-left">
+                            <div class="memory-card-left d-side-menu">
                             </div>
-                            <div class="memory-card-bot">
+                            <div class="memory-card-bot d-side-menu">
                             </div>
-                            <div class="memory-card-right">
+                            <div class="memory-card-right d-side-menu">
                             </div>
-                            <div class="memory-card-back">
+                            <div class="memory-card-back d-side-menu">
                             </div>
-                            <div class="memory-card-top">
+                            <div class="memory-card-top d-side-menu">
                             </div>
                         </div>
     
-                        <div class="memory-card memory-card-hoverable">
-                            <form class="memory-card-front" action="' . $_SERVER['PHP_SELF'] . '" method="post">
+                        <div class="memory-card d-menu memory-card-menu-hover">
+                            <form class="memory-card-front d-side-menu" action="' . $_SERVER['PHP_SELF'] . '" method="post">
                                 <button type="submit" class="button">
                                     18
                                 </button>
@@ -485,16 +485,16 @@ if(isset($_SESSION['hasStarted'])){
                                 <input type="hidden" name="cardNumber" value="18">
     
                             </form>
-                            <div class="memory-card-left">
+                            <div class="memory-card-left d-side-menu">
                             </div>
-                            <div class="memory-card-bot">
+                            <div class="memory-card-bot d-side-menu">
                             </div>
-                            <div class="memory-card-right">
+                            <div class="memory-card-right d-side-menu">
                             </div>
-                            <div class="memory-card-back">
+                            <div class="memory-card-back d-side-menu">
                                 <i class="fab fa-apple"></i>
                             </div>
-                            <div class="memory-card-top">
+                            <div class="memory-card-top d-side-menu">
                             </div>
                         </div>
     
@@ -517,9 +517,9 @@ if(isset($_SESSION['hasStarted'])){
     
                     <div class="memory-cards">
     
-                        <div class="memory-card memory-card-hoverable">
+                        <div class="memory-card d-menu memory-card-menu-hover">
     
-                            <form class="memory-card-front" action="' . $_SERVER['PHP_SELF'] . '" method="post">
+                            <form class="memory-card-front d-side-menu" action="' . $_SERVER['PHP_SELF'] . '" method="post">
                                 <button type="submit" class="button">
                                     6
                                 </button>
@@ -529,21 +529,21 @@ if(isset($_SESSION['hasStarted'])){
     
                             </form>
     
-                            <div class="memory-card-left">
+                            <div class="memory-card-left d-side-menu">
                             </div>
-                            <div class="memory-card-bot">
+                            <div class="memory-card-bot d-side-menu">
                             </div>
-                            <div class="memory-card-right">
+                            <div class="memory-card-right d-side-menu">
                             </div>
-                            <div class="memory-card-back">
+                            <div class="memory-card-back d-side-menu">
                                 <i class="fab fa-apple"></i>
                             </div>
-                            <div class="memory-card-top">
+                            <div class="memory-card-top d-side-menu">
                             </div>
                         </div>
     
-                        <div class="memory-card memory-card-hoverable">
-                            <form class="memory-card-front" action="' . $_SERVER['PHP_SELF'] . '" method="post">
+                        <div class="memory-card d-menu memory-card-menu-hover">
+                            <form class="memory-card-front d-side-menu" action="' . $_SERVER['PHP_SELF'] . '" method="post">
                                 <button type="submit" class="button">
                                     12
                                 </button>
@@ -552,20 +552,20 @@ if(isset($_SESSION['hasStarted'])){
                                 <input type="hidden" name="cardNumber" value="12">
     
                             </form>
-                            <div class="memory-card-left">
+                            <div class="memory-card-left d-side-menu">
                             </div>
-                            <div class="memory-card-bot">
+                            <div class="memory-card-bot d-side-menu">
                             </div>
-                            <div class="memory-card-right">
+                            <div class="memory-card-right d-side-menu">
                             </div>
-                            <div class="memory-card-back">
+                            <div class="memory-card-back d-side-menu">
                             </div>
-                            <div class="memory-card-top">
+                            <div class="memory-card-top d-side-menu">
                             </div>
                         </div>
     
-                        <div class="memory-card memory-card-hoverable">
-                            <form class="memory-card-front" action="' . $_SERVER['PHP_SELF'] . '" method="post">
+                        <div class="memory-card d-menu memory-card-menu-hover">
+                            <form class="memory-card-front d-side-menu" action="' . $_SERVER['PHP_SELF'] . '" method="post">
                                 <button type="submit" class="button">
                                     18
                                 </button>
@@ -574,16 +574,16 @@ if(isset($_SESSION['hasStarted'])){
                                 <input type="hidden" name="cardNumber" value="18">
     
                             </form>
-                            <div class="memory-card-left">
+                            <div class="memory-card-left d-side-menu">
                             </div>
-                            <div class="memory-card-bot">
+                            <div class="memory-card-bot d-side-menu">
                             </div>
-                            <div class="memory-card-right">
+                            <div class="memory-card-right d-side-menu">
                             </div>
-                            <div class="memory-card-back">
+                            <div class="memory-card-back d-side-menu">
                                 <i class="fab fa-apple"></i>
                             </div>
-                            <div class="memory-card-top">
+                            <div class="memory-card-top d-side-menu">
                             </div>
                         </div>
     
@@ -642,7 +642,7 @@ $class = '';
                 }
             }
 
-            echo '<form action="' . $_SERVER['PHP_SELF'] . '" method="post" id="mc-' . $i . '" class="memory-card ' . $class . '">
+            echo '<form action="' . $_SERVER['PHP_SELF'] . '" method="post" id="mc-' . $i . '" class="memory-card d-lvl1 ' . $class . '">
             <input type="hidden" name="process" value="pickCard">
             <input type="hidden" name="cardNumber" value="' . $i . '">
     <button type="button" class="memory-card-front">
