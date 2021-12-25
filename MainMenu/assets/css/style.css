@@ -117,7 +117,8 @@ nav > ul > li {
 
 header {
     height: 75px;
-    padding-left: 15px !important;
+	padding-left: 15px !important;
+	border-radius: 5px;
 }
 
 
@@ -196,7 +197,7 @@ button {
 }
 
 button::after {
-    content: "";
+    content: '';
     position: relative;
     top: -40px;
     display: block;
@@ -206,9 +207,11 @@ button::after {
     margin-top: -1px;
     margin-left: -7px;
     border-radius: 6px 0 0 6px;
-    background-image: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMTRweCIgaGVpZ2h0PSIxN3B4IiB2aWV3Qm94PSIwIDAgMTQgMTciIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+CiAgICA8IS0tIEdlbmVyYXRvcjogU2tldGNoIDUxLjEgKDU3NTAxKSAtIGh0dHA6Ly93d3cuYm9oZW1pYW5jb2RpbmcuY29tL3NrZXRjaCAtLT4KICAgIDx0aXRsZT5TaGFwZTwvdGl0bGU+CiAgICA8ZGVzYz5DcmVhdGVkIHdpdGggU2tldGNoLjwvZGVzYz4KICAgIDxkZWZzPjwvZGVmcz4KICAgIDxnIGlkPSJQYWdlLTEiIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPgogICAgICAgIDxnIGlkPSJEZXNrdG9wLUhELUNvcHktMyIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTYwOS4wMDAwMDAsIC0xMDA4LjAwMDAwMCkiIGZpbGw9IiNGOUZDRkYiIGZpbGwtcnVsZT0ibm9uemVybyI+CiAgICAgICAgICAgIDxnIGlkPSJHcm91cC0xMSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNTQ3LjAwMDAwMCwgNDk5LjAwMDAwMCkiPgogICAgICAgICAgICAgICAgPGcgaWQ9Ikdyb3VwLTYtQ29weSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNDYuMDAwMDAwLCA0OTUuMDAwMDAwKSI+CiAgICAgICAgICAgICAgICAgICAgPGcgaWQ9ImljX2ZpbGVfZG93bmxvYWRfYmxhY2tfMjRweC0oMSkiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDE2LjAwMDAwMCwgOC4wMDAwMDApIj4KICAgICAgICAgICAgICAgICAgICAgICAgPHBhdGggZD0iTTE0LDEyIEwxMCwxMiBMMTAsNiBMNCw2IEw0LDEyIEwwLDEyIEw3LDE5IEwxNCwxMiBaIE0wLDIxIEwwLDIzIEwxNCwyMyBMMTQsMjEgTDAsMjEgWiIgaWQ9IlNoYXBlIj48L3BhdGg+CiAgICAgICAgICAgICAgICAgICAgPC9nPgogICAgICAgICAgICAgICAgPC9nPgogICAgICAgICAgICA8L2c+CiAgICAgICAgPC9nPgogICAgPC9nPgo8L3N2Zz4=');
+    background-image: url('../svg/play-circle-regular.svg');
     background-repeat: no-repeat;
     background-position: center;
+    background-size: 55%;
+    
 }
 
 button::before {
@@ -281,12 +284,37 @@ button::before {
     -webkit-transition: all .3s ease-out;
     transition: all .3s ease-out;
     will-change: transform;
+
+    transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
+    transform: perspective(40000); 
+    perspective: 40000;
+    -webkit-perspective: 40000;
 }
 
 .box:hover .cover {
-    -webkit-transform: translateY(-14px) scale(1.04);
-            transform: translateY(-14px) scale(1.04);
+/*     -webkit-transform: translateY(-25px) scale(1.25);
+            transform: translateY(-25px) scale(1.25); */
+            animation: sneakPeak 2s alternate ease-in-out infinite;
 }
+
+@keyframes sneakPeak {
+
+    0% {-webkit-transform: translateY(0px) rotateY(0deg) rotateX(0deg) rotateZ(0deg);} 
+
+    15% {-webkit-transform: translateY(-25px) rotateY(0deg) rotateX(0deg) rotateZ(0deg);}
+
+    30% {-webkit-transform: translateY(-25px) rotateY(0deg) rotateX(0deg) rotateZ(11.25deg);}
+
+    50% {-webkit-transform: translateY(-25px) rotateY(0deg) rotateX(0deg) rotateZ(-11.25deg);}
+
+    70% {-webkit-transform: translateY(-25px) rotateY(0deg) rotateX(0deg) rotateZ(11.25deg);}
+
+    85% {-webkit-transform: translateY(-25px) rotateY(0deg) rotateX(0deg) rotateZ(0deg);}
+
+    100% {-webkit-transform: translateY(0px) rotateY(0deg) rotateX(0deg) rotateZ(0deg);}
+    
+  }
 
 .box-1 button {
     border: 1px solid #00BF9C;
@@ -298,7 +326,7 @@ button::before {
 }
 
 .box-1 button::after {
-    content: "";
+    content: '';
     background-color: #00BF9C;
     top: -85px
 }
@@ -367,7 +395,7 @@ button::before {
     left: -20px;
     display: block;
     width: 160px;
-    height: 214px;
+    height: 160px;
     opacity: 0;
     background-position: center;
     background-repeat: no-repeat;
@@ -379,6 +407,7 @@ button::before {
     will-change: transform;
     -webkit-transform: scale(.6);
             transform: scale(.6);
+            
 }
 
 .box:hover .cover::after {
@@ -388,7 +417,8 @@ button::before {
 }
 
 .box-1 .cover::after {
-    background-image: url('../TicTacToe.png');
+    background-image: url('../../TicTacToe.png');
+    
 }
 
 .box-2 .cover::after {
@@ -418,7 +448,7 @@ button::before {
 }
 
 .box-2 button div::before {
-    content: 'OnePass';
+    content: 'Memory';
     position: relative;
     top: -44px;
     left: -6px;

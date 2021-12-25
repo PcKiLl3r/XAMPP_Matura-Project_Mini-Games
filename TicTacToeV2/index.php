@@ -125,6 +125,75 @@ if(!isset($msg)) { $msg = "No Error messages..."; }
 
 <body style="display: grid;">
 
+    <button onclick="location.href = '../MainMenu/index.php';" class="back-btn">
+        <div class="dices">
+
+            <div class="dice dice1 dice-hoverable">
+                <div class="dice-front">
+                    1
+                </div>
+                <div class="dice-left">
+                    2
+                </div>
+                <div class="dice-bot">
+                    3
+                </div>
+                <div class="dice-right">
+                    5
+                </div>
+                <div class="dice-back">
+                    6
+                </div>
+                <div class="dice-top">
+                    4
+                </div>
+            </div>
+
+            <div class="dice dice2 dice-hoverable">
+                <div class="dice-front">
+                    1
+                </div>
+                <div class="dice-left">
+                    2
+                </div>
+                <div class="dice-bot">
+                    3
+                </div>
+                <div class="dice-right">
+                    5
+                </div>
+                <div class="dice-back">
+                    6
+                </div>
+                <div class="dice-top">
+                    4
+                </div>
+            </div>
+
+            <div class="dice dice3 dice-hoverable">
+                <div class="dice-front">
+                    1
+                </div>
+                <div class="dice-left">
+                    2
+                </div>
+                <div class="dice-bot">
+                    3
+                </div>
+                <div class="dice-right">
+                    5
+                </div>
+                <div class="dice-back">
+                    6
+                </div>
+                <div class="dice-top">
+                    4
+                </div>
+            </div>
+
+        </div>
+    </button>
+
     <div class="tic-tac-container-out mt-5">
         <div class="tic-tac-container">
             <div class="tic-tac-row">
@@ -488,7 +557,8 @@ if(!isset($msg)) { $msg = "No Error messages..."; }
                         }
                     }
                 }
-            } ?>" type="button" data-bs-toggle="modal" data-bs-target="#addTicToe5" class="tic-tac-col   tic-tac-white">
+            } ?>" type="button" data-bs-toggle="modal" data-bs-target="#addTicToe5"
+                                class="tic-tac-col   tic-tac-white">
                                 <?php
         if(isset($_SESSION['tictacs'][5])){
             if($_SESSION['tictacs'][5] == true){echo "X";}
@@ -633,7 +703,8 @@ if(!isset($msg)) { $msg = "No Error messages..."; }
                         }
                     }
                 }
-            } ?>" type="button" data-bs-toggle="modal" data-bs-target="#addTicToe7" class="tic-tac-col   tic-tac-white">
+            } ?>" type="button" data-bs-toggle="modal" data-bs-target="#addTicToe7"
+                                class="tic-tac-col   tic-tac-white">
                                 <?php
         if(isset($_SESSION['tictacs'][7])){
             if($_SESSION['tictacs'][7] == true){echo "X";}
@@ -773,7 +844,8 @@ if(!isset($msg)) { $msg = "No Error messages..."; }
                         }
                     }
                 }
-            } ?>" type="button" data-bs-toggle="modal" data-bs-target="#addTicToe9" class="tic-tac-col   tic-tac-white">
+            } ?>" type="button" data-bs-toggle="modal" data-bs-target="#addTicToe9"
+                                class="tic-tac-col   tic-tac-white">
                                 <?php
         if(isset($_SESSION['tictacs'][9])){
             if($_SESSION['tictacs'][9] == true){echo "X";}

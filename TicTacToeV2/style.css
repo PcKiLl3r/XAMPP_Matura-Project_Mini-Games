@@ -1,4 +1,5 @@
 .tic-tac-container-out{
+    margin-top: -100px;
     justify-self: center;
     border: 5px solid #00d4ad;
     padding: 25px;
@@ -285,4 +286,200 @@ padding-bottom: 4px;
   @keyframes sneakPeakRB {
     from {transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);}
     to {transform: rotateX(-15deg) rotateY(15deg) rotateZ(3deg);}
+  }
+
+/* Dices css */
+
+.dice {
+    margin: 5px;
+    -webkit-transform-style: preserve-3d;
+    width: 99px;
+    height: 99px;
+    transform: perspective(40000); 
+    -webkit-perspective: 40000;
+    background-color: rgba(0, 0, 0, 0);
+
+}
+
+.dice-left {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100px;
+    height: 100px;
+    border: 3px solid black;
+    background-color: #aaa;
+    border-radius: 5px;
+    -webkit-transform: rotateY(-90deg) translateZ(49px) translateX(0px);
+
+    font-size: 85px;
+    line-height: 85px;
+    text-align: center;
+}
+
+.dice-front{
+    position: absolute;
+    left: -5px;
+    top: -5px;
+    margin: 5px;
+    width: 100px;
+    height: 100px;
+    border: 3px solid black;
+    background-color: #aaa;
+    border-radius: 5px;
+    -webkit-transform: translateZ(49px);
+
+    font-size: 85px;
+    line-height: 85px;
+    text-align: center;
+}
+
+.dice-back{
+    position: absolute;
+    left: -5px;
+    top: -5px;
+    margin: 5px;
+    width: 100px;
+    height: 100px;
+    border: 3px solid black;
+    background-color: #aaa;
+    border-radius: 5px;
+    -webkit-transform: translateZ(-49px) rotateY(180deg);
+
+    text-align: center;
+    font-size: 85px;
+    line-height: 85px;
+}
+
+.dice-right{
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100px;
+    height: 100px;
+    border: 3px solid black;
+    background-color: #aaa;
+    border-radius: 5px;
+    -webkit-transform: rotateY(450deg) translateZ(49px) translateX(0px);
+
+    text-align: center;
+    font-size: 85px;
+    line-height: 85px;
+}
+
+.dice-top{
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100px;
+    height: 100px;
+    border: 3px solid black;
+    background-color: #aaa;
+    border-radius: 5px;
+    -webkit-transform: rotateX(-270deg) rotateZ(0deg) translateZ(49px) translateY(0px);
+
+    text-align: center;
+    font-size: 85px;
+    line-height: 85px;
+}
+
+.dice-bot{
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100px;
+    height: 100px;
+    border: 3px solid black;
+    background-color: #aaa;
+    border-radius: 5px;
+    -webkit-transform: rotateX(-90deg) translateZ(49px) translateY(0px);
+    transform: rotateX(-90deg) translateZ(49px) translateY(0px);
+    text-align: center;
+    font-size: 85px;
+    line-height: 85px;
+}
+
+.dices > .dice1 {
+    position: absolute;
+    top: -25px;
+    left: -25px;
+
+    -webkit-transform: scale(0.30);
+    transform: scale(0.30);
+}
+
+.dices > .dice2 {
+    position: absolute;
+    top: 25px;
+    left: -15px;
+
+    -webkit-transform: scale(0.30);
+    transform: scale(0.30);
+}
+
+.dices > .dice3 {
+    position: absolute;
+    top: -15px;
+    left: 25px;
+
+    -webkit-transform: scale(0.30);
+    transform: scale(0.30);
+}
+
+/* .dice-hoverable:hover,
+.dice-hoverable:focus {
+    animation: sneakPeak 3s alternate infinite;
+    
+} */
+
+.back-btn{
+    position: absolute;
+    left: 25px;
+    top: 25px;
+    width: 110px;
+    height: 110px;
+    border-radius: 10px;
+    background-color: #333;
+}
+
+
+.back-btn:hover .dice-hoverable{
+    animation: sneakPeak 2.5s alternate ease-in-out infinite;
+}
+
+.dice:hover > .dice-front,
+.dice:focus > .dice-front,
+.dice:hover > .dice-back,
+.dice:focus > .dice-back,
+.dice:hover > .dice-left,
+.dice:focus > .dice-left,
+.dice:hover > .dice-right,
+.dice:focus > .dice-right,
+.dice:hover > .dice-top,
+.dice:focus > .dice-top,
+.dice:hover > .dice-bot,
+.dice:focus > .dice-bot {
+    background-color: #bbb;
+    
+}
+
+@keyframes sneakPeak {
+    from {transform: scale(0.30) rotateY(0deg) rotateX(0deg) rotateZ(0deg);}
+    to {transform: scale(0.30) rotateY(360deg) rotateX(360deg) rotateZ(360deg);}
+  }
+
+  @keyframes sneakPeak2 {
+    /* Default number: 1 */
+    0% {-webkit-transform: scale(0.30) rotateY(0deg) rotateX(0deg) rotateZ(0deg);} 
+    /* Number: 2 */
+    20% {-webkit-transform: scale(0.30) rotateY(90deg) rotateX(0deg) rotateZ(0deg);}
+    /* Number: 3 */
+    40% {-webkit-transform: scale(0.30) rotateY(0deg) rotateX(90deg) rotateZ(0deg);}
+    /* Number: 4 */
+    60% {-webkit-transform: scale(0.30) rotateY(0deg) rotateX(-90deg) rotateZ(0deg);}
+    /* Number: 5 */
+    80% {-webkit-transform: scale(0.30) rotateY(-90deg) rotateX(0deg) rotateZ(0deg);}
+    /* Number: 6 */
+    100% {-webkit-transform: scale(0.30) rotateY(-180deg) rotateX(0deg) rotateZ(0deg);}
+    
   }
