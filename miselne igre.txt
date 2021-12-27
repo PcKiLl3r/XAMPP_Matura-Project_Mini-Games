@@ -1,0 +1,5 @@
+sudoku
+križanke
+word formation
+šah
+kocka menja števila vedno hitreje - klik na isto število za točke

@@ -352,9 +352,10 @@ padding-bottom: 4px;
     border-radius: 5px;
     -webkit-transform: rotateY(-90deg) translateZ(49px) translateX(0px);
 
-    font-size: 85px;
-    line-height: 85px;
-    text-align: center;
+    background-image: url(../assets/svg/dice-two-solid.svg);
+    background-color: #000;
+    background-size: 120%;
+    background-position: -7px -9px;
 }
 
 .dice-front{
@@ -369,9 +370,12 @@ padding-bottom: 4px;
     border-radius: 5px;
     -webkit-transform: translateZ(49px);
 
-    font-size: 85px;
-    line-height: 85px;
-    text-align: center;
+    background-image: url(../assets/svg/dice-one-solid.svg);
+    background-color: #000;
+    background-size: 120%;
+    background-position: -7px -9px;
+/*     text-align: center;
+    text-justify: auto; */
 }
 
 .dice-back{
@@ -386,9 +390,10 @@ padding-bottom: 4px;
     border-radius: 5px;
     -webkit-transform: translateZ(-49px) rotateY(180deg);
 
-    text-align: center;
-    font-size: 85px;
-    line-height: 85px;
+    background-image: url(../assets/svg/dice-six-solid.svg);
+    background-color: #000;
+    background-size: 120%;
+    background-position: -7px -9px;
 }
 
 .dice-right{
@@ -402,9 +407,10 @@ padding-bottom: 4px;
     border-radius: 5px;
     -webkit-transform: rotateY(450deg) translateZ(49px) translateX(0px);
 
-    text-align: center;
-    font-size: 85px;
-    line-height: 85px;
+    background-image: url(../assets/svg/dice-five-solid.svg);
+    background-color: #000;
+    background-size: 120%;
+    background-position: -7px -9px;
 }
 
 .dice-top{
@@ -418,9 +424,10 @@ padding-bottom: 4px;
     border-radius: 5px;
     -webkit-transform: rotateX(-270deg) rotateZ(0deg) translateZ(49px) translateY(0px);
 
-    text-align: center;
-    font-size: 85px;
-    line-height: 85px;
+    background-image: url(../assets/svg/dice-four-solid.svg);
+    background-color: #000;
+    background-size: 120%;
+    background-position: -7px -9px;
 }
 
 .dice-bot{
@@ -434,9 +441,11 @@ padding-bottom: 4px;
     border-radius: 5px;
     -webkit-transform: rotateX(-90deg) translateZ(49px) translateY(0px);
     transform: rotateX(-90deg) translateZ(49px) translateY(0px);
-    text-align: center;
-    font-size: 85px;
-    line-height: 85px;
+
+    background-image: url(../assets/svg/dice-three-solid.svg);
+    background-color: #000;
+    background-size: 120%;
+    background-position: -7px -9px;
 }
 
 .dices > .dice1 {
@@ -479,7 +488,7 @@ padding-bottom: 4px;
     width: 110px;
     height: 110px;
     border-radius: 10px;
-    background-color: #333;
+    background-color: #666;
 }
 
 

@@ -199,11 +199,11 @@ body {
     width: 15em;
     height: 15em;
     background-image:
-    radial-gradient(#0000, #000 75%),
+    radial-gradient(#fff0, #000 75%),
     repeating-conic-gradient(
         from 45deg,
-        #111 0deg 90deg,
-        #222 90deg 180deg);
+        #fff 0deg 90deg,
+        #000 90deg 180deg);
     background-size: 100%, 1em 1em;
 }
 

@@ -1,5 +1,5 @@
 <?php
-session_start();
+include '../includes/sessSt_gameCount.php';
 
 if(!isset($_SESSION['lastSign'])){
     $_SESSION['lastSign'] = "false";
@@ -83,10 +83,14 @@ if(filter_has_var(INPUT_POST, 'process')) {
         unset($_SESSION['lastSign']);
         $_SESSION['lastSign'] = "false";
         unset($_SESSION['isOver']);
+        $_SESSION['gamesPlayedTicTacToe']++;
 
     }
     // End of Reset
 
+    header("Location: ./index.php");
+
+    unset($_POST);
 
 }
 
@@ -130,10 +134,8 @@ if(!isset($msg)) { $msg = "No Error messages..."; }
 
             <div class="dice dice1 dice-hoverable">
                 <div class="dice-front">
-                    1
                 </div>
                 <div class="dice-left">
-                    2
                 </div>
                 <div class="dice-bot">
                     3

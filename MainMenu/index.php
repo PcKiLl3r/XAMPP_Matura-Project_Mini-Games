@@ -1,3 +1,7 @@
+<?php
+include '../includes/sessSt_gameCount.php';
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,7 +10,7 @@
     <title>Games Menu</title>
 
     <?php 
-    include 'incHead.php';
+    include './inc/incHead.php';
     ?>
 
     <link rel="stylesheet" href="./assets/css/style.css">
@@ -17,6 +21,12 @@
 <?php
 include './inc/navbar.php';
 ?>
+
+<p class="text-white">
+    <?php
+    echo "Games played:<br>TicTacToe: " . $_SESSION['gamesPlayedTicTacToe'] . " times<br>Memory game: " . $_SESSION['gamesPlayedMemoryGame'] . " times";
+    ?>
+</p>
 
 <div class="MainMenu">
 <div class="container">
@@ -40,7 +50,7 @@ include './inc/navbar.php';
     </div>
 
     <?php 
-    include 'incBody.php';
+    include './inc/incBody.php';
     ?>
 </body>
 </html>
