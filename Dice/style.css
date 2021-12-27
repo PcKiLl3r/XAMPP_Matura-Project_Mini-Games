@@ -22,6 +22,8 @@
     background-color: #000;
     background-size: 130%;
     background-position: -14px -13px;
+
+    animation: blackWhite2 2.5s alternate ease-in-out infinite;
 }
 
 .dice-front{
@@ -40,6 +42,8 @@
     background-color: #000;
     background-size: 130%;
     background-position: -14px -13px;
+
+    animation: blackWhite1 2.5s alternate ease-in-out infinite;
 }
 
 .dice-back{
@@ -58,6 +62,8 @@
     background-color: #000;
     background-size: 130%;
     background-position: -14px -22px;
+
+    animation: blackWhite6 2.5s alternate ease-in-out infinite;
 }
 
 .dice-right{
@@ -73,8 +79,10 @@
 
     background-image: url(../assets/svg/dice-five-solid.svg);
     background-color: #000;
-    background-size: 130%;
     background-position: -14px -22px;
+    background-size: 130%;
+
+    animation: blackWhite5 2.5s alternate ease-in-out infinite;
 }
 .dice-top{
     position: absolute;
@@ -91,6 +99,8 @@
     background-color: #000;
     background-size: 130%;
     background-position: -14px -22px;
+
+    animation: blackWhite4 2.5s alternate ease-in-out infinite;
 }
 
 .dice-bot{
@@ -108,6 +118,8 @@
     background-color: #000;
     background-size: 130%;
     background-position: -14px -22px;
+
+    animation: blackWhite3 2.5s alternate ease-in-out infinite;
 }
 
 .dices {
@@ -160,7 +172,7 @@
     flex-basis: 9%;
 }
 
-.dice-front:hover{
+/* .dice-front:hover{
     background-image: url(../assets/svg/dice-black/dice-one-solid.svg);
     background-color: #fff;
     background-position: -14px -22px;
@@ -185,12 +197,62 @@
 .dice-bot:hover {
     background-image: url(../assets/svg/dice-black/dice-three-solid.svg);
     background-color: #fff;
-}
+} */
 
 /* @keyframes sneakPeak {
     from {transform: rotateY(0deg) rotateX(0deg) rotateZ(0deg);}
     to {transform: rotateY(360deg) rotateX(360deg) rotateZ(360deg);}
   } */
+
+  @keyframes blackWhite1 {
+    0% {background-image: url(../assets/svg/dice-black/dice-one-solid.svg);
+        background-color: #fff;
+        background-position: -14px -22px;}
+    100% {background-image: url(../assets/svg/dice-one-solid.svg);
+        background-color: #000;
+        background-position: -14px -13px;}
+  }
+
+  @keyframes blackWhite2 {
+    0% {background-image: url(../assets/svg/dice-black/dice-two-solid.svg);
+        background-color: #fff;
+        background-position: -14px -22px;}
+    100% {background-image: url(../assets/svg/dice-two-solid.svg);
+        background-color: #000;
+        background-position: -14px -13px;}
+  }
+
+  @keyframes blackWhite3 {
+    0% {background-image: url(../assets/svg/dice-black/dice-three-solid.svg);
+        background-color: #fff;}
+    100% {background-image: url(../assets/svg/dice-three-solid.svg);
+        background-color: #000;
+        background-position: -14px -22px;}
+  }
+
+  @keyframes blackWhite4 {
+    0% {background-image: url(../assets/svg/dice-black/dice-four-solid.svg);
+        background-color: #fff;}
+    100% {background-image: url(../assets/svg/dice-four-solid.svg);
+        background-color: #000;
+        background-position: -14px -22px;}
+  }
+
+  @keyframes blackWhite5 {
+    0% {background-image: url(../assets/svg/dice-black/dice-five-solid.svg);
+        background-color: #fff;}
+    100% {background-image: url(../assets/svg/dice-five-solid.svg);
+        background-color: #000;
+        background-position: -14px -22px;}
+  }
+
+  @keyframes blackWhite6 {
+    0% {background-image: url(../assets/svg/dice-black/dice-six-solid.svg);
+        background-color: #fff;}
+    100% {background-image: url(../assets/svg/dice-six-solid.svg);
+        background-color: #000;
+        background-position: -14px -22px;}
+  }
 
   @keyframes sneakPeak {
     /* Default number: 1 */
@@ -208,11 +270,11 @@
     
   }
 
-  @keyframes cubeSpin {
+  /* @keyframes cubeSpin {
     0% {transform: rotateY(0deg) rotateX(0deg) rotateZ(0deg);}
     20% {transform: rotateY(90deg) rotateX(0deg) rotateZ(0deg);}
     40% {transform: rotateY(90deg) rotateX(0deg) rotateZ(90deg);}
     60% {transform: rotateY(90deg) rotateX(0deg) rotateZ(180deg);}
     80% {transform: rotateY(90deg) rotateX(0deg) rotateZ(270deg);}
     100% {transform: rotateY(180deg) rotateX(0deg) rotateZ(270deg);}
-  }
+  } */

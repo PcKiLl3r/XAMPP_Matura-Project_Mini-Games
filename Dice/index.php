@@ -59,6 +59,7 @@ if(filter_has_var(INPUT_POST, 'process')) {
     if($_POST['process'] == "reset") {
 
         unset($_SESSION['lastDiceValue']);
+        unset($_SESSION['diceHunterScore']);
         $_SESSION['gamesPlayedDiceHunter']++;
 
     }
@@ -73,6 +74,10 @@ if(filter_has_var(INPUT_POST, 'process')) {
 if(!isset($_SESSION['diceHunterAnim'])){
     $rndm = rand(1, 2);
     $_SESSION['diceHunterAnim'] = $rndm;
+}
+
+if(!isset($_SESSION['diceHunterSpeed'])){
+    $_SESSION['diceHunterSpeed'] = 1;
 }
 
 $winnerMsg = null;
@@ -99,6 +104,7 @@ if(!isset($msg)) { $msg = "No Error messages..."; }
 <body>
 
 <div style="visibility: hidden;"><?php echo $_SESSION['diceHunterAnim']; ?></div>
+<div style="visibility: hidden;"><?php echo $_SESSION['diceHunterSpeed']; ?></div>
 
     <div class="container">
 
