@@ -23,7 +23,7 @@
     background-size: 130%;
     background-position: -14px -13px;
 
-    animation: blackWhite2 2.5s alternate ease-in-out infinite;
+    /* animation: blackWhite2 1s alternate ease-in-out infinite; */
 }
 
 .dice-front{
@@ -41,9 +41,9 @@
     background-image: url(../assets/svg/dice-one-solid.svg);
     background-color: #000;
     background-size: 130%;
-    background-position: -14px -13px;
+    background-position: -14px -14px;
 
-    animation: blackWhite1 2.5s alternate ease-in-out infinite;
+    /* animation: blackWhite1 2.5s alternate ease-in-out infinite; */
 }
 
 .dice-back{
@@ -63,7 +63,7 @@
     background-size: 130%;
     background-position: -14px -22px;
 
-    animation: blackWhite6 2.5s alternate ease-in-out infinite;
+    /* animation: blackWhite6 2.5s alternate ease-in-out infinite; */
 }
 
 .dice-right{
@@ -82,7 +82,7 @@
     background-position: -14px -22px;
     background-size: 130%;
 
-    animation: blackWhite5 2.5s alternate ease-in-out infinite;
+    /* animation: blackWhite5 2.5s alternate ease-in-out infinite; */
 }
 .dice-top{
     position: absolute;
@@ -100,7 +100,7 @@
     background-size: 130%;
     background-position: -14px -22px;
 
-    animation: blackWhite4 2.5s alternate ease-in-out infinite;
+    /* animation: blackWhite4 2.5s alternate ease-in-out infinite; */
 }
 
 .dice-bot{
@@ -119,7 +119,7 @@
     background-size: 130%;
     background-position: -14px -22px;
 
-    animation: blackWhite3 2.5s alternate ease-in-out infinite;
+    /* animation: blackWhite3 2.5s alternate ease-in-out infinite; */
 }
 
 .dices {
@@ -175,7 +175,7 @@
 /* .dice-front:hover{
     background-image: url(../assets/svg/dice-black/dice-one-solid.svg);
     background-color: #fff;
-    background-position: -14px -22px;
+    background-position: -14px -15px;
 }
 .dice-back:hover{
     background-image: url(../assets/svg/dice-black/dice-six-solid.svg);
@@ -184,7 +184,7 @@
 .dice-left:hover{
     background-image: url(../assets/svg/dice-black/dice-two-solid.svg);
     background-color: #fff;
-    background-position: -14px -22px;
+    background-position: -14px -13px;
 }
 .dice-right:hover{
     background-image: url(../assets/svg/dice-black/dice-five-solid.svg);
@@ -207,16 +207,32 @@
   @keyframes blackWhite1 {
     0% {background-image: url(../assets/svg/dice-black/dice-one-solid.svg);
         background-color: #fff;
-        background-position: -14px -22px;}
+        background-size: 130%;
+        background-position: -14px -15px;}
+        49% {background-image: url(../assets/svg/dice-black/dice-one-solid.svg);
+            background-color: #fff;
+            background-size: 130%;
+            background-position: -14px -15px;}
+            51% {background-image: url(../assets/svg/dice-one-solid.svg);
+                background-color: #000;
+                background-size: 130%;
+                background-position: -14px -14px;}
     100% {background-image: url(../assets/svg/dice-one-solid.svg);
         background-color: #000;
-        background-position: -14px -13px;}
+        background-size: 130%;
+        background-position: -14px -14px;}
   }
 
   @keyframes blackWhite2 {
     0% {background-image: url(../assets/svg/dice-black/dice-two-solid.svg);
         background-color: #fff;
-        background-position: -14px -22px;}
+        background-position: -14px -13px;}
+        49% {background-image: url(../assets/svg/dice-black/dice-two-solid.svg);
+            background-color: #fff;
+            background-position: -14px -13px;}
+            51% {background-image: url(../assets/svg/dice-two-solid.svg);
+                background-color: #000;
+                background-position: -14px -13px;}
     100% {background-image: url(../assets/svg/dice-two-solid.svg);
         background-color: #000;
         background-position: -14px -13px;}
@@ -225,6 +241,11 @@
   @keyframes blackWhite3 {
     0% {background-image: url(../assets/svg/dice-black/dice-three-solid.svg);
         background-color: #fff;}
+        49% {background-image: url(../assets/svg/dice-black/dice-three-solid.svg);
+            background-color: #fff;}
+            51% {background-image: url(../assets/svg/dice-three-solid.svg);
+                background-color: #000;
+                background-position: -14px -22px;}
     100% {background-image: url(../assets/svg/dice-three-solid.svg);
         background-color: #000;
         background-position: -14px -22px;}

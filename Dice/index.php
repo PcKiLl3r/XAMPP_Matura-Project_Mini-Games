@@ -21,10 +21,16 @@ if(filter_has_var(INPUT_POST, 'process')) {
                             $_SESSION['diceHunterScore']++;
                             $rndm = rand(1, 2);
                             $_SESSION['diceHunterAnim'] = $rndm;
+                            if($_SESSION['diceHunterSpeed'] < 5){
+                                $_SESSION['diceHunterSpeed']++;
+                            }
                         } else {
                             $_SESSION['lastDiceValue'] = $diceValue;
                             if($_SESSION['diceHunterScore'] != 0){
                                 $_SESSION['diceHunterScore']--;
+                            }
+                            if($_SESSION['diceHunterSpeed'] != 1){
+                                $_SESSION['diceHunterSpeed']--;
                             }
                             $rndm = rand(1, 2);
                             $_SESSION['diceHunterAnim'] = $rndm;
@@ -32,6 +38,7 @@ if(filter_has_var(INPUT_POST, 'process')) {
                     } else {
                         $_SESSION['lastDiceValue'] = $diceValue;
                         $_SESSION['diceHunterScore'] = 0;
+                        $_SESSION['diceHunterSpeed'] = 1;
                     }
 
                 } else {
