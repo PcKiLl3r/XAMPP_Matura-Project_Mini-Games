@@ -21,7 +21,7 @@ if(filter_has_var(INPUT_POST, 'process')) {
                             $_SESSION['diceHunterScore']++;
                             $rndm = rand(1, 2);
                             $_SESSION['diceHunterAnim'] = $rndm;
-                            if($_SESSION['diceHunterSpeed'] < 5){
+                            if($_SESSION['diceHunterSpeed'] < 6){
                                 $_SESSION['diceHunterSpeed']++;
                             }
                         } else {
