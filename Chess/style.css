@@ -20,7 +20,7 @@
     --bgColor: gray;
     --chessStructureColor: #000;
 
-    --rotateSpeed: 60s;
+    --rotateSpeed: 5s;
 }
 
 *::before,
@@ -46,12 +46,13 @@ body {
 .scene {
     position: relative;
     transform-style: preserve-3d;
-    animation: sceneRotate var(--rotateSpeed) infinite linear;
-    transform: translateZ(-2750px);
+    animation: sceneRotate var(--rotateSpeed) alternate-reverse infinite linear;
+    transform: translateZ(-2750px) rotateY(-12deg);
 }
 
 @keyframes sceneRotate {
-    to { transform: translateZ(-2500px) rotateY(360deg); }
+    from { transform: translateZ(-2750px) rotateY(-45deg); }
+    to { transform: translateZ(-2750px) rotateY(12deg); }
 }
 
 .chessboard{
@@ -60,11 +61,11 @@ body {
     border: 3px solid var(--chessStructureColor);
 
     position: absolute;
-    top: 15em;
+    top: 20em;
     transform:
     translate(-50%, -50%)
     rotateX(90deg);
-
+    transform-style: preserve-3d;
     /* width: 15em;
     height: 15em;
     background-image:
@@ -79,6 +80,7 @@ body {
 .row{
     display: flex;
     width: calc(8 * var(--fieldWidth));
+    transform-style: preserve-3d;
     height: /* calc(8 *  */var(--fieldHeight)/* ) */;
 }
 
@@ -88,9 +90,13 @@ body {
 
 .row > .field{
     position: relative;
+    display: flex;
     width: var(--fieldWidth);
     height: var(--fieldHeight);
     background-color: var(--whiteFieldColor);
+    transform-style: preserve-3d;
+    justify-content: center;
+    align-items: center;
 }
 
 .row > .field:nth-child(2n){
@@ -231,13 +237,90 @@ body {
     position: absolute;
     top: 50%;
     left: 50%;
-    height: calc(var(--fieldHeight) / 2);
-    width: calc(var(--fieldWidth) / 2);
-    background-color: #000;
-    
+    height: calc(var(--fieldHeight) / 1.5);
+    width: calc(var(--fieldWidth) / 1.5);
+    transform-style: preserve-3d;
     transform: translate(-50%, -50%);
 }
 
-.figure-peasant {
+.chessCard{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    height: calc(var(--fieldHeight) / 1.5);
+    width: calc(var(--fieldWidth) / 1.5);
+    transform-style: preserve-3d;
+    transform: translate(-50%, -50%);
+}
 
+.chessCard > .card-bot {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    height: calc(var(--fieldHeight) / 1.5);
+    width: calc(var(--fieldWidth) / 1.5);
+    transform: translate(-50%, -50%);
+}
+
+.chessCard > .card-left {
+    position: absolute;
+    top: 50%;
+    left: -5%;
+    height: calc(var(--fieldHeight) / 1.5);
+    width: calc(var(--fieldWidth) / 16);
+    transform: rotateY(90deg) translate(-50%, -50%);
+}
+
+.chessCard > .card-right {
+    position: absolute;
+    top: 50%;
+    right: -5%;
+    height: calc(var(--fieldHeight) / 1.5);
+    width: calc(var(--fieldWidth) / 16);
+    transform: rotateY(90deg) translate(-50%, -50%);
+}
+
+.chessCard > .card-back {
+    position: absolute;
+    top: -50%;
+    left: -5%;
+    height: calc(var(--fieldHeight) / 1.5);
+    width: calc(var(--fieldWidth) / 16);
+    transform: rotateY(90deg) rotateX(-90deg) translate(-50%, -50%);
+}
+
+.chessCard > .card-front {
+    position: absolute;
+    top: 50%;
+    right: -5%;
+    height: calc(var(--fieldHeight) / 1.5);
+    width: calc(var(--fieldWidth) / 16);
+    transform: rotateY(90deg) rotateX(90deg) translate(-50%, -50%);
+}
+
+.chessCard > .card-top {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: calc(var(--fieldHeight) / 1.5);
+    width: calc(var(--fieldWidth) / 1.5);
+    transform: translateZ(calc(var(--fieldWidth) / 16));
+    text-align: center;
+    line-height: calc(var(--fieldHeight) / 1.5);
+}
+
+.figure-white > .chessCard > .card-back,.card-bot,.card-front,.card-left,.card-right,.card-top{
+    background-color: var(--whiteFigureColor);
+}
+
+.chessCard:hover .card-back, .chessCard:hover .card-bot, .chessCard:hover .card-front, .chessCard:hover .card-left, .chessCard:hover .card-right, .chessCard:hover .card-top {
+    background-color: var(--whiteFigureHoverColor);
+}
+
+.figure-black{
+    background-color: var(--blackFigureColor);
+}
+
+.figure-black:hover{
+    background-color: var(--blackFigureHoverColor);
 }

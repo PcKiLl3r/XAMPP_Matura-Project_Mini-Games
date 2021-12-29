@@ -124,7 +124,18 @@
                 <div class="field">&nbsp;</div>
             </div>
             <div class="row">
-                <div class="field">&nbsp;</div>
+                <div class="field">&nbsp;
+                    <div class="figure figure-white figure-peasant">
+                        <div class="chessCard">
+                            <div class="card-top">Pawn</div>
+                            <div class="card-bot"></div>
+                            <div class="card-left"></div>
+                            <div class="card-right"></div>
+                            <div class="card-front"></div>
+                            <div class="card-back"></div>
+                        </div>
+                    </div>
+                </div>
                 <div class="field">&nbsp;</div>
                 <div class="field">&nbsp;</div>
                 <div class="field">&nbsp;</div>
@@ -132,15 +143,68 @@
                 <div class="field">&nbsp;</div>
                 <div class="field">&nbsp;</div>
                 <div class="field">&nbsp;</div>
-                <div class="field">&nbsp;</div>
+                <div class="field">&nbsp;
+                    <div class="figure figure-white figure-peasant">
+                        <div class="chessCard">
+                            <div class="card-top">Pawn</div>
+                            <div class="card-bot"></div>
+                            <div class="card-left"></div>
+                            <div class="card-right"></div>
+                            <div class="card-front"></div>
+                            <div class="card-back"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="row">
                 <div class="field">&nbsp;
-                    <div class="figure figure-peasant"></div>
+                <div class="figure figure-white figure-peasant">
+                        <div class="chessCard">
+                            <div class="card-top">Rook</div>
+                            <div class="card-bot"></div>
+                            <div class="card-left"></div>
+                            <div class="card-right"></div>
+                            <div class="card-front"></div>
+                            <div class="card-back"></div>
+                        </div>
+                    </div>
                 </div>
-                <div class="field">&nbsp;</div>
-                <div class="field">&nbsp;</div>
-                <div class="field">&nbsp;</div>
+                <div class="field">&nbsp;
+                <div class="figure figure-white figure-peasant">
+                        <div class="chessCard">
+                            <div class="card-top">Knight</div>
+                            <div class="card-bot"></div>
+                            <div class="card-left"></div>
+                            <div class="card-right"></div>
+                            <div class="card-front"></div>
+                            <div class="card-back"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">&nbsp;
+                <div class="figure figure-white figure-peasant">
+                        <div class="chessCard">
+                            <div class="card-top">Bishop</div>
+                            <div class="card-bot"></div>
+                            <div class="card-left"></div>
+                            <div class="card-right"></div>
+                            <div class="card-front"></div>
+                            <div class="card-back"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">&nbsp;
+                <div class="figure figure-white figure-peasant">
+                        <div class="chessCard">
+                            <div class="card-top">King</div>
+                            <div class="card-bot"></div>
+                            <div class="card-left"></div>
+                            <div class="card-right"></div>
+                            <div class="card-front"></div>
+                            <div class="card-back"></div>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="field">&nbsp;</div>
                 <div class="field">&nbsp;</div>
