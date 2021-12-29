@@ -6,6 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 
+    <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"
+        integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous"> -->
+
+        <script src="https://kit.fontawesome.com/6e0b87b468.js" crossorigin="anonymous"></script>
+
     <link rel="stylesheet" href="./style.css">
 
 </head>
@@ -125,9 +130,9 @@
             </div>
             <div class="row">
                 <div class="field">&nbsp;
-                    <div class="figure figure-white figure-peasant">
+                    <div class="figure figure-white">
                         <div class="chessCard">
-                            <div class="card-top">Pawn</div>
+                            <div class="card-top bg-pawn"></div>
                             <div class="card-bot"></div>
                             <div class="card-left"></div>
                             <div class="card-right"></div>
@@ -144,9 +149,9 @@
                 <div class="field">&nbsp;</div>
                 <div class="field">&nbsp;</div>
                 <div class="field">&nbsp;
-                    <div class="figure figure-white figure-peasant">
+                    <div class="figure figure-white">
                         <div class="chessCard">
-                            <div class="card-top">Pawn</div>
+                            <div class="card-top bg-pawn"></div>
                             <div class="card-bot"></div>
                             <div class="card-left"></div>
                             <div class="card-right"></div>
@@ -158,9 +163,10 @@
             </div>
             <div class="row">
                 <div class="field">&nbsp;
-                <div class="figure figure-white figure-peasant">
+                    <div class="figure figure-white">
                         <div class="chessCard">
-                            <div class="card-top">Rook</div>
+                            <div class="card-top bg-rook">
+                            </div>
                             <div class="card-bot"></div>
                             <div class="card-left"></div>
                             <div class="card-right"></div>
@@ -170,9 +176,9 @@
                     </div>
                 </div>
                 <div class="field">&nbsp;
-                <div class="figure figure-white figure-peasant">
+                    <div class="figure figure-white">
                         <div class="chessCard">
-                            <div class="card-top">Knight</div>
+                            <div class="card-top bg-knight"></div>
                             <div class="card-bot"></div>
                             <div class="card-left"></div>
                             <div class="card-right"></div>
@@ -182,9 +188,9 @@
                     </div>
                 </div>
                 <div class="field">&nbsp;
-                <div class="figure figure-white figure-peasant">
+                    <div class="figure figure-white">
                         <div class="chessCard">
-                            <div class="card-top">Bishop</div>
+                            <div class="card-top bg-bishop"></div>
                             <div class="card-bot"></div>
                             <div class="card-left"></div>
                             <div class="card-right"></div>
@@ -194,9 +200,9 @@
                     </div>
                 </div>
                 <div class="field">&nbsp;
-                <div class="figure figure-white figure-peasant">
+                    <div class="figure figure-white">
                         <div class="chessCard">
-                            <div class="card-top">King</div>
+                            <div class="card-top bg-king"></div>
                             <div class="card-bot"></div>
                             <div class="card-left"></div>
                             <div class="card-right"></div>
@@ -206,7 +212,18 @@
                     </div>
                 </div>
 
-                <div class="field">&nbsp;</div>
+                <div class="field">&nbsp;
+                    <div class="figure figure-white">
+                        <div class="chessCard">
+                            <div class="card-top bg-queen"></div>
+                            <div class="card-bot"></div>
+                            <div class="card-left"></div>
+                            <div class="card-right"></div>
+                            <div class="card-front"></div>
+                            <div class="card-back"></div>
+                        </div>
+                    </div>
+                </div>
                 <div class="field">&nbsp;</div>
                 <div class="field">&nbsp;</div>
                 <div class="field">&nbsp;</div>

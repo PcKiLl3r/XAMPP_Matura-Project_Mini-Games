@@ -309,6 +309,48 @@ body {
     line-height: calc(var(--fieldHeight) / 1.5);
 }
 
+.bg-rook{
+    background-image: url('../assets/svg/chess-rook-solid.svg');
+    background-size: contain;
+    background-position: 50%;
+    background-repeat: no-repeat;
+}
+
+.bg-knight{
+    background-image: url('../assets/svg/chess-knight-solid.svg');
+    background-size: contain;
+    background-position: 50%;
+    background-repeat: no-repeat;
+}
+
+.bg-bishop{
+    background-image: url('../assets/svg/chess-bishop-solid.svg');
+    background-size: contain;
+    background-position: 50%;
+    background-repeat: no-repeat;
+}
+
+.bg-king{
+    background-image: url('../assets/svg/chess-king-solid.svg');
+    background-size: contain;
+    background-position: 50%;
+    background-repeat: no-repeat;
+}
+
+.bg-queen{
+    background-image: url('../assets/svg/chess-queen-solid.svg');
+    background-size: contain;
+    background-position: 50%;
+    background-repeat: no-repeat;
+}
+
+.bg-pawn{
+    background-image: url('../assets/svg/chess-pawn-solid.svg');
+    background-size: contain;
+    background-position: 50%;
+    background-repeat: no-repeat;
+}
+
 .figure-white > .chessCard > .card-back,.card-bot,.card-front,.card-left,.card-right,.card-top{
     background-color: var(--whiteFigureColor);
 }
