@@ -4,8 +4,8 @@
 
     --whiteFieldColor: #bbb;
     --whiteFieldHoverColor: #999; 
-    --blackFieldColor: #444;
-    --blackFieldHoverColor: #666;
+    --blackFieldColor: #666;
+    --blackFieldHoverColor: #444;
 
     --whiteFigureColor: #ddd;
     --whiteFigureHoverColor: #fff;
@@ -20,7 +20,7 @@
     --bgColor: gray;
     --chessStructureColor: #000;
 
-    --rotateSpeed: 5s;
+    --rotateSpeed: 30s;
 }
 
 *::before,
@@ -40,7 +40,7 @@ body {
     overflow: hidden;
 
     perspective: 10em;
-    perspective-origin: 50% calc(50% - 8em);
+    perspective-origin: 50% calc(50% - 10em);
 }
 
 .scene {
@@ -52,7 +52,7 @@ body {
 
 @keyframes sceneRotate {
     from { transform: translateZ(-2750px) rotateY(-45deg); }
-    to { transform: translateZ(-2750px) rotateY(12deg); }
+    to { transform: translateZ(-2750px) rotateY(45deg); }
 }
 
 .chessboard{
@@ -61,7 +61,7 @@ body {
     border: 3px solid var(--chessStructureColor);
 
     position: absolute;
-    top: 20em;
+    top: 25em;
     transform:
     translate(-50%, -50%)
     rotateX(90deg);
@@ -254,6 +254,7 @@ body {
 }
 
 .chessCard > .card-bot {
+    display: none;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -265,7 +266,7 @@ body {
 .chessCard > .card-left {
     position: absolute;
     top: 50%;
-    left: -5%;
+    left: -6%;
     height: calc(var(--fieldHeight) / 1.5);
     width: calc(var(--fieldWidth) / 16);
     transform: rotateY(90deg) translate(-50%, -50%);
@@ -274,7 +275,7 @@ body {
 .chessCard > .card-right {
     position: absolute;
     top: 50%;
-    right: -5%;
+    right: -6%;
     height: calc(var(--fieldHeight) / 1.5);
     width: calc(var(--fieldWidth) / 16);
     transform: rotateY(90deg) translate(-50%, -50%);
@@ -301,10 +302,10 @@ body {
 .chessCard > .card-top {
     position: absolute;
     top: 0;
-    right: 0;
-    height: calc(var(--fieldHeight) / 1.5);
-    width: calc(var(--fieldWidth) / 1.5);
-    transform: translateZ(calc(var(--fieldWidth) / 16));
+    right: -1px;
+    height: calc(calc(var(--fieldHeight) / 1.5) - 1px);
+    width: calc(calc(var(--fieldWidth) / 1.5) + 3px);
+    transform: translateZ(calc(calc(var(--fieldWidth) / 16) + 2px ));
     text-align: center;
     line-height: calc(var(--fieldHeight) / 1.5);
 }
@@ -312,21 +313,24 @@ body {
 .bg-rook{
     background-image: url('../assets/svg/chess-rook-solid.svg');
     background-size: contain;
-    background-position: 50%;
+    background-position: 50% 50%;
+    background-size: 45%;
     background-repeat: no-repeat;
 }
 
 .bg-knight{
     background-image: url('../assets/svg/chess-knight-solid.svg');
     background-size: contain;
-    background-position: 50%;
+    background-position: 50% 50%;
+    background-size: 50%;
     background-repeat: no-repeat;
 }
 
 .bg-bishop{
     background-image: url('../assets/svg/chess-bishop-solid.svg');
     background-size: contain;
-    background-position: 50%;
+    background-position: 50% 55%;
+    background-size: 40%;
     background-repeat: no-repeat;
 }
 
@@ -334,6 +338,7 @@ body {
     background-image: url('../assets/svg/chess-king-solid.svg');
     background-size: contain;
     background-position: 50%;
+    background-size: 60%;
     background-repeat: no-repeat;
 }
 
@@ -341,6 +346,7 @@ body {
     background-image: url('../assets/svg/chess-queen-solid.svg');
     background-size: contain;
     background-position: 50%;
+    background-size: 60%;
     background-repeat: no-repeat;
 }
 
@@ -348,21 +354,80 @@ body {
     background-image: url('../assets/svg/chess-pawn-solid.svg');
     background-size: contain;
     background-position: 50%;
+    background-size: 40%;
     background-repeat: no-repeat;
 }
 
-.figure-white > .chessCard > .card-back,.card-bot,.card-front,.card-left,.card-right,.card-top{
+.bg-rook-white{
+    background-image: url('../assets/svg/chess-white/chess-rook-solid.svg');
+    background-size: contain;
+    background-position: 50% 50%;
+    background-size: 50%;
+    background-repeat: no-repeat;
+}
+
+.bg-knight-white{
+    background-image: url('../assets/svg/chess-white/chess-knight-solid.svg');
+    background-size: contain;
+    background-position: 50% 50%;
+    background-size: 50%;
+    background-repeat: no-repeat;
+}
+
+.bg-bishop-white{
+    background-image: url('../assets/svg/chess-white/chess-bishop-solid.svg');
+    background-size: contain;
+    background-position: 50% 55%;
+    background-size: 40%;
+    background-repeat: no-repeat;
+}
+
+.bg-king-white{
+    background-image: url('../assets/svg/chess-white/chess-king-solid.svg');
+    background-size: contain;
+    background-position: 50%;
+    background-size: 60%;
+    background-repeat: no-repeat;
+}
+
+.bg-queen-white{
+    background-image: url('../assets/svg/chess-white/chess-queen-solid.svg');
+    background-size: contain;
+    background-position: 50%;
+    background-size: 60%;
+    background-repeat: no-repeat;
+}
+
+.bg-pawn-white{
+    background-image: url('../assets/svg/chess-white/chess-pawn-solid.svg');
+    background-size: contain;
+    background-position: 50%;
+    background-size: 40%;
+    background-repeat: no-repeat;
+}
+
+.figure-white > .chessCard > .card-back, .figure-white > .chessCard > .card-bot, .figure-white > .chessCard > .card-front, .figure-white > .chessCard > .card-left, .figure-white > .chessCard > .card-right, .figure-white > .chessCard > .card-top{
     background-color: var(--whiteFigureColor);
+    border: solid 1px var(--blackFigureColor);
 }
 
-.chessCard:hover .card-back, .chessCard:hover .card-bot, .chessCard:hover .card-front, .chessCard:hover .card-left, .chessCard:hover .card-right, .chessCard:hover .card-top {
-    background-color: var(--whiteFigureHoverColor);
-}
-
-.figure-black{
+.figure-black > .chessCard > .card-back, .figure-black > .chessCard > .card-bot, .figure-black > .chessCard > .card-front, .figure-black > .chessCard > .card-left, .figure-black > .chessCard > .card-right, .figure-black > .chessCard > .card-top{
     background-color: var(--blackFigureColor);
+    border: solid 1px var(--whiteFigureColor);
 }
 
-.figure-black:hover{
+/* .chessCard:hover .card-back, .chessCard:hover .card-bot, .chessCard:hover .card-front, .chessCard:hover .card-left, .chessCard:hover .card-right, .chessCard:hover .card-top {
+    background-color: var(--whiteFigureHoverColor);
+} */
+
+.field:hover > .figure-white > .chessCard > .card-back, .field:hover > .figure-white > .chessCard > .card-bot, .field:hover > .figure-white > .chessCard > .card-front, .field:hover > .figure-white > .chessCard > .card-left, .field:hover > .figure-white > .chessCard > .card-right, .field:hover > .figure-white > .chessCard > .card-top 
+{
+    background-color: var(--whiteFigureHoverColor);
+    border: solid 1px var(--blackFigureHoverColor);
+}
+
+.field:hover > .figure-black > .chessCard > .card-back, .field:hover > .figure-black > .chessCard > .card-bot, .field:hover > .figure-black > .chessCard > .card-front, .field:hover > .figure-black > .chessCard > .card-left, .field:hover > .figure-black > .chessCard > .card-right, .field:hover > .figure-black > .chessCard > .card-top 
+{
     background-color: var(--blackFigureHoverColor);
+    border: solid 1px var(--whiteFigureHoverColor);
 }

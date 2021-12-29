@@ -63,18 +63,84 @@
                 <div class="mark markH">H</div>
             </div>
             <div class="row">
-                <div class="field">&nbsp;</div>
-                <div class="field">&nbsp;</div>
-                <div class="field">&nbsp;</div>
-                <div class="field">&nbsp;</div>
-
-                <div class="field">&nbsp;</div>
+                <div class="field">&nbsp;
+                    <div class="figure figure-black">
+                        <div class="chessCard">
+                            <div class="card-top bg-rook-white">
+                            </div>
+                            <div class="card-bot"></div>
+                            <div class="card-left"></div>
+                            <div class="card-right"></div>
+                            <div class="card-front"></div>
+                            <div class="card-back"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">&nbsp;
+                    <div class="figure figure-black">
+                        <div class="chessCard">
+                            <div class="card-top bg-knight-white"></div>
+                            <div class="card-bot"></div>
+                            <div class="card-left"></div>
+                            <div class="card-right"></div>
+                            <div class="card-front"></div>
+                            <div class="card-back"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">&nbsp;
+                    <div class="figure figure-black">
+                        <div class="chessCard">
+                            <div class="card-top bg-bishop-white"></div>
+                            <div class="card-bot"></div>
+                            <div class="card-left"></div>
+                            <div class="card-right"></div>
+                            <div class="card-front"></div>
+                            <div class="card-back"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">&nbsp;
+                    <div class="figure figure-black">
+                        <div class="chessCard">
+                            <div class="card-top bg-king-white"></div>
+                            <div class="card-bot"></div>
+                            <div class="card-left"></div>
+                            <div class="card-right"></div>
+                            <div class="card-front"></div>
+                            <div class="card-back"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">&nbsp;
+                    <div class="figure figure-black">
+                        <div class="chessCard">
+                            <div class="card-top bg-queen-white"></div>
+                            <div class="card-bot"></div>
+                            <div class="card-left"></div>
+                            <div class="card-right"></div>
+                            <div class="card-front"></div>
+                            <div class="card-back"></div>
+                        </div>
+                    </div>
+                </div>
                 <div class="field">&nbsp;</div>
                 <div class="field">&nbsp;</div>
                 <div class="field">&nbsp;</div>
             </div>
             <div class="row">
-                <div class="field">&nbsp;</div>
+                <div class="field">&nbsp;
+                    <div class="figure figure-black">
+                        <div class="chessCard">
+                            <div class="card-top bg-pawn-white"></div>
+                            <div class="card-bot"></div>
+                            <div class="card-left"></div>
+                            <div class="card-right"></div>
+                            <div class="card-front"></div>
+                            <div class="card-back"></div>
+                        </div>
+                    </div>
+                </div>
                 <div class="field">&nbsp;</div>
                 <div class="field">&nbsp;</div>
                 <div class="field">&nbsp;</div>
@@ -82,7 +148,18 @@
                 <div class="field">&nbsp;</div>
                 <div class="field">&nbsp;</div>
                 <div class="field">&nbsp;</div>
-                <div class="field">&nbsp;</div>
+                <div class="field">&nbsp;
+                    <div class="figure figure-black">
+                        <div class="chessCard">
+                            <div class="card-top bg-pawn-white"></div>
+                            <div class="card-bot"></div>
+                            <div class="card-left"></div>
+                            <div class="card-right"></div>
+                            <div class="card-front"></div>
+                            <div class="card-back"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="row">
                 <div class="field">&nbsp;</div>
