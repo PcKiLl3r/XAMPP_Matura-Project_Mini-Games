@@ -1,0 +1,243 @@
+:root{
+    --fieldHeight: 5em;
+    --fieldWidth: 5em;
+
+    --whiteFieldColor: #bbb;
+    --whiteFieldHoverColor: #999; 
+    --blackFieldColor: #444;
+    --blackFieldHoverColor: #666;
+
+    --whiteFigureColor: #ddd;
+    --whiteFigureHoverColor: #fff;
+    --blackFigureColor: #222;
+    --blackFigureHoverColor: #000;
+
+    --whiteMarksColor: #aaa;
+    --blackMarksColor: #555;
+    --blackMarksTextColor: #aaa;
+    --whiteMarksTextColor: #555;
+
+    --bgColor: gray;
+    --chessStructureColor: #000;
+
+    --rotateSpeed: 60s;
+}
+
+*::before,
+*::after{
+margin: 0;
+padding: 0;
+}
+
+body {
+    background-color: var(--bgColor);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 75px;
+
+    overflow: hidden;
+
+    perspective: 10em;
+    perspective-origin: 50% calc(50% - 8em);
+}
+
+.scene {
+    position: relative;
+    transform-style: preserve-3d;
+    animation: sceneRotate var(--rotateSpeed) infinite linear;
+    transform: translateZ(-2750px);
+}
+
+@keyframes sceneRotate {
+    to { transform: translateZ(-2500px) rotateY(360deg); }
+}
+
+.chessboard{
+    height: calc(8 * var(--fieldHeight));
+    width: calc(8 * var(--fieldWidth));
+    border: 3px solid var(--chessStructureColor);
+
+    position: absolute;
+    top: 15em;
+    transform:
+    translate(-50%, -50%)
+    rotateX(90deg);
+
+    /* width: 15em;
+    height: 15em;
+    background-image:
+    radial-gradient(#fff0, #000 75%),
+    repeating-conic-gradient(
+        from 45deg,
+        #fff 0deg 90deg,
+        #000 90deg 180deg);
+    background-size: 100%, 1em 1em; */
+}
+
+.row{
+    display: flex;
+    width: calc(8 * var(--fieldWidth));
+    height: /* calc(8 *  */var(--fieldHeight)/* ) */;
+}
+
+.row:nth-child(2n){
+    flex-direction: row-reverse;
+}
+
+.row > .field{
+    position: relative;
+    width: var(--fieldWidth);
+    height: var(--fieldHeight);
+    background-color: var(--whiteFieldColor);
+}
+
+.row > .field:nth-child(2n){
+    width: var(--fieldWidth);
+    height: var(--fieldHeight);
+    background-color: var(--blackFieldColor);
+}
+
+.row > .field:hover{
+    background-color: var(--whiteFieldHoverColor);
+}
+
+.row > .field:nth-child(2n):hover{
+    background-color: var(--blackFieldHoverColor);
+}
+
+.bg-black{
+    background-color: #000 !important;
+    border: solid 3px white;
+}
+
+.fieldMarksVertical{
+    position: absolute;
+    left: -5.5%;
+    top: -0%;
+    height: calc(8 * var(--fieldHeight));
+    width: calc(var(--fieldWidth) / 4);
+    justify-content: space-around;
+    display: flex;
+    flex-direction: column-reverse;
+    border: solid 3px var(--chessStructureColor);
+}
+
+.fieldMarksHorizontal{
+    position: absolute;
+    left: 0%;
+    top: 102%;
+    width: calc(8 * var(--fieldWidth));
+    height: calc(var(--fieldWidth) / 4) ;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    border: solid 3px var(--chessStructureColor);
+}
+
+.fieldMarksVertical2{
+    position: absolute;
+    right: -5.5%;
+    bottom: -0%;
+    height: calc(8 * var(--fieldHeight));
+    width: calc(var(--fieldWidth) / 4);
+    justify-content: space-around;
+    display: flex;
+    flex-direction: column;
+    border: solid 3px var(--chessStructureColor);
+    transform: rotateZ(180deg);
+}
+
+.fieldMarksHorizontal2{
+    position: absolute;
+    right: 0%;
+    bottom: 102%;
+    width: calc(8 * var(--fieldWidth));
+    height: calc(var(--fieldWidth) / 4) ;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-around;
+    border: solid 3px var(--chessStructureColor);
+    transform: rotateZ(180deg);
+}
+
+.mark{
+    color: var(--whiteMarksTextColor);
+    text-align: center;
+    background-color: var(--whiteMarksColor);
+}
+
+.fieldMarksHorizontal > .mark{
+    line-height: calc(var(--fieldWidth) / 4);
+    text-align: center;
+    align-content: center;
+    width: calc(var(--fieldWidth) / 2);
+    height: calc(var(--fieldWidth) / 4) ;
+}
+
+.fieldMarksVertical > .mark{
+    line-height: calc(var(--fieldWidth) / 2);
+    text-align: center;
+    align-content: center;
+    width: calc(var(--fieldWidth) / 4);
+    height: calc(var(--fieldWidth) / 2) ;
+}
+
+.fieldMarksHorizontal2 > .mark{
+    line-height: calc(var(--fieldWidth) / 4);
+    text-align: center;
+    align-content: center;
+    width: calc(var(--fieldWidth) / 2);
+    height: calc(var(--fieldWidth) / 4) ;
+}
+
+.fieldMarksVertical2 > .mark{
+    line-height: calc(var(--fieldWidth) / 2);
+    text-align: center;
+    align-content: center;
+    width: calc(var(--fieldWidth) / 4);
+    height: calc(var(--fieldWidth) / 2) ;
+}
+
+.mark:nth-child(2n){
+    color: var(--blackMarksTextColor);
+    background-color: var(--blackMarksColor);
+}
+
+.bottomLeftBox{
+    position: absolute;
+    left: -3.9%;
+    top: 50%;
+    width: calc(var(--fieldWidth) / 3);
+    height: calc(var(--fieldWidth) / 3) ;
+    background-color: #fff;
+    border: solid 3px black;
+    transform: translate(-50%, -50%);
+}
+
+.bottomRightBox{
+    position: absolute;
+    right: -8.5%;
+    top: 50%;
+    width: calc(var(--fieldWidth) / 3);
+    height: calc(var(--fieldWidth) / 3) ;
+    background-color: #fff;
+    border: solid 3px black;
+    transform: translate(-50%, -50%);
+}
+
+.figure{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    height: calc(var(--fieldHeight) / 2);
+    width: calc(var(--fieldWidth) / 2);
+    background-color: #000;
+    
+    transform: translate(-50%, -50%);
+}
+
+.figure-peasant {
+
+}
