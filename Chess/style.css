@@ -105,11 +105,13 @@ body {
     background-color: var(--blackFieldColor);
 }
 
-.row > .field:hover{
+.row > .field:hover,
+.row > .field:focus{
     background-color: var(--whiteFieldHoverColor);
 }
 
-.row > .field:nth-child(2n):hover{
+.row > .field:nth-child(2n):hover,
+.row > .field:nth-child(2n):focus{
     background-color: var(--blackFieldHoverColor);
 }
 
@@ -427,6 +429,18 @@ body {
 }
 
 .field:hover > .figure-black > .chessCard > .card-back, .field:hover > .figure-black > .chessCard > .card-bot, .field:hover > .figure-black > .chessCard > .card-front, .field:hover > .figure-black > .chessCard > .card-left, .field:hover > .figure-black > .chessCard > .card-right, .field:hover > .figure-black > .chessCard > .card-top 
+{
+    background-color: var(--blackFigureHoverColor);
+    border: solid 1px var(--whiteFigureHoverColor);
+}
+
+.field:focus > .figure-white > .chessCard > .card-back, .field:focus > .figure-white > .chessCard > .card-bot, .field:focus > .figure-white > .chessCard > .card-front, .field:focus > .figure-white > .chessCard > .card-left, .field:focus > .figure-white > .chessCard > .card-right, .field:focus > .figure-white > .chessCard > .card-top 
+{
+    background-color: var(--whiteFigureHoverColor);
+    border: solid 1px var(--blackFigureHoverColor);
+}
+
+.field:focus > .figure-black > .chessCard > .card-back, .field:focus > .figure-black > .chessCard > .card-bot, .field:focus > .figure-black > .chessCard > .card-front, .field:focus > .figure-black > .chessCard > .card-left, .field:focus > .figure-black > .chessCard > .card-right, .field:focus > .figure-black > .chessCard > .card-top 
 {
     background-color: var(--blackFigureHoverColor);
     border: solid 1px var(--whiteFigureHoverColor);
