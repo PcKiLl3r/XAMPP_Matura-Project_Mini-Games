@@ -84,16 +84,16 @@ body {
     height: /* calc(8 *  */var(--fieldHeight)/* ) */;
 }
 
-.row:nth-child(2n){
+/* .row:nth-child(2n){
     flex-direction: row-reverse;
-}
+} */
 
 .row > .field{
     position: relative;
     display: flex;
     width: var(--fieldWidth);
     height: var(--fieldHeight);
-    background-color: var(--whiteFieldColor);
+    background-color: var(--blackFieldColor);
     transform-style: preserve-3d;
     justify-content: center;
     align-items: center;
@@ -102,17 +102,39 @@ body {
 .row > .field:nth-child(2n){
     width: var(--fieldWidth);
     height: var(--fieldHeight);
+    background-color: var(--whiteFieldColor);
+}
+
+.row:nth-child(2n) > .field{
+    width: var(--fieldWidth);
+    height: var(--fieldHeight);
+    background-color: var(--whiteFieldColor);
+}
+
+.row:nth-child(2n) > .field:nth-child(2n){
+    width: var(--fieldWidth);
+    height: var(--fieldHeight);
     background-color: var(--blackFieldColor);
+}
+
+.row:nth-child(2n) > .field:hover,
+.row:nth-child(2n) > .field:focus{
+    background-color: var(--whiteFieldHoverColor);
+}
+
+.row:nth-child(2n) > .field:nth-child(2n):hover,
+.row:nth-child(2n) > .field:nth-child(2n):focus{
+    background-color: var(--blackFieldHoverColor);
 }
 
 .row > .field:hover,
 .row > .field:focus{
-    background-color: var(--whiteFieldHoverColor);
+    background-color: var(--blackFieldHoverColor);
 }
 
 .row > .field:nth-child(2n):hover,
 .row > .field:nth-child(2n):focus{
-    background-color: var(--blackFieldHoverColor);
+    background-color: var(--whiteFieldHoverColor);
 }
 
 .bg-black{
@@ -444,4 +466,12 @@ body {
 {
     background-color: var(--blackFigureHoverColor);
     border: solid 1px var(--whiteFigureHoverColor);
+}
+
+.focusedFieldBlack {
+    background-color: var(--blackFieldHoverColor) !important;
+}
+
+.focusedFieldWhite {
+    background-color: var(--whiteFieldHoverColor) !important;
 }
