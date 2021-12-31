@@ -23,7 +23,8 @@
     --rotateSpeed: 30s;
     --figureFallSpeed: 1s;
     --figureRotateAmount: 360deg;
-    --figureDieSpeed: 3s;
+    --figureDieSpeed: 1s;
+    --fieldBlinkSpeed: 2s;
 }
 
 *::before,
@@ -51,9 +52,35 @@ body {
     transform-style: preserve-3d;
 }
 
+.scene.scene-empty {
+    transform: translateZ(-3250px) translateX(250px) rotateY(90deg);
+    /* animation-name:
+    sceneChangeP2ToP1, sceneRotatePl1;
+  animation-duration:
+    2000ms, var(--rotateSpeed);
+    animation-delay: 0ms, 2000ms;
+  animation-timing-function:
+    ease-in-out, ease-in-out;
+  animation-iteration-count:
+    1, infinite; */
+}
+
 .scene.scene-playerOne{
-    animation: sceneRotatePl1 var(--rotateSpeed) infinite ease-in-out;
+    animation-name:
+    sceneChangeP2ToP1, sceneRotatePl1;
+  animation-duration:
+    2000ms, var(--rotateSpeed);
+    animation-delay: 0ms, 2000ms;
+  animation-timing-function:
+    ease-in-out, ease-in-out;
+  animation-iteration-count:
+    1, infinite;
     transform: translateZ(-3250px) translateX(250px) /* translateZ(-2750px) */ rotateY(0deg);
+}
+
+@keyframes sceneChangeP2ToP1 {
+    0% { transform: translateZ(-3250px) translateX(250px) rotateY(180deg); }
+    100% { transform: translateZ(-3250px) translateX(250px) rotateY(360deg); }
 }
 
 @keyframes sceneRotatePl1 {
@@ -65,7 +92,15 @@ body {
 }
 
 .scene-playerTwo{
-    animation: sceneRotatePl2 var(--rotateSpeed) infinite ease-in-out;
+    animation-name:
+    sceneChangeP1ToP2, sceneRotatePl2;
+  animation-duration:
+    2000ms, var(--rotateSpeed);
+    animation-delay: 0ms, 2000ms;
+  animation-timing-function:
+    ease-in-out, ease-in-out;
+  animation-iteration-count:
+    1, infinite;
     transform: translateZ(-3250px) translateX(250px) /* translateZ(-2750px) */ rotateY(180deg);
 }
 
@@ -74,6 +109,11 @@ body {
     25% { transform: translateZ(-3250px) translateX(250px) rotateY(170deg); }
     50% { transform: translateZ(-3250px) translateX(250px) rotateY(180deg); }
     75% { transform: translateZ(-3250px) translateX(250px) rotateY(190deg); }
+    100% { transform: translateZ(-3250px) translateX(250px) rotateY(180deg); }
+}
+
+@keyframes sceneChangeP1ToP2 {
+    0% { transform: translateZ(-3250px) translateX(250px) rotateY(0deg); }
     100% { transform: translateZ(-3250px) translateX(250px) rotateY(180deg); }
 }
 
@@ -138,6 +178,18 @@ body {
     height: var(--fieldHeight);
     background-color: var(--blackFieldColor);
 }
+
+
+/* @keyframes blinkFieldBlack {
+    0% { background-color: #464; }
+    50% { background-color: #353; }
+    100% { background-color: #464; }
+    }
+
+    @keyframes blinkFieldWhite {
+        0% { background-color: #686; }
+        50% { background-color: #575; }
+        100% { background-color: #686; } */
 
 .row:nth-child(2n) > .field:hover,
 .row:nth-child(2n) > .field:focus{
@@ -396,6 +448,7 @@ to { transform: translateZ(0px) rotateX(var(--figureRotateAmount)) rotateY(0deg)
 }
 
 .chessCard > .card-top {
+    border: #000 solid 15px;
     position: absolute;
     top: 0;
     right: -1px;
@@ -406,8 +459,21 @@ to { transform: translateZ(0px) rotateX(var(--figureRotateAmount)) rotateY(0deg)
     line-height: calc(var(--fieldHeight) / 1.5);
 }
 
+@keyframes iconsChangeP1ToP2 {
+    0% { transform: rotateZ(0deg) translateZ(calc(calc(var(--fieldWidth) / 16) + 2px )) }
+    100% { transform: rotateZ(180deg) translateZ(calc(calc(var(--fieldWidth) / 16) + 2px )); }
+}
+@keyframes iconsChangeP2ToP1 {
+    0% { transform: rotateZ(180deg) translateZ(calc(calc(var(--fieldWidth) / 16) + 2px )) }
+    100% { transform: rotateZ(360deg) translateZ(calc(calc(var(--fieldWidth) / 16) + 2px )); }
+}
+.scene-playerOne > .chessboard > .row > .field > .figure > .chessCard > .bg-rook {
+    transform: rotateZ(0deg) translateZ(calc(calc(var(--fieldWidth) / 16) + 2px )) !important;
+    animation: iconsChangeP2ToP1 2s ease-in-out 1;
+}
 .scene-playerTwo > .chessboard > .row > .field > .figure > .chessCard > .bg-rook {
     transform: rotateZ(180deg) translateZ(calc(calc(var(--fieldWidth) / 16) + 2px )) !important;
+    animation: iconsChangeP1ToP2 2s ease-in-out 1;
 }
 .bg-rook{
     background-image: url('../assets/svg/chess-rook-solid.svg');
@@ -416,8 +482,13 @@ to { transform: translateZ(0px) rotateX(var(--figureRotateAmount)) rotateY(0deg)
     background-size: 45%;
     background-repeat: no-repeat;
 }
+.scene-playerOne > .chessboard > .row > .field > .figure > .chessCard > .bg-knight {
+    transform: rotateZ(0deg) translateZ(calc(calc(var(--fieldWidth) / 16) + 2px )) !important;
+    animation: iconsChangeP2ToP1 2s ease-in-out 1;
+}
 .scene-playerTwo > .chessboard > .row > .field > .figure > .chessCard > .bg-knight {
     transform: rotateZ(180deg) translateZ(calc(calc(var(--fieldWidth) / 16) + 2px )) !important;
+    animation: iconsChangeP1ToP2 2s ease-in-out 1;
 }
 .bg-knight{
     background-image: url('../assets/svg/chess-knight-solid.svg');
@@ -426,8 +497,13 @@ to { transform: translateZ(0px) rotateX(var(--figureRotateAmount)) rotateY(0deg)
     background-size: 50%;
     background-repeat: no-repeat;
 }
+.scene-playerOne > .chessboard > .row > .field > .figure > .chessCard > .bg-bishop {
+    transform: rotateZ(0deg) translateZ(calc(calc(var(--fieldWidth) / 16) + 2px )) !important;
+    animation: iconsChangeP2ToP1 2s ease-in-out 1;
+}
 .scene-playerTwo > .chessboard > .row > .field > .figure > .chessCard > .bg-bishop {
     transform: rotateZ(180deg) translateZ(calc(calc(var(--fieldWidth) / 16) + 2px )) !important;
+    animation: iconsChangeP1ToP2 2s ease-in-out 1;
 }
 .bg-bishop{
     background-image: url('../assets/svg/chess-bishop-solid.svg');
@@ -436,8 +512,13 @@ to { transform: translateZ(0px) rotateX(var(--figureRotateAmount)) rotateY(0deg)
     background-size: 40%;
     background-repeat: no-repeat;
 }
+.scene-playerOne > .chessboard > .row > .field > .figure > .chessCard > .bg-king {
+    transform: rotateZ(0deg) translateZ(calc(calc(var(--fieldWidth) / 16) + 2px )) !important;
+    animation: iconsChangeP2ToP1 2s ease-in-out 1;
+}
 .scene-playerTwo > .chessboard > .row > .field > .figure > .chessCard > .bg-king {
     transform: rotateZ(180deg) translateZ(calc(calc(var(--fieldWidth) / 16) + 2px )) !important;
+    animation: iconsChangeP1ToP2 2s ease-in-out 1;
 }
 .bg-king{
     background-image: url('../assets/svg/chess-king-solid.svg');
@@ -446,8 +527,13 @@ to { transform: translateZ(0px) rotateX(var(--figureRotateAmount)) rotateY(0deg)
     background-size: 60%;
     background-repeat: no-repeat;
 }
+.scene-playerOne > .chessboard > .row > .field > .figure > .chessCard > .bg-queen {
+    transform: rotateZ(0deg) translateZ(calc(calc(var(--fieldWidth) / 16) + 2px )) !important;
+    animation: iconsChangeP2ToP1 2s ease-in-out 1;
+}
 .scene-playerTwo > .chessboard > .row > .field > .figure > .chessCard > .bg-queen {
     transform: rotateZ(180deg) translateZ(calc(calc(var(--fieldWidth) / 16) + 2px )) !important;
+    animation: iconsChangeP1ToP2 2s ease-in-out 1;
 }
 .bg-queen{
     background-image: url('../assets/svg/chess-queen-solid.svg');
@@ -456,8 +542,13 @@ to { transform: translateZ(0px) rotateX(var(--figureRotateAmount)) rotateY(0deg)
     background-size: 60%;
     background-repeat: no-repeat;
 }
+.scene-playerOne > .chessboard > .row > .field > .figure > .chessCard > .bg-pawn {
+    transform: rotateZ(0deg) translateZ(calc(calc(var(--fieldWidth) / 16) + 2px )) !important;
+    animation: iconsChangeP2ToP1 2s ease-in-out 1;
+}
 .scene-playerTwo > .chessboard > .row > .field > .figure > .chessCard > .bg-pawn {
     transform: rotateZ(180deg) translateZ(calc(calc(var(--fieldWidth) / 16) + 2px )) !important;
+    animation: iconsChangeP1ToP2 2s ease-in-out 1;
 }
 .bg-pawn{
     background-image: url('../assets/svg/chess-pawn-solid.svg');
@@ -466,8 +557,13 @@ to { transform: translateZ(0px) rotateX(var(--figureRotateAmount)) rotateY(0deg)
     background-size: 40%;
     background-repeat: no-repeat;
 }
+.scene-playerOne > .chessboard > .row > .field > .figure > .chessCard > .bg-rook-white {
+    transform: rotateZ(0deg) translateZ(calc(calc(var(--fieldWidth) / 16) + 2px )) !important;
+    animation: iconsChangeP2ToP1 2s ease-in-out 1;
+}
 .scene-playerTwo > .chessboard > .row > .field > .figure > .chessCard > .bg-rook-white {
     transform: rotateZ(180deg) translateZ(calc(calc(var(--fieldWidth) / 16) + 2px )) !important;
+    animation: iconsChangeP1ToP2 2s ease-in-out 1;
 }
 .bg-rook-white{
     background-image: url('../assets/svg/chess-white/chess-rook-solid.svg');
@@ -476,8 +572,13 @@ to { transform: translateZ(0px) rotateX(var(--figureRotateAmount)) rotateY(0deg)
     background-size: 50%;
     background-repeat: no-repeat;
 }
+.scene-playerOne > .chessboard > .row > .field > .figure > .chessCard > .bg-knight-white {
+    transform: rotateZ(0deg) translateZ(calc(calc(var(--fieldWidth) / 16) + 2px )) !important;
+    animation: iconsChangeP2ToP1 2s ease-in-out 1;
+}
 .scene-playerTwo > .chessboard > .row > .field > .figure > .chessCard > .bg-knight-white {
     transform: rotateZ(180deg) translateZ(calc(calc(var(--fieldWidth) / 16) + 2px )) !important;
+    animation: iconsChangeP1ToP2 2s ease-in-out 1;
 }
 .bg-knight-white{
     background-image: url('../assets/svg/chess-white/chess-knight-solid.svg');
@@ -486,8 +587,13 @@ to { transform: translateZ(0px) rotateX(var(--figureRotateAmount)) rotateY(0deg)
     background-size: 50%;
     background-repeat: no-repeat;
 }
+.scene-playerOne > .chessboard > .row > .field > .figure > .chessCard > .bg-bishop-white {
+    transform: rotateZ(0deg) translateZ(calc(calc(var(--fieldWidth) / 16) + 2px )) !important;
+    animation: iconsChangeP2ToP1 2s ease-in-out 1;
+}
 .scene-playerTwo > .chessboard > .row > .field > .figure > .chessCard > .bg-bishop-white {
     transform: rotateZ(180deg) translateZ(calc(calc(var(--fieldWidth) / 16) + 2px )) !important;
+    animation: iconsChangeP1ToP2 2s ease-in-out 1;
 }
 .bg-bishop-white{
     background-image: url('../assets/svg/chess-white/chess-bishop-solid.svg');
@@ -496,8 +602,13 @@ to { transform: translateZ(0px) rotateX(var(--figureRotateAmount)) rotateY(0deg)
     background-size: 40%;
     background-repeat: no-repeat;
 }
+.scene-playerOne > .chessboard > .row > .field > .figure > .chessCard > .bg-king-white {
+    transform: rotateZ(0deg) translateZ(calc(calc(var(--fieldWidth) / 16) + 2px )) !important;
+    animation: iconsChangeP2ToP1 2s ease-in-out 1;
+}
 .scene-playerTwo > .chessboard > .row > .field > .figure > .chessCard > .bg-king-white {
     transform: rotateZ(180deg) translateZ(calc(calc(var(--fieldWidth) / 16) + 2px )) !important;
+    animation: iconsChangeP1ToP2 2s ease-in-out 1;
 }
 .bg-king-white{
     background-image: url('../assets/svg/chess-white/chess-king-solid.svg');
@@ -506,8 +617,13 @@ to { transform: translateZ(0px) rotateX(var(--figureRotateAmount)) rotateY(0deg)
     background-size: 60%;
     background-repeat: no-repeat;
 }
+.scene-playerOne > .chessboard > .row > .field > .figure > .chessCard > .bg-queen-white {
+    transform: rotateZ(0deg) translateZ(calc(calc(var(--fieldWidth) / 16) + 2px )) !important;
+    animation: iconsChangeP2ToP1 2s ease-in-out 1;
+}
 .scene-playerTwo > .chessboard > .row > .field > .figure > .chessCard > .bg-queen-white {
     transform: rotateZ(180deg) translateZ(calc(calc(var(--fieldWidth) / 16) + 2px )) !important;
+    animation: iconsChangeP1ToP2 2s ease-in-out 1;
 }
 .bg-queen-white{
     background-image: url('../assets/svg/chess-white/chess-queen-solid.svg');
@@ -516,8 +632,13 @@ to { transform: translateZ(0px) rotateX(var(--figureRotateAmount)) rotateY(0deg)
     background-size: 60%;
     background-repeat: no-repeat;
 }
+.scene-playerOne > .chessboard > .row > .field > .figure > .chessCard > .bg-pawn-white {
+    transform: rotateZ(0deg) translateZ(calc(calc(var(--fieldWidth) / 16) + 2px )) !important;
+    animation: iconsChangeP2ToP1 2s ease-in-out 1;
+}
 .scene-playerTwo > .chessboard > .row > .field > .figure > .chessCard > .bg-pawn-white {
     transform: rotateZ(180deg) translateZ(calc(calc(var(--fieldWidth) / 16) + 2px )) !important;
+    animation: iconsChangeP1ToP2 2s ease-in-out 1;
 }
 .bg-pawn-white{
     background-image: url('../assets/svg/chess-white/chess-pawn-solid.svg');
@@ -565,10 +686,52 @@ to { transform: translateZ(0px) rotateX(var(--figureRotateAmount)) rotateY(0deg)
     border: solid 1px var(--whiteFigureHoverColor);
 }
 
+/* --whiteFieldHoverColor: #999; 
+    --blackFieldColor: #666;
+    --blackFieldHoverColor: #444; */
+
 .focusedFieldBlack {
-    background-color: var(--blackFieldHoverColor) !important;
+    animation: blinkFieldBlack var(--fieldBlinkSpeed) alternate ease-in-out infinite;
+    border: #000 solid 5px;
 }
 
 .focusedFieldWhite {
-    background-color: var(--whiteFieldHoverColor) !important;
+    animation: blinkFieldWhite var(--fieldBlinkSpeed) alternate ease-in-out infinite;
+    border: #000 solid 5px;
 }
+
+.field{
+    border: #000 solid 5px;
+}
+
+.enemyFieldBlack {
+    animation: blinkFieldEnemyBlack var(--fieldBlinkSpeed) alternate ease-in-out infinite;
+}
+
+.enemyFieldWhite {
+    animation: blinkFieldEnemyWhite var(--fieldBlinkSpeed) alternate ease-in-out infinite;
+}
+
+@keyframes blinkFieldBlack {
+    0% { background-color: #464; }
+    50% { background-color: #353; }
+    100% { background-color: #464; }
+    }
+
+    @keyframes blinkFieldWhite {
+        0% { background-color: #686; }
+        50% { background-color: #575; }
+        100% { background-color: #686; }
+        }
+
+        @keyframes blinkFieldEnemyBlack {
+            0% { background-color: #844; }
+            50% { background-color: #733; }
+            100% { background-color: #844; }
+            }
+        
+            @keyframes blinkFieldEnemyWhite {
+                0% { background-color: #a66; }
+                50% { background-color: #955; }
+                100% { background-color: #a66; }
+                }
