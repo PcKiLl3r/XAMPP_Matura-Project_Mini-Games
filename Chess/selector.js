@@ -114,10 +114,74 @@ let blackQueenText = `<div class="chessCard">
     <div class="card-back"></div>
 </div>`;
 
-let fields = document.querySelectorAll('.field');
+const fields = document.querySelectorAll('.field');
+
+let scene = document.querySelector('.scene');
+
+let currentPlayer = 1;
 
 let highlightedFields = [];
 
+function setup(){
+    let _isOdd = true;
+    let _count = 0;
+    fields.forEach(field => {
+
+        if(_count == 8 || _count == 16 ||_count == 24 ||_count == 32
+            ||_count == 40 ||_count == 48 ||_count == 56){
+                _isOdd = !_isOdd;
+            }
+        if(!_isOdd){
+            field.classList.add('field-white');
+            _isOdd = !_isOdd;
+        } else {
+            field.classList.add('field-black');
+            _isOdd = !_isOdd;
+        }
+
+        _count++;
+
+        field.addEventListener('click', handleFieldClick);
+    });
+
+    // DEV BUTTONS
+    for (let index = 0; index < fields.length; index++) {
+        if(index == fields.length - 1){
+            fields[index].addEventListener('click', () => {
+                resetBoard();
+            });
+        }
+        if(index == fields.length - 2){
+            fields[index].addEventListener('click', () => {
+                wipeBoard();
+            });
+        }
+        if(index == fields.length - 3){
+            fields[index].addEventListener('click', () => {
+                if(currentPlayer == 1) {
+                    switchToPlayer2();
+                } else {
+                    switchToPlayer1();
+                }
+            });
+        }
+        if(index == fields.length - 4){
+            fields[index].addEventListener('click', () => {
+                    killFigure(55);
+            });
+        }
+    }
+}
+function switchToPlayer2(){
+    scene.classList.add('scene-playerTwo');
+    scene.classList.remove('scene-playerOne');
+    currentPlayer = 2;
+}
+function switchToPlayer1(){
+    scene.classList.add('scene-playerOne');
+    scene.classList.remove('scene-playerTwo');
+    currentPlayer = 1;
+}
     function resetBoard(){
         console.log("Board Reset!");
         let fields = document.querySelectorAll('.field');
@@ -187,7 +251,6 @@ let highlightedFields = [];
             }
         }
     }
-
     function wipeBoard(){
         console.log("Board Reset!");
         let fields = document.querySelectorAll('.field');
@@ -195,154 +258,13 @@ let highlightedFields = [];
             fields[i].innerHTML = i;
         }
     }
-
-    for (let index = 0; index < fields.length; index++) {
-        if(index == fields.length - 1){
-            fields[index].addEventListener('click', () => {
-                resetBoard();
-            });
-        }
-        if(index == fields.length - 2){
-            fields[index].addEventListener('click', () => {
-                wipeBoard();
-            });
+    function killFigure(_fieldNumber){
+        if(fields[_fieldNumber].children[0].classList.contains('figure-white')){
+            fields[_fieldNumber].children[0].classList.add('figure-white-dead');
+        } else if(fields[_fieldNumber].children[0].classList.contains('figure-white')) {
+            fields[_fieldNumber].children[0].classList.add('figure-black-dead');
         }
     }
-
-    let isOdd = true;
-
-    fields.forEach(field => {
-
-        if(!isOdd){
-            field.classList.add('field-white');
-            isOdd = !isOdd;
-        } else {
-            field.classList.add('field-black');
-            isOdd = !isOdd;
-        }
-
-        field.addEventListener('click', (e) => {
-
-            let figureType;
-
-            let fieldNumber;
-
-            clearHighlightedFields();
-
-            if(e.target.classList.contains('field')){
-                if(e.target.children[0] == undefined){
-                    console.log("Empty field clicked!");
-                    return;
-                } else {
-                    console.log(e.target);
-                    figureType = e.target.children[0].children[0].children[0].classList;
-                    figureType = figureType[1];
-                    fieldNumber = parseInt(e.target.tabIndex);
-                    console.log(figureType);
-                    console.log(fieldNumber);
-                }
-            } else if(e.target.classList.contains('figure')){
-
-                console.log(e.target);
-
-                console.log(e.target.children[0].children[0]);
-                figureType = e.target.children[0].children[0].classList;
-                figureType = figureType[1];
-
-                /* let figureColor = e.target.classList;
-                    figureColor = figureColor[1]; */
-    
-                    // logs bg-queen
-                    console.log(figureType);
-
-                    fieldNumber = parseInt(e.target.parentNode.tabIndex);
-                console.log(fieldNumber);
-                    /* console.log(figureColor); */
-                
-            } else if(e.target.classList.contains('chessCard')){
-                
-                console.log(e.target);
-                figureType = e.target.children[0].classList;
-                figureType = figureType[1];
-
-                /* let figureColor = e.target.parentNode.classList;
-                    figureColor = figureColor[1]; */
-    
-                    // logs bg-queen
-                    console.log(figureType);
-
-                    fieldNumber = parseInt(e.target.parentNode.parentNode.tabIndex);
-                console.log(fieldNumber);
-                    /* console.log(figureColor); */
-
-            } else if(e.target.classList.contains('card-top')){
-
-                console.log(e.target);
-                figureType = e.target.classList;
-                figureType = figureType[1];
-
-                /* let figureColor = e.target.parentNode.parentNode.classList;
-                    figureColor = figureColor[1]; */
-    
-                    // logs bg-queen
-                    console.log(figureType);
-                    fieldNumber = parseInt(e.target.parentNode.parentNode.parentNode.tabIndex);
-                console.log(fieldNumber);
-                    /* console.log(figureColor); */
-
-            } else if(e.target.classList.contains('card-front') || e.target.classList.contains('card-back') || e.target.classList.contains('card-left') || e.target.classList.contains('card-right') || e.target.classList.contains('card-bot')){
-
-                console.log(e.target);
-                figureType = e.target.parentNode.children[0].classList;
-                figureType = figureType[1];
-
-                /* let figureColor = e.target.parentNode.parentNode.classList;
-                    figureColor = figureColor[1]; */
-    
-                    // logs bg-queen
-                    console.log(figureType);
-                    fieldNumber = parseInt(e.target.parentNode.parentNode.parentNode.tabIndex);
-                console.log(fieldNumber);
-                    /* console.log(figureColor); */
-
-            }
-
-            fieldNumber--;
-
-            // Switch figureType
-
-            switch (figureType) {
-                case 'bg-pawn':
-
-                    let fieldsAhead = getFieldsAhead(fields[fieldNumber], fieldNumber, 1)
-
-                    console.log(fieldNumber);
-
-                    if(fieldNumber >= 46 && fieldNumber <= 55){
-                            fieldsAhead = fieldsAhead.slice(0, 2);
-                        } else {
-                            fieldsAhead = fieldsAhead.slice(0, 1);
-                        }
-
-                    highlightFieldsAhead(fieldsAhead);
-                    
-                    break;
-
-                    case 'bg-pawn-white':
-
-
-
-                    break;
-            
-                default:
-                    break;
-            }
-
-
-
-        })
-    });
-
     function clearHighlightedFields(){
         for (let index = 0; index < highlightedFields.length; index++) {
             if(fields[highlightedFields[index]].classList.contains('focusedFieldBlack')){
@@ -350,110 +272,258 @@ let highlightedFields = [];
             } else {
                 fields[highlightedFields[index]].classList.remove('focusedFieldWhite');
             }
-            console.log("Clearing Highlighted Field: " + highlightedFields[index]);
+            /* console.log("Clearing Highlighted Field: " + highlightedFields[index]); */
         }
         highlightedFields = [];
     }
-
-    function highlightFieldsAhead(_fields){
-        let isOdd = false;
-        if(fields[_fields[0]].classList.contains('field-white')){
-            isOdd = true;
+    function highlightFieldsInLine(_fields, isRow){
+        let _isOdd;
+        if(_fields.length == 0){
+            return;
         }
+            if(fields[_fields[0]].classList.contains('field-white')){
+                _isOdd = false;
+            } else if(fields[_fields[0]].classList.contains('field-black')){
+                _isOdd = true;
+            }
         for (let index = 0; index < _fields.length; index++) {
-            if(isOdd){
+            if(_isOdd){
                 fields[_fields[index]].classList.add('focusedFieldBlack');
             } else {
                 fields[_fields[index]].classList.add('focusedFieldWhite');
             }
             highlightedFields.push(_fields[index]);
-            isOdd = !isOdd;
+            _isOdd = !_isOdd;
         }
     }
-
-    function getFieldsBehind(isWhite){
-        
-    }
-
-    function getFieldsAhead(field, fieldNumber, isWhite){
-         let isOdd = field.parentNode.id;
-         let fieldsAhead = [];
-         isOdd = isOdd.slice(3, 4);
-         isOdd = parseInt(isOdd);
-         let row = isOdd;
-         /* isOdd = isOdd % 2;
-         console.log(isOdd); */
+    function getFieldsVertically(field, _fieldNumber, isWhite, isAhead){
+        let fieldsAhead = [];
+        let row = parseInt(field.parentNode.id.slice(3, 4));
+        if (!isAhead) isWhite = !isWhite;
             if(isWhite){
                 // isWhite num of field should first decrement by 1
                 for (let index = 0; index < row; index++) {
-
+                    
                     if(index == 0){
-                        fieldsAhead[index] = fieldNumber - 8;
+                        if(_fieldNumber - 8 < 0){
+                            break;
+                        }
+                        fieldsAhead[index] = _fieldNumber - 8;
                     } else {
                         if(fieldsAhead[index - 1] - 8 < 0){
                             break;
                         }
                         fieldsAhead[index] = fieldsAhead[index - 1] - 8;
-                        /* if(isOdd){
-                            if(fieldsAhead[index - 1] - 15 < 0){
-                                break;
-                            }
-                            fieldsAhead[index] = fieldsAhead[index - 1] - 15;
-                        } else {
-                            if(fieldsAhead[index - 1] - 1 < 0){
-                                break;
-                            }
-                            fieldsAhead[index] = fieldsAhead[index - 1] - 1;
-                        } */
                     }
-                    /* isOdd = !isOdd; */
-
                 }
-                
             } else {
                 // isWhite NOT TRUE num of field first should increment by 1
                 for (let index = 0; index < 8 - row; index++) {
-
                     if(index == 0){
-                        fieldsAhead[index] = fieldNumber + 8;
+                        if(_fieldNumber + 8 > 63){
+                            break;
+                        }
+                        fieldsAhead[index] = _fieldNumber + 8;
                     } else {
-                        if(fieldsAhead[index - 1] + 8 > 64){
+                        if(fieldsAhead[index - 1] + 8 > 63){
                             break;
                         }
                         fieldsAhead[index] = fieldsAhead[index - 1] + 8;
                     }
-                    
                 }
-                fieldsAhead.reverse();
             }
-         for (let index = 0; index < fieldsAhead.length; index++) {
-             
+         /* for (let index = 0; index < fieldsAhead.length; index++) {
             console.log("Can move on: " + fieldsAhead[index]);
+         } */
+         return(fieldsAhead);
+    }
+    function getFieldsHorizontally(field, _fieldNumber, isWhite, isRight){
+        let fieldsLeft = [];
+        console.log(fields[_fieldNumber].parentNode.id);
+        let _row = fields[_fieldNumber].parentNode.id;
+        _row = parseInt(_row.slice(3, 4));
+        if (isRight) isWhite = !isWhite;
+        if(isWhite){
+        for (let index = 0; index < 7; index++) {
+            if(_fieldNumber - 1 - index < 0) {
+                break;
+            }
+            if(fields[_fieldNumber - 1 - index].parentNode.id.slice(3, 4) == _row)
+            {
+                fieldsLeft[index] = _fieldNumber - 1 - index;
+            } else {
+                break;
+            }
+        }
+    } else {
+        for (let index = 0; index < 7; index++) {
+            if(_fieldNumber + 1 + index > 63) {
+                break;
+            }
+            if(fields[_fieldNumber + 1 + index].parentNode.id.slice(3, 4) == _row)
+            {
+                fieldsLeft[index] = _fieldNumber + 1 + index;
+            } else {
+                break;
+            }
+        }
+    }
+         return(fieldsLeft);
+    }
+    function handleFieldClick(e) {
+        let figureType;
 
-            return(fieldsAhead);
-             
-         }
-     }
+        let _fieldNumber;
 
-    function getFieldsLeft(isWhite){
+        clearHighlightedFields();
+
+        if(e.target.classList.contains('field')){
+            if(e.target.children[0] == undefined){
+                
+                _fieldNumber = parseInt(e.target.tabIndex);
+                console.log("Empty field: " + _fieldNumber);
+                return;
+            } else {
+                figureType = e.target.children[0].children[0].children[0].classList;
+                figureType = figureType[1];
+                _fieldNumber = parseInt(e.target.tabIndex);
+            }
+        } else if(e.target.classList.contains('figure')){
+            figureType = e.target.children[0].children[0].classList;
+            figureType = figureType[1];
+                _fieldNumber = parseInt(e.target.parentNode.tabIndex);
+        } else if(e.target.classList.contains('chessCard')){
+            figureType = e.target.children[0].classList;
+            figureType = figureType[1];
+                _fieldNumber = parseInt(e.target.parentNode.parentNode.tabIndex);
+        } else if(e.target.classList.contains('card-top')){
+            figureType = e.target.classList;
+            figureType = figureType[1];
+                _fieldNumber = parseInt(e.target.parentNode.parentNode.parentNode.tabIndex);
+
+        } else if(e.target.classList.contains('card-front') || e.target.classList.contains('card-back') || e.target.classList.contains('card-left') || e.target.classList.contains('card-right') || e.target.classList.contains('card-bot')){
+            figureType = e.target.parentNode.children[0].classList;
+            figureType = figureType[1];
+                _fieldNumber = parseInt(e.target.parentNode.parentNode.parentNode.tabIndex);
+        }
+
+        _fieldNumber--;
+
+        figureType = figureType.slice(3, figureType.length);
+
+        console.log("Field Nr: " + _fieldNumber + "\r\nFigure: " + figureType);
+
+        // Switch figureType
+
+        let _fieldsAhead;
+        let _fieldsBehind;
+        let _fieldsLeft;
+        let _fieldsRight;
+
+        switch (figureType) {
+
+            case 'pawn':
+
+                _fieldsAhead = getFieldsVertically(fields[_fieldNumber], _fieldNumber, 1, 1);
+                if(_fieldNumber >= 46 && _fieldNumber <= 55){
+                        _fieldsAhead = _fieldsAhead.slice(0, 2);
+                    } else {
+                        _fieldsAhead = _fieldsAhead.slice(0, 1);
+                    }
+                highlightFieldsInLine(_fieldsAhead, 1);
+                
+                break;
+                case 'pawn-white':
+
+                    _fieldsAhead = getFieldsVertically(fields[_fieldNumber], _fieldNumber, 0, 1);
+                    if(_fieldNumber >= 8 && _fieldNumber <= 15){
+                            _fieldsAhead = _fieldsAhead.slice(0, 2);
+                        } else {
+                            _fieldsAhead = _fieldsAhead.slice(0, 1);
+                        }
+                        highlightFieldsInLine(_fieldsAhead, 1);
+
+                break;
+                case 'rook':
+
+                _fieldsAhead = getFieldsVertically(fields[_fieldNumber], _fieldNumber, 1, 1);
+                highlightFieldsInLine(_fieldsAhead, 1);
+                
+                break;
+                case 'rook-white':
+
+                    _fieldsAhead = getFieldsVertically(fields[_fieldNumber], _fieldNumber, 0, 1);
+                    highlightFieldsInLine(_fieldsAhead, 1);
+
+                break;
+                case 'queen':
+
+                _fieldsAhead = getFieldsVertically(fields[_fieldNumber], _fieldNumber, 1, 1);
+                fieldsBehind = getFieldsVertically(fields[_fieldNumber], _fieldNumber, 1, 0);
+                fieldsLeft = getFieldsHorizontally(fields[_fieldNumber], _fieldNumber, 1, 0);
+                fieldsRight = getFieldsHorizontally(fields[_fieldNumber], _fieldNumber, 1, 1);
+
+                highlightFieldsInLine(_fieldsAhead, 1);
+                highlightFieldsInLine(fieldsBehind, 1);
+                highlightFieldsInLine(fieldsLeft, 1);
+                highlightFieldsInLine(fieldsRight, 1);
+                
+                break;
+                case 'queen-white':
+
+                    _fieldsAhead = getFieldsVertically(fields[_fieldNumber], _fieldNumber, 0, 1);
+                    fieldsBehind = getFieldsVertically(fields[_fieldNumber], _fieldNumber, 0, 0);
+                    fieldsLeft = getFieldsHorizontally(fields[_fieldNumber], _fieldNumber, 0, 0);
+                    fieldsRight = getFieldsHorizontally(fields[_fieldNumber], _fieldNumber, 0, 1);
+    
+                    highlightFieldsInLine(_fieldsAhead, 1);
+                    highlightFieldsInLine(fieldsBehind, 1);
+                    highlightFieldsInLine(fieldsLeft, 1);
+                    highlightFieldsInLine(fieldsRight, 1);
+
+                break;
+                case 'king':
+
+                    _fieldsAhead = getFieldsVertically(fields[_fieldNumber], _fieldNumber, 1, 1);
+                    fieldsBehind = getFieldsVertically(fields[_fieldNumber], _fieldNumber, 1, 0);
+                    fieldsLeft = getFieldsHorizontally(fields[_fieldNumber], _fieldNumber, 1, 0);
+                    fieldsRight = getFieldsHorizontally(fields[_fieldNumber], _fieldNumber, 1, 1);
+
+                    _fieldsAhead = _fieldsAhead.slice(0, 1);
+                    fieldsBehind = fieldsBehind.slice(0, 1);
+                    fieldsLeft = fieldsLeft.slice(0, 1);
+                    fieldsRight = fieldsRight.slice(0, 1);
+
+                    highlightFieldsInLine(_fieldsAhead, 1);
+                    highlightFieldsInLine(fieldsBehind, 1);
+                    highlightFieldsInLine(fieldsLeft, 1);
+                    highlightFieldsInLine(fieldsRight, 1);
+                
+                break;
+                case 'king-white':
+
+                    _fieldsAhead = getFieldsVertically(fields[_fieldNumber], _fieldNumber, 0, 1);
+                    fieldsBehind = getFieldsVertically(fields[_fieldNumber], _fieldNumber, 0, 0);
+                    fieldsLeft = getFieldsHorizontally(fields[_fieldNumber], _fieldNumber, 0, 0);
+                    fieldsRight = getFieldsHorizontally(fields[_fieldNumber], _fieldNumber, 0, 1);
+
+                    _fieldsAhead = _fieldsAhead.slice(0, 1);
+                    fieldsBehind = fieldsBehind.slice(0, 1);
+                    fieldsLeft = fieldsLeft.slice(0, 1);
+                    fieldsRight = fieldsRight.slice(0, 1);
+
+                    highlightFieldsInLine(_fieldsAhead, 1);
+                    highlightFieldsInLine(fieldsBehind, 1);
+                    highlightFieldsInLine(fieldsLeft, 1);
+                    highlightFieldsInLine(fieldsRight, 1);
+
+                break;
         
+            default:
+                break;
+        }
     }
 
-    function getFieldsRight(isWhite){
-        
-    }
+    setup();
 
-    /* let figures = document.querySelectorAll('.figure');
-
-    figures.forEach(figure => {
-        figure.addEventListener('click', (e) => {
-            e.target.parentNode.click();
-        })
-    }); */
-
-
-
-
-
-})
-
+});

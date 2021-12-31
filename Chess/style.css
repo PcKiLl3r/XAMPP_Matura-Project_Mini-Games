@@ -21,6 +21,9 @@
     --chessStructureColor: #000;
 
     --rotateSpeed: 30s;
+    --figureFallSpeed: 1s;
+    --figureRotateAmount: 360deg;
+    --figureDieSpeed: 3s;
 }
 
 *::before,
@@ -40,19 +43,38 @@ body {
     overflow: hidden;
 
     perspective: 10em;
-    perspective-origin: 50% calc(50% - 10em);
+    perspective-origin: 50% calc(50% - 12em);
 }
 
 .scene {
     position: relative;
     transform-style: preserve-3d;
-    animation: sceneRotate var(--rotateSpeed) alternate-reverse infinite linear;
-    transform: translateZ(-2750px) rotateY(-12deg);
 }
 
-@keyframes sceneRotate {
-    from { transform: translateZ(-2750px) rotateY(-45deg); }
-    to { transform: translateZ(-2750px) rotateY(45deg); }
+.scene.scene-playerOne{
+    animation: sceneRotatePl1 var(--rotateSpeed) infinite ease-in-out;
+    transform: translateZ(-3250px) translateX(250px) /* translateZ(-2750px) */ rotateY(0deg);
+}
+
+@keyframes sceneRotatePl1 {
+    0% { transform: translateZ(-3250px) translateX(250px) rotateY(0deg); }
+    25% { transform: translateZ(-3250px) translateX(250px) rotateY(-10deg); }
+    50% { transform: translateZ(-3250px) translateX(250px) rotateY(0deg); }
+    75% { transform: translateZ(-3250px) translateX(250px) rotateY(10deg); }
+    100% { transform: translateZ(-3250px) translateX(250px) rotateY(0deg); }
+}
+
+.scene-playerTwo{
+    animation: sceneRotatePl2 var(--rotateSpeed) infinite ease-in-out;
+    transform: translateZ(-3250px) translateX(250px) /* translateZ(-2750px) */ rotateY(180deg);
+}
+
+@keyframes sceneRotatePl2 {
+    0% { transform: translateZ(-3250px) translateX(250px) rotateY(180deg); }
+    25% { transform: translateZ(-3250px) translateX(250px) rotateY(170deg); }
+    50% { transform: translateZ(-3250px) translateX(250px) rotateY(180deg); }
+    75% { transform: translateZ(-3250px) translateX(250px) rotateY(190deg); }
+    100% { transform: translateZ(-3250px) translateX(250px) rotateY(180deg); }
 }
 
 .chessboard{
@@ -61,7 +83,7 @@ body {
     border: 3px solid var(--chessStructureColor);
 
     position: absolute;
-    top: 25em;
+    top: 40em;
     transform:
     translate(-50%, -50%)
     rotateX(90deg);
@@ -159,7 +181,7 @@ body {
     left: 0%;
     top: 102%;
     width: calc(8 * var(--fieldWidth));
-    height: calc(var(--fieldWidth) / 4) ;
+    height: calc(var(--fieldHeight) / 4) ;
     display: flex;
     flex-direction: row;
     justify-content: space-around;
@@ -184,12 +206,47 @@ body {
     right: 0%;
     bottom: 102%;
     width: calc(8 * var(--fieldWidth));
-    height: calc(var(--fieldWidth) / 4) ;
+    height: calc(var(--fieldHeight) / 4) ;
     display: flex;
     flex-direction: row-reverse;
     justify-content: space-around;
     border: solid 3px var(--chessStructureColor);
     transform: rotateZ(180deg);
+}
+
+.whiteGraveyard{
+    padding: calc(var(--fieldHeight) / 16) 0;
+    position: absolute;
+    left: 110%;
+    top: 0%;
+    background-color: #222;
+    width: calc(var(--fieldWidth) * 2);
+    /* height: calc(var(--fieldHeight) * 4) ; */
+    display: flex;
+    flex-flow: wrap-reverse;
+    flex-direction: row-reverse;
+    justify-content: space-evenly;
+    border: solid 3px var(--chessStructureColor);
+    transform: rotateZ(180deg);
+    transform-style: preserve-3d;
+    gap: calc(var(--fieldHeight) / 16) calc(var(--fieldHeight) / 16);
+}
+
+.blackGraveyard{
+    padding: calc(var(--fieldHeight) / 16) 0;
+    position: absolute;
+    right: 110%;
+    bottom: 0%;
+    background-color: #ddd;
+    width: calc(var(--fieldWidth) * 2 );
+    /* height: calc(var(--fieldHeight) * 4 ) ; */
+    display: flex;
+    flex-flow: wrap-reverse;
+    flex-direction: row-reverse;
+    justify-content: space-evenly;
+    border: solid 3px var(--chessStructureColor);
+    transform-style: preserve-3d;
+    gap: calc(var(--fieldHeight) / 16) calc(var(--fieldHeight) / 16);
 }
 
 .mark{
@@ -258,14 +315,29 @@ body {
 }
 
 .figure{
-    position: absolute;
-    top: 50%;
-    left: 50%;
+    position: relative;
     height: calc(var(--fieldHeight) / 1.5);
     width: calc(var(--fieldWidth) / 1.5);
-    transform-style: preserve-3d;
-    transform: translate(-50%, -50%);
+    transform-style: preserve-3d;;
+
+    animation: placeFigures var(--figureFallSpeed) ease-out;
 }
+
+@keyframes placeFigures {
+from { transform: translateZ(2250px) rotateX(0deg) rotateY(0deg) rotateZ(0deg) }
+to { transform: translateZ(0px) rotateX(var(--figureRotateAmount)) rotateY(0deg) rotateZ(var(--figureRotateAmount)) }
+}
+
+.figure-white-dead {
+    animation: figureWhiteDead var(--figureDieSpeed) linear;
+}
+
+@keyframes figureWhiteDead {
+    0% { transform: translateZ(0px) }
+    33% { transform: translateZ(250px) translateX(1625px) }
+    66% { transform: translateZ(0px) translateX(3250px) }
+    100% { transform: translateZ(0px) translateX(3250px) }
+    }
 
 .chessCard{
     position: absolute;
@@ -334,6 +406,9 @@ body {
     line-height: calc(var(--fieldHeight) / 1.5);
 }
 
+.scene-playerTwo > .chessboard > .row > .field > .figure > .chessCard > .bg-rook {
+    transform: rotateZ(180deg) translateZ(calc(calc(var(--fieldWidth) / 16) + 2px )) !important;
+}
 .bg-rook{
     background-image: url('../assets/svg/chess-rook-solid.svg');
     background-size: contain;
@@ -341,7 +416,9 @@ body {
     background-size: 45%;
     background-repeat: no-repeat;
 }
-
+.scene-playerTwo > .chessboard > .row > .field > .figure > .chessCard > .bg-knight {
+    transform: rotateZ(180deg) translateZ(calc(calc(var(--fieldWidth) / 16) + 2px )) !important;
+}
 .bg-knight{
     background-image: url('../assets/svg/chess-knight-solid.svg');
     background-size: contain;
@@ -349,7 +426,9 @@ body {
     background-size: 50%;
     background-repeat: no-repeat;
 }
-
+.scene-playerTwo > .chessboard > .row > .field > .figure > .chessCard > .bg-bishop {
+    transform: rotateZ(180deg) translateZ(calc(calc(var(--fieldWidth) / 16) + 2px )) !important;
+}
 .bg-bishop{
     background-image: url('../assets/svg/chess-bishop-solid.svg');
     background-size: contain;
@@ -357,7 +436,9 @@ body {
     background-size: 40%;
     background-repeat: no-repeat;
 }
-
+.scene-playerTwo > .chessboard > .row > .field > .figure > .chessCard > .bg-king {
+    transform: rotateZ(180deg) translateZ(calc(calc(var(--fieldWidth) / 16) + 2px )) !important;
+}
 .bg-king{
     background-image: url('../assets/svg/chess-king-solid.svg');
     background-size: contain;
@@ -365,7 +446,9 @@ body {
     background-size: 60%;
     background-repeat: no-repeat;
 }
-
+.scene-playerTwo > .chessboard > .row > .field > .figure > .chessCard > .bg-queen {
+    transform: rotateZ(180deg) translateZ(calc(calc(var(--fieldWidth) / 16) + 2px )) !important;
+}
 .bg-queen{
     background-image: url('../assets/svg/chess-queen-solid.svg');
     background-size: contain;
@@ -373,7 +456,9 @@ body {
     background-size: 60%;
     background-repeat: no-repeat;
 }
-
+.scene-playerTwo > .chessboard > .row > .field > .figure > .chessCard > .bg-pawn {
+    transform: rotateZ(180deg) translateZ(calc(calc(var(--fieldWidth) / 16) + 2px )) !important;
+}
 .bg-pawn{
     background-image: url('../assets/svg/chess-pawn-solid.svg');
     background-size: contain;
@@ -381,7 +466,9 @@ body {
     background-size: 40%;
     background-repeat: no-repeat;
 }
-
+.scene-playerTwo > .chessboard > .row > .field > .figure > .chessCard > .bg-rook-white {
+    transform: rotateZ(180deg) translateZ(calc(calc(var(--fieldWidth) / 16) + 2px )) !important;
+}
 .bg-rook-white{
     background-image: url('../assets/svg/chess-white/chess-rook-solid.svg');
     background-size: contain;
@@ -389,7 +476,9 @@ body {
     background-size: 50%;
     background-repeat: no-repeat;
 }
-
+.scene-playerTwo > .chessboard > .row > .field > .figure > .chessCard > .bg-knight-white {
+    transform: rotateZ(180deg) translateZ(calc(calc(var(--fieldWidth) / 16) + 2px )) !important;
+}
 .bg-knight-white{
     background-image: url('../assets/svg/chess-white/chess-knight-solid.svg');
     background-size: contain;
@@ -397,7 +486,9 @@ body {
     background-size: 50%;
     background-repeat: no-repeat;
 }
-
+.scene-playerTwo > .chessboard > .row > .field > .figure > .chessCard > .bg-bishop-white {
+    transform: rotateZ(180deg) translateZ(calc(calc(var(--fieldWidth) / 16) + 2px )) !important;
+}
 .bg-bishop-white{
     background-image: url('../assets/svg/chess-white/chess-bishop-solid.svg');
     background-size: contain;
@@ -405,7 +496,9 @@ body {
     background-size: 40%;
     background-repeat: no-repeat;
 }
-
+.scene-playerTwo > .chessboard > .row > .field > .figure > .chessCard > .bg-king-white {
+    transform: rotateZ(180deg) translateZ(calc(calc(var(--fieldWidth) / 16) + 2px )) !important;
+}
 .bg-king-white{
     background-image: url('../assets/svg/chess-white/chess-king-solid.svg');
     background-size: contain;
@@ -413,7 +506,9 @@ body {
     background-size: 60%;
     background-repeat: no-repeat;
 }
-
+.scene-playerTwo > .chessboard > .row > .field > .figure > .chessCard > .bg-queen-white {
+    transform: rotateZ(180deg) translateZ(calc(calc(var(--fieldWidth) / 16) + 2px )) !important;
+}
 .bg-queen-white{
     background-image: url('../assets/svg/chess-white/chess-queen-solid.svg');
     background-size: contain;
@@ -421,7 +516,9 @@ body {
     background-size: 60%;
     background-repeat: no-repeat;
 }
-
+.scene-playerTwo > .chessboard > .row > .field > .figure > .chessCard > .bg-pawn-white {
+    transform: rotateZ(180deg) translateZ(calc(calc(var(--fieldWidth) / 16) + 2px )) !important;
+}
 .bg-pawn-white{
     background-image: url('../assets/svg/chess-white/chess-pawn-solid.svg');
     background-size: contain;
