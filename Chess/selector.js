@@ -277,27 +277,44 @@ function switchToPlayer1(){
         highlightedFields = [];
     }
     function highlightFieldsInLine(_fields, isRow){
-        let _isOdd;
         if(_fields.length == 0){
             return;
         }
+        if(isRow){
+            let _isOdd;
             if(fields[_fields[0]].classList.contains('field-white')){
                 _isOdd = false;
             } else if(fields[_fields[0]].classList.contains('field-black')){
                 _isOdd = true;
             }
-        for (let index = 0; index < _fields.length; index++) {
-            if(_isOdd){
-                fields[_fields[index]].classList.add('focusedFieldBlack');
-            } else {
-                fields[_fields[index]].classList.add('focusedFieldWhite');
+            for (let index = 0; index < _fields.length; index++) {
+                if(_isOdd){
+                    fields[_fields[index]].classList.add('focusedFieldBlack');
+                } else {
+                    fields[_fields[index]].classList.add('focusedFieldWhite');
+                }
+                highlightedFields.push(_fields[index]);
+                _isOdd = !_isOdd;
             }
-            highlightedFields.push(_fields[index]);
-            _isOdd = !_isOdd;
+        } else {
+            let _isBlack;
+            if(fields[_fields[0]].classList.contains('field-white')){
+                _isBlack = false;
+            } else if(fields[_fields[0]].classList.contains('field-black')){
+                _isBlack = true;
+            }
+            for (let index = 0; index < _fields.length; index++) {
+                if(_isBlack){
+                    fields[_fields[index]].classList.add('focusedFieldBlack');
+                } else {
+                    fields[_fields[index]].classList.add('focusedFieldWhite');
+                }
+                highlightedFields.push(_fields[index]);
+            }
         }
     }
     function getFieldsVertically(field, _fieldNumber, isWhite, isAhead){
-        let fieldsAhead = [];
+        let _fieldsAvail = [];
         let row = parseInt(field.parentNode.id.slice(3, 4));
         if (!isAhead) isWhite = !isWhite;
             if(isWhite){
@@ -308,12 +325,12 @@ function switchToPlayer1(){
                         if(_fieldNumber - 8 < 0){
                             break;
                         }
-                        fieldsAhead[index] = _fieldNumber - 8;
+                        _fieldsAvail[index] = _fieldNumber - 8;
                     } else {
-                        if(fieldsAhead[index - 1] - 8 < 0){
+                        if(_fieldsAvail[index - 1] - 8 < 0){
                             break;
                         }
-                        fieldsAhead[index] = fieldsAhead[index - 1] - 8;
+                        _fieldsAvail[index] = _fieldsAvail[index - 1] - 8;
                     }
                 }
             } else {
@@ -323,25 +340,23 @@ function switchToPlayer1(){
                         if(_fieldNumber + 8 > 63){
                             break;
                         }
-                        fieldsAhead[index] = _fieldNumber + 8;
+                        _fieldsAvail[index] = _fieldNumber + 8;
                     } else {
-                        if(fieldsAhead[index - 1] + 8 > 63){
+                        if(_fieldsAvail[index - 1] + 8 > 63){
                             break;
                         }
-                        fieldsAhead[index] = fieldsAhead[index - 1] + 8;
+                        _fieldsAvail[index] = _fieldsAvail[index - 1] + 8;
                     }
                 }
             }
          /* for (let index = 0; index < fieldsAhead.length; index++) {
             console.log("Can move on: " + fieldsAhead[index]);
          } */
-         return(fieldsAhead);
+         return(_fieldsAvail);
     }
     function getFieldsHorizontally(field, _fieldNumber, isWhite, isRight){
-        let fieldsLeft = [];
-        console.log(fields[_fieldNumber].parentNode.id);
-        let _row = fields[_fieldNumber].parentNode.id;
-        _row = parseInt(_row.slice(3, 4));
+        let _fieldsAvail = [];
+        let _row = parseInt(fields[_fieldNumber].parentNode.id.slice(3, 4));
         if (isRight) isWhite = !isWhite;
         if(isWhite){
         for (let index = 0; index < 7; index++) {
@@ -350,7 +365,7 @@ function switchToPlayer1(){
             }
             if(fields[_fieldNumber - 1 - index].parentNode.id.slice(3, 4) == _row)
             {
-                fieldsLeft[index] = _fieldNumber - 1 - index;
+                _fieldsAvail[index] = _fieldNumber - 1 - index;
             } else {
                 break;
             }
@@ -362,13 +377,84 @@ function switchToPlayer1(){
             }
             if(fields[_fieldNumber + 1 + index].parentNode.id.slice(3, 4) == _row)
             {
-                fieldsLeft[index] = _fieldNumber + 1 + index;
+                _fieldsAvail[index] = _fieldNumber + 1 + index;
             } else {
                 break;
             }
         }
     }
-         return(fieldsLeft);
+         return(_fieldsAvail);
+    }
+    function getFieldsDiagonally(field, _fieldNumber, isWhite, isRight, isTop){
+        let _fieldsAvail = [];
+        
+        if (!isWhite){
+            isRight = !isRight;
+            isTop = !isTop;
+        }
+
+        /* if(isWhite){ */
+            if(isRight){
+                if(isTop){
+                    for (let index = 0; index < 7; index++) {
+                        if(_fieldNumber - 7 - (7 * index) < 0) {
+                            break;
+                        }
+                            _fieldsAvail[index] = _fieldNumber - 7 - (7 * index);
+                            if(fields[_fieldNumber - 7 - (7 * index)].nextElementSibling == null || fields[_fieldNumber - 7 - (7 * index)].previousElementSibling == null) {
+                                break;
+                            }
+                    }
+                } else {
+                    for (let index = 0; index < 7; index++) {
+                        if(_fieldNumber + 9 + (9 * index) > 63) {
+                            break;
+                        }
+                            _fieldsAvail[index] = _fieldNumber + 9 + (9 * index);
+                            if(fields[_fieldNumber + 9 + (9 * index)].nextElementSibling == null || fields[_fieldNumber + 9 + (9 * index)].previousElementSibling == null) {
+                                break;
+                            }
+                    }
+                }
+            } else {
+                if(isTop){
+                    for (let index = 0; index < 7; index++) {
+                        if(_fieldNumber - 9 - (9 * index) < 0) {
+                            break;
+                        }
+                            _fieldsAvail[index] = _fieldNumber - 9 - (9 * index);
+                            if(fields[_fieldNumber - 9 - (9 * index)].nextElementSibling == null || fields[_fieldNumber - 9 - (9 * index)].previousElementSibling == null) {
+                                break;
+                            }
+                    }
+                } else {
+                    for (let index = 0; index < 7; index++) {
+                        if(_fieldNumber + 7 + (7 * index) > 63) {
+                            break;
+                        }
+                            _fieldsAvail[index] = _fieldNumber + 7 + (7 * index);
+                            if(fields[_fieldNumber + 7 + (7 * index)].nextElementSibling == null || fields[_fieldNumber + 7 + (7 * index)].previousElementSibling == null) {
+                            break;
+                        }
+                    }
+                }
+            }
+        /* } else {
+            if(isRight){
+                if(isTop){
+
+                } else {
+
+                }
+            } else {
+                if(isTop){
+
+                } else {
+                    
+                }
+            }
+        } */
+         return(_fieldsAvail);
     }
     function handleFieldClick(e) {
         let figureType;
@@ -418,7 +504,11 @@ function switchToPlayer1(){
         let _fieldsAhead;
         let _fieldsBehind;
         let _fieldsLeft;
+        let _fieldsLeftTop;
+        let _fieldsLeftBot;
         let _fieldsRight;
+        let _fieldsRightTop;
+        let _fieldsRightBot;
 
         switch (figureType) {
 
@@ -446,8 +536,15 @@ function switchToPlayer1(){
                 break;
                 case 'rook':
 
-                _fieldsAhead = getFieldsVertically(fields[_fieldNumber], _fieldNumber, 1, 1);
-                highlightFieldsInLine(_fieldsAhead, 1);
+                    _fieldsAhead = getFieldsVertically(fields[_fieldNumber], _fieldNumber, 1, 1);
+                    _fieldsBehind = getFieldsVertically(fields[_fieldNumber], _fieldNumber, 1, 0);
+                    _fieldsLeft = getFieldsHorizontally(fields[_fieldNumber], _fieldNumber, 1, 0);
+                    _fieldsRight = getFieldsHorizontally(fields[_fieldNumber], _fieldNumber, 1, 1);
+                    
+                    highlightFieldsInLine(_fieldsAhead, 1);
+                    highlightFieldsInLine(_fieldsBehind, 1);
+                    highlightFieldsInLine(_fieldsLeft, 1);
+                    highlightFieldsInLine(_fieldsRight, 1);
                 
                 break;
                 case 'rook-white':
@@ -459,63 +556,139 @@ function switchToPlayer1(){
                 case 'queen':
 
                 _fieldsAhead = getFieldsVertically(fields[_fieldNumber], _fieldNumber, 1, 1);
-                fieldsBehind = getFieldsVertically(fields[_fieldNumber], _fieldNumber, 1, 0);
-                fieldsLeft = getFieldsHorizontally(fields[_fieldNumber], _fieldNumber, 1, 0);
-                fieldsRight = getFieldsHorizontally(fields[_fieldNumber], _fieldNumber, 1, 1);
+                _fieldsBehind = getFieldsVertically(fields[_fieldNumber], _fieldNumber, 1, 0);
+                _fieldsLeft = getFieldsHorizontally(fields[_fieldNumber], _fieldNumber, 1, 0);
+                _fieldsRight = getFieldsHorizontally(fields[_fieldNumber], _fieldNumber, 1, 1);
+
+                _fieldsLeftBot = getFieldsDiagonally(fields[_fieldNumber], _fieldNumber, 1, 0, 0);
+                    _fieldsLeftTop = getFieldsDiagonally(fields[_fieldNumber], _fieldNumber, 1, 0, 1)
+                    _fieldsRightBot = getFieldsDiagonally(fields[_fieldNumber], _fieldNumber, 1, 1, 0);
+                    _fieldsRightTop = getFieldsDiagonally(fields[_fieldNumber], _fieldNumber, 1, 1, 1);
+
+                    highlightFieldsInLine(_fieldsLeftBot, 0);
+                    highlightFieldsInLine(_fieldsLeftTop, 0);
+                    highlightFieldsInLine(_fieldsRightBot, 0);
+                    highlightFieldsInLine(_fieldsRightTop, 0);
 
                 highlightFieldsInLine(_fieldsAhead, 1);
-                highlightFieldsInLine(fieldsBehind, 1);
-                highlightFieldsInLine(fieldsLeft, 1);
-                highlightFieldsInLine(fieldsRight, 1);
+                highlightFieldsInLine(_fieldsBehind, 1);
+                highlightFieldsInLine(_fieldsLeft, 1);
+                highlightFieldsInLine(_fieldsRight, 1);
                 
                 break;
                 case 'queen-white':
 
                     _fieldsAhead = getFieldsVertically(fields[_fieldNumber], _fieldNumber, 0, 1);
-                    fieldsBehind = getFieldsVertically(fields[_fieldNumber], _fieldNumber, 0, 0);
-                    fieldsLeft = getFieldsHorizontally(fields[_fieldNumber], _fieldNumber, 0, 0);
-                    fieldsRight = getFieldsHorizontally(fields[_fieldNumber], _fieldNumber, 0, 1);
+                    _fieldsBehind = getFieldsVertically(fields[_fieldNumber], _fieldNumber, 0, 0);
+                    _fieldsLeft = getFieldsHorizontally(fields[_fieldNumber], _fieldNumber, 0, 0);
+                    _fieldsRight = getFieldsHorizontally(fields[_fieldNumber], _fieldNumber, 0, 1);
+
+                    _fieldsLeftBot = getFieldsDiagonally(fields[_fieldNumber], _fieldNumber, 0, 0, 0);
+                    _fieldsLeftTop = getFieldsDiagonally(fields[_fieldNumber], _fieldNumber, 0, 0, 1)
+                    _fieldsRightBot = getFieldsDiagonally(fields[_fieldNumber], _fieldNumber, 0, 1, 0);
+                    _fieldsRightTop = getFieldsDiagonally(fields[_fieldNumber], _fieldNumber, 0, 1, 1);
+
+                    highlightFieldsInLine(_fieldsLeftBot, 0);
+                    highlightFieldsInLine(_fieldsLeftTop, 0);
+                    highlightFieldsInLine(_fieldsRightBot, 0);
+                    highlightFieldsInLine(_fieldsRightTop, 0);
     
                     highlightFieldsInLine(_fieldsAhead, 1);
-                    highlightFieldsInLine(fieldsBehind, 1);
-                    highlightFieldsInLine(fieldsLeft, 1);
-                    highlightFieldsInLine(fieldsRight, 1);
+                    highlightFieldsInLine(_fieldsBehind, 1);
+                    highlightFieldsInLine(_fieldsLeft, 1);
+                    highlightFieldsInLine(_fieldsRight, 1);
 
                 break;
                 case 'king':
 
                     _fieldsAhead = getFieldsVertically(fields[_fieldNumber], _fieldNumber, 1, 1);
-                    fieldsBehind = getFieldsVertically(fields[_fieldNumber], _fieldNumber, 1, 0);
-                    fieldsLeft = getFieldsHorizontally(fields[_fieldNumber], _fieldNumber, 1, 0);
-                    fieldsRight = getFieldsHorizontally(fields[_fieldNumber], _fieldNumber, 1, 1);
+                    _fieldsBehind = getFieldsVertically(fields[_fieldNumber], _fieldNumber, 1, 0);
+                    _fieldsLeft = getFieldsHorizontally(fields[_fieldNumber], _fieldNumber, 1, 0);
+                    _fieldsRight = getFieldsHorizontally(fields[_fieldNumber], _fieldNumber, 1, 1);
+
+                    _fieldsLeftBot = getFieldsDiagonally(fields[_fieldNumber], _fieldNumber, 1, 0, 0);
+                    _fieldsLeftTop = getFieldsDiagonally(fields[_fieldNumber], _fieldNumber, 1, 0, 1)
+                    _fieldsRightBot = getFieldsDiagonally(fields[_fieldNumber], _fieldNumber, 1, 1, 0);
+                    _fieldsRightTop = getFieldsDiagonally(fields[_fieldNumber], _fieldNumber, 1, 1, 1);
 
                     _fieldsAhead = _fieldsAhead.slice(0, 1);
-                    fieldsBehind = fieldsBehind.slice(0, 1);
-                    fieldsLeft = fieldsLeft.slice(0, 1);
-                    fieldsRight = fieldsRight.slice(0, 1);
+                    _fieldsBehind = _fieldsBehind.slice(0, 1);
+                    _fieldsLeft = _fieldsLeft.slice(0, 1);
+                    _fieldsRight = _fieldsRight.slice(0, 1);
+
+                    _fieldsLeftBot = _fieldsLeftBot.slice(0, 1);
+                    _fieldsLeftTop = _fieldsLeftTop.slice(0, 1);
+                    _fieldsRightBot = _fieldsRightBot.slice(0, 1);
+                    _fieldsRightTop = _fieldsRightTop.slice(0, 1);
 
                     highlightFieldsInLine(_fieldsAhead, 1);
-                    highlightFieldsInLine(fieldsBehind, 1);
-                    highlightFieldsInLine(fieldsLeft, 1);
-                    highlightFieldsInLine(fieldsRight, 1);
+                    highlightFieldsInLine(_fieldsBehind, 1);
+                    highlightFieldsInLine(_fieldsLeft, 1);
+                    highlightFieldsInLine(_fieldsRight, 1);
+
+                    highlightFieldsInLine(_fieldsLeftBot, 0);
+                    highlightFieldsInLine(_fieldsLeftTop, 0);
+                    highlightFieldsInLine(_fieldsRightBot, 0);
+                    highlightFieldsInLine(_fieldsRightTop, 0);
                 
                 break;
                 case 'king-white':
 
                     _fieldsAhead = getFieldsVertically(fields[_fieldNumber], _fieldNumber, 0, 1);
-                    fieldsBehind = getFieldsVertically(fields[_fieldNumber], _fieldNumber, 0, 0);
-                    fieldsLeft = getFieldsHorizontally(fields[_fieldNumber], _fieldNumber, 0, 0);
-                    fieldsRight = getFieldsHorizontally(fields[_fieldNumber], _fieldNumber, 0, 1);
+                    _fieldsBehind = getFieldsVertically(fields[_fieldNumber], _fieldNumber, 0, 0);
+                    _fieldsLeft = getFieldsHorizontally(fields[_fieldNumber], _fieldNumber, 0, 0);
+                    _fieldsRight = getFieldsHorizontally(fields[_fieldNumber], _fieldNumber, 0, 1);
+
+                    _fieldsLeftBot = getFieldsDiagonally(fields[_fieldNumber], _fieldNumber, 0, 0, 0);
+                    _fieldsLeftTop = getFieldsDiagonally(fields[_fieldNumber], _fieldNumber, 0, 0, 1)
+                    _fieldsRightBot = getFieldsDiagonally(fields[_fieldNumber], _fieldNumber, 0, 1, 0);
+                    _fieldsRightTop = getFieldsDiagonally(fields[_fieldNumber], _fieldNumber, 0, 1, 1);
 
                     _fieldsAhead = _fieldsAhead.slice(0, 1);
-                    fieldsBehind = fieldsBehind.slice(0, 1);
-                    fieldsLeft = fieldsLeft.slice(0, 1);
-                    fieldsRight = fieldsRight.slice(0, 1);
+                    _fieldsBehind = _fieldsBehind.slice(0, 1);
+                    _fieldsLeft = _fieldsLeft.slice(0, 1);
+                    _fieldsRight = _fieldsRight.slice(0, 1);
+
+                    _fieldsLeftBot = _fieldsLeftBot.slice(0, 1);
+                    _fieldsLeftTop = _fieldsLeftTop.slice(0, 1);
+                    _fieldsRightBot = _fieldsRightBot.slice(0, 1);
+                    _fieldsRightTop = _fieldsRightTop.slice(0, 1);
 
                     highlightFieldsInLine(_fieldsAhead, 1);
-                    highlightFieldsInLine(fieldsBehind, 1);
-                    highlightFieldsInLine(fieldsLeft, 1);
-                    highlightFieldsInLine(fieldsRight, 1);
+                    highlightFieldsInLine(_fieldsBehind, 1);
+                    highlightFieldsInLine(_fieldsLeft, 1);
+                    highlightFieldsInLine(_fieldsRight, 1);
+
+                    highlightFieldsInLine(_fieldsLeftBot, 0);
+                    highlightFieldsInLine(_fieldsLeftTop, 0);
+                    highlightFieldsInLine(_fieldsRightBot, 0);
+                    highlightFieldsInLine(_fieldsRightTop, 0);
+
+                break;
+                case 'bishop':
+
+                    /* _fieldsLeftBot = getFieldsDiagonally(fields[_fieldNumber], _fieldNumber, 1, 0, 0); */
+                    _fieldsLeftTop = getFieldsDiagonally(fields[_fieldNumber], _fieldNumber, 1, 0, 1)
+                    /* _fieldsRightBot = getFieldsDiagonally(fields[_fieldNumber], _fieldNumber, 1, 1, 0); */
+                    _fieldsRightTop = getFieldsDiagonally(fields[_fieldNumber], _fieldNumber, 1, 1, 1);
+
+                    /* highlightFieldsInLine(_fieldsLeftBot, 0); */
+                    highlightFieldsInLine(_fieldsLeftTop, 0);
+                    /* highlightFieldsInLine(_fieldsRightBot, 0); */
+                    highlightFieldsInLine(_fieldsRightTop, 0);
+                
+                break;
+                case 'bishop-white':
+
+                    _fieldsLeftBot = getFieldsDiagonally(fields[_fieldNumber], _fieldNumber, 0, 0, 0);
+                    _fieldsLeftTop = getFieldsDiagonally(fields[_fieldNumber], _fieldNumber, 0, 0, 1)
+                    _fieldsRightBot = getFieldsDiagonally(fields[_fieldNumber], _fieldNumber, 0, 1, 0);
+                    _fieldsRightTop = getFieldsDiagonally(fields[_fieldNumber], _fieldNumber, 0, 1, 1);
+
+                    highlightFieldsInLine(_fieldsLeftBot, 0);
+                    highlightFieldsInLine(_fieldsLeftTop, 0);
+                    highlightFieldsInLine(_fieldsRightBot, 0);
+                    highlightFieldsInLine(_fieldsRightTop, 0);
 
                 break;
         
