@@ -116,6 +116,9 @@ let blackQueenText = `<div class="chessCard">
 
 const fields = document.querySelectorAll('.field');
 
+const quickActWhite = document.querySelector('.whiteQuickActions');
+const quickActBlack = document.querySelector('.blackQuickActions');
+
 let scene = document.querySelector('.scene');
 
 let currentPlayer = 1;
@@ -145,6 +148,24 @@ function setup(){
 
         field.addEventListener('click', handleFieldClick);
     });
+
+    quickActWhite.children[1].addEventListener('click', () => {
+
+    });
+
+    quickActWhite.children[0].addEventListener('click', () => {
+        toggleUIMenu();
+    });
+
+    quickActBlack.children[1].addEventListener('click', () => {
+
+    });
+
+    quickActBlack.children[0].addEventListener('click', () => {
+        toggleUIMenu();
+    });
+
+    
 
     // DEV BUTTONS
     for (let index = 0; index < fields.length; index++) {
@@ -178,15 +199,34 @@ function setup(){
         }
     }
 }
+function toggleUIMenu(){
+    const uiBoard = document.querySelector('.ui-board');
+
+    if(uiBoard.classList.contains('ui-board-shown')){
+        uiBoard.classList.remove('ui-board-shown');
+        uiBoard.classList.add('ui-board-hidden');
+    } else {
+        uiBoard.classList.remove('ui-board-hidden');
+        uiBoard.classList.add('ui-board-shown');
+    }
+}
 function switchToPlayer2(){
     scene.classList.add('scene-playerTwo');
     scene.classList.remove('scene-playerOne');
     currentPlayer = 2;
+    quickActBlack.classList.add('blackQuickActions-shown');
+    quickActBlack.classList.remove('blackQuickActions-hidden');
+    quickActWhite.classList.remove('whiteQuickActions-shown');
+    quickActWhite.classList.add('whiteQuickActions-hidden');
 }
 function switchToPlayer1(){
     scene.classList.add('scene-playerOne');
     scene.classList.remove('scene-playerTwo');
     currentPlayer = 1;
+    quickActWhite.classList.add('whiteQuickActions-shown');
+    quickActWhite.classList.remove('whiteQuickActions-hidden');
+    quickActBlack.classList.remove('blackQuickActions-shown');
+    quickActBlack.classList.add('blackQuickActions-hidden');
 }
     function resetBoard(){
         console.log("Board Reset!");
@@ -394,9 +434,9 @@ function switchToPlayer1(){
             }
         }
     }
-    function getFieldsVertically(field, _fieldNumber, isWhite, isAhead){
+    function getFieldsVertically(_fieldNumber, isWhite, isAhead){
         let _fieldsAvail = [];
-        let row = parseInt(field.parentNode.id.slice(3, 4));
+        let row = parseInt(fields[_fieldNumber].parentNode.id.slice(3, 4));
         if (!isAhead) isWhite = !isWhite;
             if(isWhite){
                 // isWhite num of field should first decrement by 1
@@ -435,7 +475,7 @@ function switchToPlayer1(){
          } */
          return(_fieldsAvail);
     }
-    function getFieldsHorizontally(field, _fieldNumber, isWhite, isRight){
+    function getFieldsHorizontally(_fieldNumber, isWhite, isRight){
         let _fieldsAvail = [];
         let _row = parseInt(fields[_fieldNumber].parentNode.id.slice(3, 4));
         if (isRight) isWhite = !isWhite;
@@ -466,7 +506,7 @@ function switchToPlayer1(){
     }
          return(_fieldsAvail);
     }
-    function getFieldsDiagonally(field, _fieldNumber, isWhite, isRight, isTop){
+    function getFieldsDiagonally(_fieldNumber, isWhite, isRight, isTop){
         let _fieldsAvail = [];
         
         if (!isWhite){
@@ -597,7 +637,7 @@ function switchToPlayer1(){
 
             case 'pawn':
 
-                _fieldsAhead = getFieldsVertically(fields[_fieldNumber], _fieldNumber, 1, 1);
+                _fieldsAhead = getFieldsVertically(_fieldNumber, 1, 1);
                 if(_fieldNumber >= 48 && _fieldNumber <= 55){
                     _fieldsAhead = _fieldsAhead.slice(0, 2);
                 } else {
@@ -607,8 +647,8 @@ function switchToPlayer1(){
                 
                 highlightFieldsInLine(_fieldsAhead, 1);
 
-                _fieldsLeftTop = enemylightFields(getFieldsDiagonally(fields[_fieldNumber], _fieldNumber, 1, 0, 1), 1).slice(0, 1);
-                    _fieldsRightTop = enemylightFields(getFieldsDiagonally(fields[_fieldNumber], _fieldNumber, 1, 1, 1), 1).slice(0, 1);
+                _fieldsLeftTop = enemylightFields(getFieldsDiagonally(_fieldNumber, 1, 0, 1), 1).slice(0, 1);
+                    _fieldsRightTop = enemylightFields(getFieldsDiagonally(_fieldNumber, 1, 1, 1), 1).slice(0, 1);
 
                     enemylightFields(_fieldsLeftTop, 1, 1);
                     enemylightFields(_fieldsRightTop, 1, 1);
@@ -618,7 +658,7 @@ function switchToPlayer1(){
                 break;
                 case 'pawn-white':
 
-                    _fieldsAhead = getFieldsVertically(fields[_fieldNumber], _fieldNumber, 0, 1);
+                    _fieldsAhead = getFieldsVertically(_fieldNumber, 0, 1);
                     if(_fieldNumber >= 8 && _fieldNumber <= 15){
                             _fieldsAhead = _fieldsAhead.slice(0, 2);
                         } else {
@@ -628,8 +668,8 @@ function switchToPlayer1(){
 
                         highlightFieldsInLine(_fieldsAhead, 1);
 
-                        _fieldsLeftTop = enemylightFields(getFieldsDiagonally(fields[_fieldNumber], _fieldNumber, 0, 0, 1), 0).slice(0, 1);
-                    _fieldsRightTop = enemylightFields(getFieldsDiagonally(fields[_fieldNumber], _fieldNumber, 0, 1, 1), 0).slice(0, 1);
+                        _fieldsLeftTop = enemylightFields(getFieldsDiagonally(_fieldNumber, 0, 0, 1), 0).slice(0, 1);
+                    _fieldsRightTop = enemylightFields(getFieldsDiagonally(_fieldNumber, 0, 1, 1), 0).slice(0, 1);
 
                     enemylightFields(_fieldsLeftTop, 0, 1);
                     enemylightFields(_fieldsRightTop, 0, 1);
@@ -637,10 +677,10 @@ function switchToPlayer1(){
                 break;
                 case 'rook':
 
-                    _fieldsAhead = enemylightFields(getFieldsVertically(fields[_fieldNumber], _fieldNumber, 1, 1), 1);
-                    _fieldsBehind = enemylightFields(getFieldsVertically(fields[_fieldNumber], _fieldNumber, 1, 0), 1);
-                    _fieldsLeft = enemylightFields(getFieldsHorizontally(fields[_fieldNumber], _fieldNumber, 1, 0), 1);
-                    _fieldsRight = enemylightFields(getFieldsHorizontally(fields[_fieldNumber], _fieldNumber, 1, 1), 1);
+                    _fieldsAhead = enemylightFields(getFieldsVertically(_fieldNumber, 1, 1), 1);
+                    _fieldsBehind = enemylightFields(getFieldsVertically(_fieldNumber, 1, 0), 1);
+                    _fieldsLeft = enemylightFields(getFieldsHorizontally(_fieldNumber, 1, 0), 1);
+                    _fieldsRight = enemylightFields(getFieldsHorizontally(_fieldNumber, 1, 1), 1);
                     
                     highlightFieldsInLine(_fieldsAhead, 1);
                     highlightFieldsInLine(_fieldsBehind, 1);
@@ -650,10 +690,10 @@ function switchToPlayer1(){
                 break;
                 case 'rook-white':
 
-                    _fieldsAhead = enemylightFields(getFieldsVertically(fields[_fieldNumber], _fieldNumber, 0, 1), 0);
-                    _fieldsBehind = enemylightFields(getFieldsVertically(fields[_fieldNumber], _fieldNumber, 0, 0), 0);
-                    _fieldsLeft = enemylightFields(getFieldsHorizontally(fields[_fieldNumber], _fieldNumber, 0, 0), 0);
-                    _fieldsRight = enemylightFields(getFieldsHorizontally(fields[_fieldNumber], _fieldNumber, 0, 1), 0);
+                    _fieldsAhead = enemylightFields(getFieldsVertically(_fieldNumber, 0, 1), 0);
+                    _fieldsBehind = enemylightFields(getFieldsVertically(_fieldNumber, 0, 0), 0);
+                    _fieldsLeft = enemylightFields(getFieldsHorizontally(_fieldNumber, 0, 0), 0);
+                    _fieldsRight = enemylightFields(getFieldsHorizontally(_fieldNumber, 0, 1), 0);
                     
                     highlightFieldsInLine(_fieldsAhead, 1);
                     highlightFieldsInLine(_fieldsBehind, 1);
@@ -663,15 +703,15 @@ function switchToPlayer1(){
                 break;
                 case 'queen':
 
-                _fieldsAhead = enemylightFields(getFieldsVertically(fields[_fieldNumber], _fieldNumber, 1, 1), 1);
-                _fieldsBehind = enemylightFields(getFieldsVertically(fields[_fieldNumber], _fieldNumber, 1, 0), 1);
-                _fieldsLeft = enemylightFields(getFieldsHorizontally(fields[_fieldNumber], _fieldNumber, 1, 0), 1);
-                _fieldsRight = enemylightFields(getFieldsHorizontally(fields[_fieldNumber], _fieldNumber, 1, 1), 1);
+                _fieldsAhead = enemylightFields(getFieldsVertically(_fieldNumber, 1, 1), 1);
+                _fieldsBehind = enemylightFields(getFieldsVertically(_fieldNumber, 1, 0), 1);
+                _fieldsLeft = enemylightFields(getFieldsHorizontally(_fieldNumber, 1, 0), 1);
+                _fieldsRight = enemylightFields(getFieldsHorizontally(_fieldNumber, 1, 1), 1);
 
-                _fieldsLeftBot = enemylightFields(getFieldsDiagonally(fields[_fieldNumber], _fieldNumber, 1, 0, 0), 1);
-                    _fieldsLeftTop = enemylightFields(getFieldsDiagonally(fields[_fieldNumber], _fieldNumber, 1, 0, 1), 1);
-                    _fieldsRightBot = enemylightFields(getFieldsDiagonally(fields[_fieldNumber], _fieldNumber, 1, 1, 0), 1);
-                    _fieldsRightTop = enemylightFields(getFieldsDiagonally(fields[_fieldNumber], _fieldNumber, 1, 1, 1), 1);
+                _fieldsLeftBot = enemylightFields(getFieldsDiagonally(_fieldNumber, 1, 0, 0), 1);
+                    _fieldsLeftTop = enemylightFields(getFieldsDiagonally(_fieldNumber, 1, 0, 1), 1);
+                    _fieldsRightBot = enemylightFields(getFieldsDiagonally(_fieldNumber, 1, 1, 0), 1);
+                    _fieldsRightTop = enemylightFields(getFieldsDiagonally(_fieldNumber, 1, 1, 1), 1);
 
                     highlightFieldsInLine(_fieldsLeftBot, 0);
                     highlightFieldsInLine(_fieldsLeftTop, 0);
@@ -686,15 +726,15 @@ function switchToPlayer1(){
                 break;
                 case 'queen-white':
 
-                    _fieldsAhead = enemylightFields(getFieldsVertically(fields[_fieldNumber], _fieldNumber, 0, 1), 0);
-                    _fieldsBehind = enemylightFields(getFieldsVertically(fields[_fieldNumber], _fieldNumber, 0, 0), 0);
-                    _fieldsLeft = enemylightFields(getFieldsHorizontally(fields[_fieldNumber], _fieldNumber, 0, 0), 0);
-                    _fieldsRight = enemylightFields(getFieldsHorizontally(fields[_fieldNumber], _fieldNumber, 0, 1), 0);
+                    _fieldsAhead = enemylightFields(getFieldsVertically(_fieldNumber, 0, 1), 0);
+                    _fieldsBehind = enemylightFields(getFieldsVertically(_fieldNumber, 0, 0), 0);
+                    _fieldsLeft = enemylightFields(getFieldsHorizontally(_fieldNumber, 0, 0), 0);
+                    _fieldsRight = enemylightFields(getFieldsHorizontally(_fieldNumber, 0, 1), 0);
 
-                    _fieldsLeftBot = enemylightFields(getFieldsDiagonally(fields[_fieldNumber], _fieldNumber, 0, 0, 0), 0);
-                    _fieldsLeftTop = enemylightFields(getFieldsDiagonally(fields[_fieldNumber], _fieldNumber, 0, 0, 1), 0);
-                    _fieldsRightBot = enemylightFields(getFieldsDiagonally(fields[_fieldNumber], _fieldNumber, 0, 1, 0), 0);
-                    _fieldsRightTop = enemylightFields(getFieldsDiagonally(fields[_fieldNumber], _fieldNumber, 0, 1, 1), 0);
+                    _fieldsLeftBot = enemylightFields(getFieldsDiagonally(_fieldNumber, 0, 0, 0), 0);
+                    _fieldsLeftTop = enemylightFields(getFieldsDiagonally(_fieldNumber, 0, 0, 1), 0);
+                    _fieldsRightBot = enemylightFields(getFieldsDiagonally(_fieldNumber, 0, 1, 0), 0);
+                    _fieldsRightTop = enemylightFields(getFieldsDiagonally(_fieldNumber, 0, 1, 1), 0);
 
                     highlightFieldsInLine(_fieldsLeftBot, 0);
                     highlightFieldsInLine(_fieldsLeftTop, 0);
@@ -709,15 +749,15 @@ function switchToPlayer1(){
                 break;
                 case 'king':
 
-                    _fieldsAhead = enemylightFields(getFieldsVertically(fields[_fieldNumber], _fieldNumber, 1, 1).slice(0, 1), 1);
-                    _fieldsBehind = enemylightFields(getFieldsVertically(fields[_fieldNumber], _fieldNumber, 1, 0).slice(0, 1), 1);
-                    _fieldsLeft = enemylightFields(getFieldsHorizontally(fields[_fieldNumber], _fieldNumber, 1, 0).slice(0, 1), 1);
-                    _fieldsRight = enemylightFields(getFieldsHorizontally(fields[_fieldNumber], _fieldNumber, 1, 1).slice(0, 1), 1);
+                    _fieldsAhead = enemylightFields(getFieldsVertically(_fieldNumber, 1, 1).slice(0, 1), 1);
+                    _fieldsBehind = enemylightFields(getFieldsVertically(_fieldNumber, 1, 0).slice(0, 1), 1);
+                    _fieldsLeft = enemylightFields(getFieldsHorizontally(_fieldNumber, 1, 0).slice(0, 1), 1);
+                    _fieldsRight = enemylightFields(getFieldsHorizontally(_fieldNumber, 1, 1).slice(0, 1), 1);
 
-                    _fieldsLeftBot = enemylightFields(getFieldsDiagonally(fields[_fieldNumber], _fieldNumber, 1, 0, 0).slice(0, 1), 1);
-                    _fieldsLeftTop = enemylightFields(getFieldsDiagonally(fields[_fieldNumber], _fieldNumber, 1, 0, 1).slice(0, 1), 1);
-                    _fieldsRightBot = enemylightFields(getFieldsDiagonally(fields[_fieldNumber], _fieldNumber, 1, 1, 0).slice(0, 1), 1);
-                    _fieldsRightTop = enemylightFields(getFieldsDiagonally(fields[_fieldNumber], _fieldNumber, 1, 1, 1).slice(0, 1), 1);
+                    _fieldsLeftBot = enemylightFields(getFieldsDiagonally(_fieldNumber, 1, 0, 0).slice(0, 1), 1);
+                    _fieldsLeftTop = enemylightFields(getFieldsDiagonally(_fieldNumber, 1, 0, 1).slice(0, 1), 1);
+                    _fieldsRightBot = enemylightFields(getFieldsDiagonally(_fieldNumber, 1, 1, 0).slice(0, 1), 1);
+                    _fieldsRightTop = enemylightFields(getFieldsDiagonally(_fieldNumber, 1, 1, 1).slice(0, 1), 1);
 
                     highlightFieldsInLine(_fieldsAhead, 1);
                     highlightFieldsInLine(_fieldsBehind, 1);
@@ -732,15 +772,15 @@ function switchToPlayer1(){
                 break;
                 case 'king-white':
 
-                    _fieldsAhead = enemylightFields(getFieldsVertically(fields[_fieldNumber], _fieldNumber, 0, 1).slice(0, 1), 0);
-                    _fieldsBehind = enemylightFields(getFieldsVertically(fields[_fieldNumber], _fieldNumber, 0, 0).slice(0, 1), 0);
-                    _fieldsLeft = enemylightFields(getFieldsHorizontally(fields[_fieldNumber], _fieldNumber, 0, 0).slice(0, 1), 0);
-                    _fieldsRight = enemylightFields(getFieldsHorizontally(fields[_fieldNumber], _fieldNumber, 0, 1).slice(0, 1), 0);
+                    _fieldsAhead = enemylightFields(getFieldsVertically(_fieldNumber, 0, 1).slice(0, 1), 0);
+                    _fieldsBehind = enemylightFields(getFieldsVertically(_fieldNumber, 0, 0).slice(0, 1), 0);
+                    _fieldsLeft = enemylightFields(getFieldsHorizontally(_fieldNumber, 0, 0).slice(0, 1), 0);
+                    _fieldsRight = enemylightFields(getFieldsHorizontally(_fieldNumber, 0, 1).slice(0, 1), 0);
 
-                    _fieldsLeftBot = enemylightFields(getFieldsDiagonally(fields[_fieldNumber], _fieldNumber, 0, 0, 0).slice(0, 1), 0);
-                    _fieldsLeftTop = enemylightFields(getFieldsDiagonally(fields[_fieldNumber], _fieldNumber, 0, 0, 1).slice(0, 1), 0);
-                    _fieldsRightBot = enemylightFields(getFieldsDiagonally(fields[_fieldNumber], _fieldNumber, 0, 1, 0).slice(0, 1), 0);
-                    _fieldsRightTop = enemylightFields(getFieldsDiagonally(fields[_fieldNumber], _fieldNumber, 0, 1, 1).slice(0, 1), 0);
+                    _fieldsLeftBot = enemylightFields(getFieldsDiagonally(_fieldNumber, 0, 0, 0).slice(0, 1), 0);
+                    _fieldsLeftTop = enemylightFields(getFieldsDiagonally(_fieldNumber, 0, 0, 1).slice(0, 1), 0);
+                    _fieldsRightBot = enemylightFields(getFieldsDiagonally(_fieldNumber, 0, 1, 0).slice(0, 1), 0);
+                    _fieldsRightTop = enemylightFields(getFieldsDiagonally(_fieldNumber, 0, 1, 1).slice(0, 1), 0);
 
                     highlightFieldsInLine(_fieldsAhead, 1);
                     highlightFieldsInLine(_fieldsBehind, 1);
@@ -755,10 +795,10 @@ function switchToPlayer1(){
                 break;
                 case 'bishop':
 
-                    _fieldsLeftBot = enemylightFields(getFieldsDiagonally(fields[_fieldNumber], _fieldNumber, 1, 0, 0), 1);
-                    _fieldsLeftTop = enemylightFields(getFieldsDiagonally(fields[_fieldNumber], _fieldNumber, 1, 0, 1), 1);
-                    _fieldsRightBot = enemylightFields(getFieldsDiagonally(fields[_fieldNumber], _fieldNumber, 1, 1, 0), 1);
-                    _fieldsRightTop = enemylightFields(getFieldsDiagonally(fields[_fieldNumber], _fieldNumber, 1, 1, 1), 1);
+                    _fieldsLeftBot = enemylightFields(getFieldsDiagonally(_fieldNumber, 1, 0, 0), 1);
+                    _fieldsLeftTop = enemylightFields(getFieldsDiagonally(_fieldNumber, 1, 0, 1), 1);
+                    _fieldsRightBot = enemylightFields(getFieldsDiagonally(_fieldNumber, 1, 1, 0), 1);
+                    _fieldsRightTop = enemylightFields(getFieldsDiagonally(_fieldNumber, 1, 1, 1), 1);
 
                     /* highlightFieldsInLine(_fieldsLeftBot, 0); */
                     highlightFieldsInLine(_fieldsLeftTop, 0);
@@ -768,10 +808,10 @@ function switchToPlayer1(){
                 break;
                 case 'bishop-white':
 
-                    _fieldsLeftBot = enemylightFields(getFieldsDiagonally(fields[_fieldNumber], _fieldNumber, 0, 0, 0), 0);
-                    _fieldsLeftTop = enemylightFields(getFieldsDiagonally(fields[_fieldNumber], _fieldNumber, 0, 0, 1), 0);
-                    _fieldsRightBot = enemylightFields(getFieldsDiagonally(fields[_fieldNumber], _fieldNumber, 0, 1, 0), 0);
-                    _fieldsRightTop = enemylightFields(getFieldsDiagonally(fields[_fieldNumber], _fieldNumber, 0, 1, 1), 0);
+                    _fieldsLeftBot = enemylightFields(getFieldsDiagonally(_fieldNumber, 0, 0, 0), 0);
+                    _fieldsLeftTop = enemylightFields(getFieldsDiagonally(_fieldNumber, 0, 0, 1), 0);
+                    _fieldsRightBot = enemylightFields(getFieldsDiagonally(_fieldNumber, 0, 1, 0), 0);
+                    _fieldsRightTop = enemylightFields(getFieldsDiagonally(_fieldNumber, 0, 1, 1), 0);
 
                     highlightFieldsInLine(_fieldsLeftBot, 0);
                     highlightFieldsInLine(_fieldsLeftTop, 0);
@@ -779,7 +819,42 @@ function switchToPlayer1(){
                     highlightFieldsInLine(_fieldsRightTop, 0);
 
                 break;
-        
+                case 'knight':
+
+                    // SLICE AT 2 and check sides again
+                    _fieldsAhead = getFieldsVertically(_fieldNumber, 1, 1).slice(0, 2);
+                    _fieldsBehind = getFieldsVertically(_fieldNumber, 1, 0).slice(0, 2);
+                    _fieldsLeft = getFieldsHorizontally(_fieldNumber, 1, 0).slice(0, 2);
+                    _fieldsRight = getFieldsHorizontally(_fieldNumber, 1, 1).slice(0, 2);
+
+
+
+                    if(_fieldsAhead[1] != null){
+                        let top1 = enemylightFields(getFieldsHorizontally(_fieldsAhead[1], 1, 0).slice(0,1), 1);
+                        let top2 = enemylightFields(getFieldsHorizontally(_fieldsAhead[1], 1, 1).slice(0,1), 1)
+                        highlightFieldsInLine(top1, 1);
+                        highlightFieldsInLine(top2, 1);
+                    }
+                    
+
+/*                     _fieldsLeftBot = enemylightFields(getFieldsDiagonally(_fieldNumber, 1, 0, 0).slice(0, 1), 1);
+                    _fieldsLeftTop = enemylightFields(getFieldsDiagonally(_fieldNumber, 1, 0, 1).slice(0, 1), 1);
+                    _fieldsRightBot = enemylightFields(getFieldsDiagonally(_fieldNumber, 1, 1, 0).slice(0, 1), 1);
+                    _fieldsRightTop = enemylightFields(getFieldsDiagonally(_fieldNumber, 1, 1, 1).slice(0, 1), 1); */
+
+/*                     highlightFieldsInLine(_fieldsAhead, 1);
+                    highlightFieldsInLine(_fieldsBehind, 1);
+                    highlightFieldsInLine(_fieldsLeft, 1);
+                    highlightFieldsInLine(_fieldsRight, 1);
+
+                    highlightFieldsInLine(_fieldsLeftBot, 0);
+                    highlightFieldsInLine(_fieldsLeftTop, 0);
+                    highlightFieldsInLine(_fieldsRightBot, 0);
+                    highlightFieldsInLine(_fieldsRightTop, 0); */
+                
+                break;
+                case 'knight-white':
+
             default:
                 break;
         }

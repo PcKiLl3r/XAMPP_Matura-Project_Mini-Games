@@ -35,10 +35,10 @@
             </div>
         </div>
         <div class="chessboard">
-            <div class="blackQuickActions">
+            <div class="blackQuickActions blackQuickActions-hidden">
                 <div class="figure figure-black">
                     <div class="chessCard">
-                        <div class="card-top bg-rook-white">
+                        <div class="card-top bg-menu-white">
                         </div>
                         <div class="card-bot"></div>
                         <div class="card-left"></div>
@@ -49,7 +49,7 @@
                 </div>
                 <div class="figure figure-black">
                     <div class="chessCard">
-                        <div class="card-top bg-rook-white">
+                        <div class="card-top bg-flag-white">
                         </div>
                         <div class="card-bot"></div>
                         <div class="card-left"></div>
@@ -62,7 +62,7 @@
             <div class="whiteQuickActions">
                 <div class="figure figure-white">
                     <div class="chessCard">
-                        <div class="card-top bg-rook">
+                        <div class="card-top bg-menu">
                         </div>
                         <div class="card-bot"></div>
                         <div class="card-left"></div>
@@ -73,7 +73,43 @@
                 </div>
                 <div class="figure figure-white">
                     <div class="chessCard">
-                        <div class="card-top bg-rook">
+                        <div class="card-top bg-flag">
+                        </div>
+                        <div class="card-bot"></div>
+                        <div class="card-left"></div>
+                        <div class="card-right"></div>
+                        <div class="card-front"></div>
+                        <div class="card-back"></div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="blackGraveyard blackGraveyard-shown">
+                <div class="figure figure-black">
+                    <div class="chessCard">
+                        <div class="card-top bg-rook-white">
+                        </div>
+                        <div class="card-bot"></div>
+                        <div class="card-left"></div>
+                        <div class="card-right"></div>
+                        <div class="card-front"></div>
+                        <div class="card-back"></div>
+                    </div>
+                </div>
+                <div class="figure figure-black">
+                    <div class="chessCard">
+                        <div class="card-top bg-rook-white">
+                        </div>
+                        <div class="card-bot"></div>
+                        <div class="card-left"></div>
+                        <div class="card-right"></div>
+                        <div class="card-front"></div>
+                        <div class="card-back"></div>
+                    </div>
+                </div>
+                <div class="figure figure-black">
+                    <div class="chessCard">
+                        <div class="card-top bg-rook-white">
                         </div>
                         <div class="card-bot"></div>
                         <div class="card-left"></div>
@@ -83,42 +119,7 @@
                     </div>
                 </div>
             </div>
-            <div class="blackGraveyard">
-                <div class="figure figure-black">
-                    <div class="chessCard">
-                        <div class="card-top bg-rook-white">
-                        </div>
-                        <div class="card-bot"></div>
-                        <div class="card-left"></div>
-                        <div class="card-right"></div>
-                        <div class="card-front"></div>
-                        <div class="card-back"></div>
-                    </div>
-                </div>
-                <div class="figure figure-black">
-                    <div class="chessCard">
-                        <div class="card-top bg-rook-white">
-                        </div>
-                        <div class="card-bot"></div>
-                        <div class="card-left"></div>
-                        <div class="card-right"></div>
-                        <div class="card-front"></div>
-                        <div class="card-back"></div>
-                    </div>
-                </div>
-                <div class="figure figure-black">
-                    <div class="chessCard">
-                        <div class="card-top bg-rook-white">
-                        </div>
-                        <div class="card-bot"></div>
-                        <div class="card-left"></div>
-                        <div class="card-right"></div>
-                        <div class="card-front"></div>
-                        <div class="card-back"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="whiteGraveyard">
+            <div class="whiteGraveyard whiteGraveyard-shown">
                 <div class="figure figure-white">
                     <div class="chessCard">
                         <div class="card-top bg-rook">
@@ -235,9 +236,7 @@
                         </div>
                     </div>
                 </div>
-                <div tabindex="4" class="field">
-
-                </div>
+                <div tabindex="4" class="field"></div>
                 <div tabindex="5" class="field">
                     <div class="figure figure-black">
                         <div class="chessCard">
@@ -334,7 +333,18 @@
             <div id="row6" class="row">
                 <div tabindex="41" class="field"></div>
                 <div tabindex="42" class="field"></div>
-                <div tabindex="43" class="field"></div>
+                <div tabindex="43" class="field">
+                        <div class="figure figure-black">
+                            <div class="chessCard">
+                                <div class="card-top bg-knight-white"></div>
+                                <div class="card-bot"></div>
+                                <div class="card-left"></div>
+                                <div class="card-right"></div>
+                                <div class="card-front"></div>
+                                <div class="card-back"></div>
+                            </div>
+                        </div>
+                </div>
                 <div tabindex="44" class="field">
                     <div class="figure figure-white">
                         <div class="chessCard">
