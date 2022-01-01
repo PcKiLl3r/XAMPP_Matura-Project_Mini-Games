@@ -17,7 +17,72 @@
 
 <body>
     <div class="scene scene-playerOne">
+        <div class="ui-board">
+            <div class="ui-bar">
+                <div class="ui-btn">
+                    <div class="figure figure-black">
+                        <div class="chessCard">
+                            <div class="card-top ">
+                            </div>
+                            <div class="card-bot"></div>
+                            <div class="card-left"></div>
+                            <div class="card-right"></div>
+                            <div class="card-front"></div>
+                            <div class="card-back"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="chessboard">
+            <div class="blackQuickActions">
+                <div class="figure figure-black">
+                    <div class="chessCard">
+                        <div class="card-top bg-rook-white">
+                        </div>
+                        <div class="card-bot"></div>
+                        <div class="card-left"></div>
+                        <div class="card-right"></div>
+                        <div class="card-front"></div>
+                        <div class="card-back"></div>
+                    </div>
+                </div>
+                <div class="figure figure-black">
+                    <div class="chessCard">
+                        <div class="card-top bg-rook-white">
+                        </div>
+                        <div class="card-bot"></div>
+                        <div class="card-left"></div>
+                        <div class="card-right"></div>
+                        <div class="card-front"></div>
+                        <div class="card-back"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="whiteQuickActions">
+                <div class="figure figure-white">
+                    <div class="chessCard">
+                        <div class="card-top bg-rook">
+                        </div>
+                        <div class="card-bot"></div>
+                        <div class="card-left"></div>
+                        <div class="card-right"></div>
+                        <div class="card-front"></div>
+                        <div class="card-back"></div>
+                    </div>
+                </div>
+                <div class="figure figure-white">
+                    <div class="chessCard">
+                        <div class="card-top bg-rook">
+                        </div>
+                        <div class="card-bot"></div>
+                        <div class="card-left"></div>
+                        <div class="card-right"></div>
+                        <div class="card-front"></div>
+                        <div class="card-back"></div>
+                    </div>
+                </div>
+            </div>
             <div class="blackGraveyard">
                 <div class="figure figure-black">
                     <div class="chessCard">
@@ -171,7 +236,7 @@
                     </div>
                 </div>
                 <div tabindex="4" class="field">
-                    
+
                 </div>
                 <div tabindex="5" class="field">
                     <div class="figure figure-black">
@@ -205,7 +270,7 @@
                 <div tabindex="10" class="field"></div>
                 <div tabindex="11" class="field"></div>
                 <div tabindex="12" class="field">
-                <div class="figure figure-black">
+                    <div class="figure figure-black">
                         <div class="chessCard">
                             <div class="card-top bg-queen-white"></div>
                             <div class="card-bot"></div>
@@ -286,7 +351,7 @@
                 <div tabindex="45" class="field"></div>
                 <div tabindex="46" class="field"></div>
                 <div tabindex="47" class="field">
-                <div class="figure figure-black">
+                    <div class="figure figure-black">
                         <div class="chessCard">
                             <div class="card-top bg-rook-white">
                             </div>
@@ -299,7 +364,7 @@
                     </div>
                 </div>
                 <div tabindex="48" class="field">
-                <div class="figure figure-white">
+                    <div class="figure figure-white">
                         <div class="chessCard">
                             <div class="card-top bg-pawn"></div>
                             <div class="card-bot"></div>

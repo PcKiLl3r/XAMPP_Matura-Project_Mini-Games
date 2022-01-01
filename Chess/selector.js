@@ -311,6 +311,7 @@ function switchToPlayer1(){
         }
         enemylightedFields = [];
     }
+    
     function enemylightFields(_fields, isWhite, canKill = true){
         // MAYBE SELECT CHILD USING QUERY SELECTOR
         if(_fields.length == 0){
@@ -606,6 +607,12 @@ function switchToPlayer1(){
                 
                 highlightFieldsInLine(_fieldsAhead, 1);
 
+                _fieldsLeftTop = enemylightFields(getFieldsDiagonally(fields[_fieldNumber], _fieldNumber, 1, 0, 1), 1).slice(0, 1);
+                    _fieldsRightTop = enemylightFields(getFieldsDiagonally(fields[_fieldNumber], _fieldNumber, 1, 1, 1), 1).slice(0, 1);
+
+                    enemylightFields(_fieldsLeftTop, 1, 1);
+                    enemylightFields(_fieldsRightTop, 1, 1);
+
                 // TODO ATTACK CHECK PAWN
                 
                 break;
@@ -620,6 +627,12 @@ function switchToPlayer1(){
                         _fieldsAhead = enemylightFields(_fieldsAhead, 0, false);
 
                         highlightFieldsInLine(_fieldsAhead, 1);
+
+                        _fieldsLeftTop = enemylightFields(getFieldsDiagonally(fields[_fieldNumber], _fieldNumber, 0, 0, 1), 0).slice(0, 1);
+                    _fieldsRightTop = enemylightFields(getFieldsDiagonally(fields[_fieldNumber], _fieldNumber, 0, 1, 1), 0).slice(0, 1);
+
+                    enemylightFields(_fieldsLeftTop, 0, 1);
+                    enemylightFields(_fieldsRightTop, 0, 1);
 
                 break;
                 case 'rook':
