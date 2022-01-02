@@ -819,7 +819,7 @@ function switchToPlayer1(){
                     highlightFieldsInLine(_fieldsRightTop, 0);
 
                 break;
-                case 'knight':
+                case 'knight': 
 
                     _fieldsAhead = getFieldsVertically(_fieldNumber, 1, 1).slice(0, 2);
                     _fieldsBehind = getFieldsVertically(_fieldNumber, 1, 0).slice(0, 2);
