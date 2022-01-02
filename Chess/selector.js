@@ -116,6 +116,9 @@ let blackQueenText = `<div class="chessCard">
 
 const fields = document.querySelectorAll('.field');
 
+const fieldHeight = '5em';
+const fieldWidth = '5em';
+
 const quickActWhite = document.querySelector('.whiteQuickActions');
 const quickActBlack = document.querySelector('.blackQuickActions');
 
@@ -128,6 +131,8 @@ let highlightedFields = [];
 let enemylightedFields = [];
 
 const uiBoard = document.querySelector('.ui-board');
+
+let lastClickedField = undefined;
 
 function setup(){
     switchToPlayer1();
@@ -211,14 +216,33 @@ function toggleUIMenu(){
         uiBoard.classList.add('ui-board-shown');
     }
 }
+function togglePlayer(){
+    if(currentPlayer == 1){
+        scene.classList.add('scene-playerTwo');
+        scene.classList.remove('scene-playerOne');
+        currentPlayer = 2;
+        quickActBlack.classList.add('blackQuickActions-shown');
+        quickActBlack.classList.remove('blackQuickActions-hidden');
+        quickActWhite.classList.remove('whiteQuickActions-shown');
+        quickActWhite.classList.add('whiteQuickActions-hidden');
+    } else {
+        scene.classList.add('scene-playerOne');
+    scene.classList.remove('scene-playerTwo');
+    currentPlayer = 1;
+    quickActWhite.classList.add('whiteQuickActions-shown');
+    quickActWhite.classList.remove('whiteQuickActions-hidden');
+    quickActBlack.classList.remove('blackQuickActions-shown');
+    quickActBlack.classList.add('blackQuickActions-hidden');
+    }
+}
 function switchToPlayer2(){
-    scene.classList.add('scene-playerTwo');
-    scene.classList.remove('scene-playerOne');
-    currentPlayer = 2;
-    quickActBlack.classList.add('blackQuickActions-shown');
-    quickActBlack.classList.remove('blackQuickActions-hidden');
-    quickActWhite.classList.remove('whiteQuickActions-shown');
-    quickActWhite.classList.add('whiteQuickActions-hidden');
+        scene.classList.add('scene-playerTwo');
+        scene.classList.remove('scene-playerOne');
+        currentPlayer = 2;
+        quickActBlack.classList.add('blackQuickActions-shown');
+        quickActBlack.classList.remove('blackQuickActions-hidden');
+        quickActWhite.classList.remove('whiteQuickActions-shown');
+        quickActWhite.classList.add('whiteQuickActions-hidden');
 }
 function switchToPlayer1(){
     scene.classList.add('scene-playerOne');
@@ -577,50 +601,109 @@ function switchToPlayer1(){
         } */
          return(_fieldsAvail);
     }
+    function performMove(_desiredFieldNum, _lastFieldNum){
+        let _figure = fields[_lastFieldNum].innerHTML;
+        fields[_lastFieldNum].innerHTML = '';
+        fields[_desiredFieldNum].innerHTML = _figure;
+        
+        clearEnemylightedFields();
+        clearHighlightedFields();
+        togglePlayer();
+    }
+    function performAttack(_desiredFieldNum, _lastFieldNum){
+        // let Attacker
+        let _figureAttacker = fields[_lastFieldNum].innerHTML;
+
+        killFigure(_desiredFieldNum);
+        setTimeout(() => {
+            moveFigureToGrave(_desiredFieldNum);
+            fields[_desiredFieldNum].innerHTML = _figureAttacker;
+            fields[_lastFieldNum].innerHTML = '';
+        }, 1000)
+
+        clearEnemylightedFields();
+        clearHighlightedFields();
+        togglePlayer();
+    }
     function handleFieldClick(e) {
+
         let figureType;
 
         let _fieldNumber;
 
-        clearHighlightedFields();
-
-        clearEnemylightedFields();
+        let _selectedField;
 
         if(e.target.classList.contains('field')){
+            _selectedField = e.target;
             if(e.target.children[0] == undefined){
-                
                 _fieldNumber = parseInt(e.target.tabIndex);
+                _selectedField = fields[_fieldNumber - 1];
                 console.log("Empty field: " + _fieldNumber);
-                return;
             } else {
                 figureType = e.target.children[0].children[0].children[0].classList;
                 figureType = figureType[1];
                 _fieldNumber = parseInt(e.target.tabIndex);
+                _selectedField = fields[_fieldNumber - 1];
             }
         } else if(e.target.classList.contains('figure')){
             figureType = e.target.children[0].children[0].classList;
             figureType = figureType[1];
                 _fieldNumber = parseInt(e.target.parentNode.tabIndex);
+                _selectedField = fields[_fieldNumber - 1];
         } else if(e.target.classList.contains('chessCard')){
             figureType = e.target.children[0].classList;
             figureType = figureType[1];
                 _fieldNumber = parseInt(e.target.parentNode.parentNode.tabIndex);
+                _selectedField = fields[_fieldNumber - 1];
         } else if(e.target.classList.contains('card-top')){
             figureType = e.target.classList;
             figureType = figureType[1];
                 _fieldNumber = parseInt(e.target.parentNode.parentNode.parentNode.tabIndex);
-
+                _selectedField = fields[_fieldNumber - 1];
         } else if(e.target.classList.contains('card-front') || e.target.classList.contains('card-back') || e.target.classList.contains('card-left') || e.target.classList.contains('card-right') || e.target.classList.contains('card-bot')){
             figureType = e.target.parentNode.children[0].classList;
             figureType = figureType[1];
                 _fieldNumber = parseInt(e.target.parentNode.parentNode.parentNode.tabIndex);
+                _selectedField = fields[_fieldNumber - 1];
         }
+
+        if(currentPlayer == 1){
+
+        }
+
+        if(_selectedField.classList.contains('focusedFieldWhite') || _selectedField.classList.contains('focusedFieldBlack')){
+            // IF FIELD IS HIGHLIGHTED REGISTER MOVE
+            if(currentPlayer == 1){
+                if(fields[lastClickedField].children[0].classList.contains('figure-white')){
+                    performMove(_fieldNumber - 1, lastClickedField);
+                }
+            } else {
+                if(fields[lastClickedField].children[0].classList.contains('figure-black')){
+                    performMove(_fieldNumber - 1, lastClickedField);
+                }
+            }
+        } else if(_selectedField.classList.contains('enemyFieldBlack') || _selectedField.classList.contains('enemyFieldWhite')){
+            if(currentPlayer == 1){
+                if(fields[lastClickedField].children[0].classList.contains('figure-white')){
+                    performAttack(_fieldNumber - 1, lastClickedField);
+                }
+            } else {
+                if(fields[lastClickedField].children[0].classList.contains('figure-black')){
+                    performAttack(_fieldNumber - 1, lastClickedField);
+                }
+            }
+        } else {
+            // ELSE PERFORM NORMAL CLICK
+            clearHighlightedFields();
+
+        clearEnemylightedFields();
 
         _fieldNumber--;
 
-        figureType = figureType.slice(3, figureType.length);
-
-        console.log("Field Nr: " + _fieldNumber + "\r\nFigure: " + figureType);
+        if(figureType != null){
+            figureType = figureType.slice(3, figureType.length);
+            console.log("Field Nr: " + _fieldNumber + "\r\nFigure: " + figureType);
+        }
 
         // Switch figureType
 
@@ -633,7 +716,286 @@ function switchToPlayer1(){
         let _fieldsRightTop;
         let _fieldsRightBot;
 
-        switch (figureType) {
+        if(figureType != null){
+            if(currentPlayer == 1){
+                if(fields[_fieldNumber].children[0].classList.contains('figure-white')){
+                    switch (figureType) {
+    
+                case 'pawn':
+    
+                    _fieldsAhead = getFieldsVertically(_fieldNumber, 1, 1);
+                    if(_fieldNumber >= 48 && _fieldNumber <= 55){
+                        _fieldsAhead = _fieldsAhead.slice(0, 2);
+                    } else {
+                        _fieldsAhead = _fieldsAhead.slice(0, 1);
+                    }
+                    _fieldsAhead = enemylightFields(_fieldsAhead, 1, false);
+                    
+                    highlightFieldsInLine(_fieldsAhead, 1);
+    
+                    _fieldsLeftTop = enemylightFields(getFieldsDiagonally(_fieldNumber, 1, 0, 1).slice(0, 1), 1);
+                        _fieldsRightTop = enemylightFields(getFieldsDiagonally(_fieldNumber, 1, 1, 1).slice(0, 1), 1);
+    
+                        enemylightFields(_fieldsLeftTop, 1, 1);
+                        enemylightFields(_fieldsRightTop, 1, 1);
+    
+                    // TODO ATTACK CHECK PAWN
+                    
+                    break;
+                    case 'rook':
+    
+                        _fieldsAhead = enemylightFields(getFieldsVertically(_fieldNumber, 1, 1), 1);
+                        _fieldsBehind = enemylightFields(getFieldsVertically(_fieldNumber, 1, 0), 1);
+                        _fieldsLeft = enemylightFields(getFieldsHorizontally(_fieldNumber, 1, 0), 1);
+                        _fieldsRight = enemylightFields(getFieldsHorizontally(_fieldNumber, 1, 1), 1);
+                        
+                        highlightFieldsInLine(_fieldsAhead, 1);
+                        highlightFieldsInLine(_fieldsBehind, 1);
+                        highlightFieldsInLine(_fieldsLeft, 1);
+                        highlightFieldsInLine(_fieldsRight, 1);
+                    
+                    break;
+                    case 'queen':
+    
+                    _fieldsAhead = enemylightFields(getFieldsVertically(_fieldNumber, 1, 1), 1);
+                    _fieldsBehind = enemylightFields(getFieldsVertically(_fieldNumber, 1, 0), 1);
+                    _fieldsLeft = enemylightFields(getFieldsHorizontally(_fieldNumber, 1, 0), 1);
+                    _fieldsRight = enemylightFields(getFieldsHorizontally(_fieldNumber, 1, 1), 1);
+    
+                    _fieldsLeftBot = enemylightFields(getFieldsDiagonally(_fieldNumber, 1, 0, 0), 1);
+                        _fieldsLeftTop = enemylightFields(getFieldsDiagonally(_fieldNumber, 1, 0, 1), 1);
+                        _fieldsRightBot = enemylightFields(getFieldsDiagonally(_fieldNumber, 1, 1, 0), 1);
+                        _fieldsRightTop = enemylightFields(getFieldsDiagonally(_fieldNumber, 1, 1, 1), 1);
+    
+                        highlightFieldsInLine(_fieldsLeftBot, 0);
+                        highlightFieldsInLine(_fieldsLeftTop, 0);
+                        highlightFieldsInLine(_fieldsRightBot, 0);
+                        highlightFieldsInLine(_fieldsRightTop, 0);
+    
+                    highlightFieldsInLine(_fieldsAhead, 1);
+                    highlightFieldsInLine(_fieldsBehind, 1);
+                    highlightFieldsInLine(_fieldsLeft, 1);
+                    highlightFieldsInLine(_fieldsRight, 1);
+                    
+                    break;
+                    case 'king':
+    
+                        _fieldsAhead = enemylightFields(getFieldsVertically(_fieldNumber, 1, 1).slice(0, 1), 1);
+                        _fieldsBehind = enemylightFields(getFieldsVertically(_fieldNumber, 1, 0).slice(0, 1), 1);
+                        _fieldsLeft = enemylightFields(getFieldsHorizontally(_fieldNumber, 1, 0).slice(0, 1), 1);
+                        _fieldsRight = enemylightFields(getFieldsHorizontally(_fieldNumber, 1, 1).slice(0, 1), 1);
+    
+                        _fieldsLeftBot = enemylightFields(getFieldsDiagonally(_fieldNumber, 1, 0, 0).slice(0, 1), 1);
+                        _fieldsLeftTop = enemylightFields(getFieldsDiagonally(_fieldNumber, 1, 0, 1).slice(0, 1), 1);
+                        _fieldsRightBot = enemylightFields(getFieldsDiagonally(_fieldNumber, 1, 1, 0).slice(0, 1), 1);
+                        _fieldsRightTop = enemylightFields(getFieldsDiagonally(_fieldNumber, 1, 1, 1).slice(0, 1), 1);
+    
+                        highlightFieldsInLine(_fieldsAhead, 1);
+                        highlightFieldsInLine(_fieldsBehind, 1);
+                        highlightFieldsInLine(_fieldsLeft, 1);
+                        highlightFieldsInLine(_fieldsRight, 1);
+    
+                        highlightFieldsInLine(_fieldsLeftBot, 0);
+                        highlightFieldsInLine(_fieldsLeftTop, 0);
+                        highlightFieldsInLine(_fieldsRightBot, 0);
+                        highlightFieldsInLine(_fieldsRightTop, 0);
+                    
+                    break;
+                    case 'bishop':
+    
+                        _fieldsLeftBot = enemylightFields(getFieldsDiagonally(_fieldNumber, 1, 0, 0), 1);
+                        _fieldsLeftTop = enemylightFields(getFieldsDiagonally(_fieldNumber, 1, 0, 1), 1);
+                        _fieldsRightBot = enemylightFields(getFieldsDiagonally(_fieldNumber, 1, 1, 0), 1);
+                        _fieldsRightTop = enemylightFields(getFieldsDiagonally(_fieldNumber, 1, 1, 1), 1);
+    
+                        /* highlightFieldsInLine(_fieldsLeftBot, 0); */
+                        highlightFieldsInLine(_fieldsLeftTop, 0);
+                        /* highlightFieldsInLine(_fieldsRightBot, 0); */
+                        highlightFieldsInLine(_fieldsRightTop, 0);
+                    
+                    break;
+                    case 'knight': 
+    
+                        _fieldsAhead = getFieldsVertically(_fieldNumber, 1, 1).slice(0, 2);
+                        _fieldsBehind = getFieldsVertically(_fieldNumber, 1, 0).slice(0, 2);
+                        _fieldsLeft = getFieldsHorizontally(_fieldNumber, 1, 0).slice(0, 2);
+                        _fieldsRight = getFieldsHorizontally(_fieldNumber, 1, 1).slice(0, 2);
+    
+                        if(_fieldsAhead[1] != null){
+                            let top1 = enemylightFields(getFieldsHorizontally(_fieldsAhead[1], 1, 0).slice(0,1), 1);
+                            let top2 = enemylightFields(getFieldsHorizontally(_fieldsAhead[1], 1, 1).slice(0,1), 1)
+                            highlightFieldsInLine(top1, 1);
+                            highlightFieldsInLine(top2, 1);
+                        }
+                        
+                        if(_fieldsRight[1] != null){
+                            let right1 = enemylightFields(getFieldsVertically(_fieldsRight[1], 1, 1).slice(0,1), 1);
+                            let right2 = enemylightFields(getFieldsVertically(_fieldsRight[1], 1, 0).slice(0,1), 1)
+                            highlightFieldsInLine(right1, 1);
+                            highlightFieldsInLine(right2, 1);
+                        }
+    
+                        if(_fieldsLeft[1] != null){
+                            let left1 = enemylightFields(getFieldsVertically(_fieldsLeft[1], 1, 1).slice(0,1), 1);
+                            let left2 = enemylightFields(getFieldsVertically(_fieldsLeft[1], 1, 0).slice(0,1), 1)
+                            highlightFieldsInLine(left1, 1);
+                            highlightFieldsInLine(left2, 1);
+                        }
+    
+                        if(_fieldsBehind[1] != null){
+                            let bot1 = enemylightFields(getFieldsHorizontally(_fieldsBehind[1], 1, 1).slice(0,1), 1);
+                            let bot2 = enemylightFields(getFieldsHorizontally(_fieldsBehind[1], 1, 0).slice(0,1), 1)
+                            highlightFieldsInLine(bot1, 1);
+                            highlightFieldsInLine(bot2, 1);
+                        }
+                    break;
+                    
+                default:
+                    break;
+                    }
+                }
+                
+            } else {
+                if(fields[_fieldNumber].children[0].classList.contains('figure-black')){
+                    switch (figureType) {
+                        case 'pawn-white':
+    
+                            _fieldsAhead = getFieldsVertically(_fieldNumber, 0, 1);
+                            if(_fieldNumber >= 8 && _fieldNumber <= 15){
+                                    _fieldsAhead = _fieldsAhead.slice(0, 2);
+                                } else {
+                                    _fieldsAhead = _fieldsAhead.slice(0, 1);
+                                }
+                                _fieldsAhead = enemylightFields(_fieldsAhead, 0, false);
+    
+                                highlightFieldsInLine(_fieldsAhead, 1);
+    
+                                _fieldsLeftTop = enemylightFields(getFieldsDiagonally(_fieldNumber, 0, 0, 1).slice(0, 1), 0);
+                            _fieldsRightTop = enemylightFields(getFieldsDiagonally(_fieldNumber, 0, 1, 1).slice(0, 1), 0);
+    
+                            enemylightFields(_fieldsLeftTop, 0, 1);
+                            enemylightFields(_fieldsRightTop, 0, 1);
+    
+                        break;
+                        case 'rook-white':
+    
+                            _fieldsAhead = enemylightFields(getFieldsVertically(_fieldNumber, 0, 1), 0);
+                            _fieldsBehind = enemylightFields(getFieldsVertically(_fieldNumber, 0, 0), 0);
+                            _fieldsLeft = enemylightFields(getFieldsHorizontally(_fieldNumber, 0, 0), 0);
+                            _fieldsRight = enemylightFields(getFieldsHorizontally(_fieldNumber, 0, 1), 0);
+                            
+                            highlightFieldsInLine(_fieldsAhead, 1);
+                            highlightFieldsInLine(_fieldsBehind, 1);
+                            highlightFieldsInLine(_fieldsLeft, 1);
+                            highlightFieldsInLine(_fieldsRight, 1);
+    
+                        break;
+                        case 'queen-white':
+    
+                            _fieldsAhead = enemylightFields(getFieldsVertically(_fieldNumber, 0, 1), 0);
+                            _fieldsBehind = enemylightFields(getFieldsVertically(_fieldNumber, 0, 0), 0);
+                            _fieldsLeft = enemylightFields(getFieldsHorizontally(_fieldNumber, 0, 0), 0);
+                            _fieldsRight = enemylightFields(getFieldsHorizontally(_fieldNumber, 0, 1), 0);
+    
+                            _fieldsLeftBot = enemylightFields(getFieldsDiagonally(_fieldNumber, 0, 0, 0), 0);
+                            _fieldsLeftTop = enemylightFields(getFieldsDiagonally(_fieldNumber, 0, 0, 1), 0);
+                            _fieldsRightBot = enemylightFields(getFieldsDiagonally(_fieldNumber, 0, 1, 0), 0);
+                            _fieldsRightTop = enemylightFields(getFieldsDiagonally(_fieldNumber, 0, 1, 1), 0);
+    
+                            highlightFieldsInLine(_fieldsLeftBot, 0);
+                            highlightFieldsInLine(_fieldsLeftTop, 0);
+                            highlightFieldsInLine(_fieldsRightBot, 0);
+                            highlightFieldsInLine(_fieldsRightTop, 0);
+    
+                            highlightFieldsInLine(_fieldsAhead, 1);
+                            highlightFieldsInLine(_fieldsBehind, 1);
+                            highlightFieldsInLine(_fieldsLeft, 1);
+                            highlightFieldsInLine(_fieldsRight, 1);
+    
+                        break;
+                        case 'king-white':
+    
+                            _fieldsAhead = enemylightFields(getFieldsVertically(_fieldNumber, 0, 1).slice(0, 1), 0);
+                            _fieldsBehind = enemylightFields(getFieldsVertically(_fieldNumber, 0, 0).slice(0, 1), 0);
+                            _fieldsLeft = enemylightFields(getFieldsHorizontally(_fieldNumber, 0, 0).slice(0, 1), 0);
+                            _fieldsRight = enemylightFields(getFieldsHorizontally(_fieldNumber, 0, 1).slice(0, 1), 0);
+    
+                            _fieldsLeftBot = enemylightFields(getFieldsDiagonally(_fieldNumber, 0, 0, 0).slice(0, 1), 0);
+                            _fieldsLeftTop = enemylightFields(getFieldsDiagonally(_fieldNumber, 0, 0, 1).slice(0, 1), 0);
+                            _fieldsRightBot = enemylightFields(getFieldsDiagonally(_fieldNumber, 0, 1, 0).slice(0, 1), 0);
+                            _fieldsRightTop = enemylightFields(getFieldsDiagonally(_fieldNumber, 0, 1, 1).slice(0, 1), 0);
+    
+                            highlightFieldsInLine(_fieldsAhead, 1);
+                            highlightFieldsInLine(_fieldsBehind, 1);
+                            highlightFieldsInLine(_fieldsLeft, 1);
+                            highlightFieldsInLine(_fieldsRight, 1);
+    
+                            highlightFieldsInLine(_fieldsLeftBot, 0);
+                            highlightFieldsInLine(_fieldsLeftTop, 0);
+                            highlightFieldsInLine(_fieldsRightBot, 0);
+                            highlightFieldsInLine(_fieldsRightTop, 0);
+    
+                        break;
+                        case 'bishop-white':
+    
+                                        _fieldsLeftBot = enemylightFields(getFieldsDiagonally(_fieldNumber, 0, 0, 0), 0);
+                                        _fieldsLeftTop = enemylightFields(getFieldsDiagonally(_fieldNumber, 0, 0, 1), 0);
+                                        _fieldsRightBot = enemylightFields(getFieldsDiagonally(_fieldNumber, 0, 1, 0), 0);
+                                        _fieldsRightTop = enemylightFields(getFieldsDiagonally(_fieldNumber, 0, 1, 1), 0);
+    
+                                        highlightFieldsInLine(_fieldsLeftBot, 0);
+                                        highlightFieldsInLine(_fieldsLeftTop, 0);
+                                        highlightFieldsInLine(_fieldsRightBot, 0);
+                                        highlightFieldsInLine(_fieldsRightTop, 0);
+    
+                                    break;
+                        case 'knight-white':
+    
+                                        _fieldsAhead = getFieldsVertically(_fieldNumber, 0, 1).slice(0, 2);
+                                        _fieldsBehind = getFieldsVertically(_fieldNumber, 0, 0).slice(0, 2);
+                                        _fieldsLeft = getFieldsHorizontally(_fieldNumber, 0, 0).slice(0, 2);
+                                        _fieldsRight = getFieldsHorizontally(_fieldNumber, 0, 1).slice(0, 2);
+    
+                                        if(_fieldsAhead[1] != null){
+                                            let top1 = enemylightFields(getFieldsHorizontally(_fieldsAhead[1], 0, 0).slice(0,1), 0);
+                                            let top2 = enemylightFields(getFieldsHorizontally(_fieldsAhead[1], 0, 1).slice(0,1), 0);
+                                            highlightFieldsInLine(top1, 1);
+                                            highlightFieldsInLine(top2, 1);
+                                        }
+                                        
+                                        if(_fieldsRight[1] != null){
+                                            let right1 = enemylightFields(getFieldsVertically(_fieldsRight[1], 0, 1).slice(0,1), 0);
+                                            let right2 = enemylightFields(getFieldsVertically(_fieldsRight[1], 0, 0).slice(0,1), 0);
+                                            highlightFieldsInLine(right1, 1);
+                                            highlightFieldsInLine(right2, 1);
+                                        }
+    
+                                        if(_fieldsLeft[1] != null){
+                                            let left1 = enemylightFields(getFieldsVertically(_fieldsLeft[1], 0, 1).slice(0,1), 0);
+                                            let left2 = enemylightFields(getFieldsVertically(_fieldsLeft[1], 0, 0).slice(0,1), 0);
+                                            highlightFieldsInLine(left1, 1);
+                                            highlightFieldsInLine(left2, 1);
+                                        }
+    
+                                        if(_fieldsBehind[1] != null){
+                                            let bot1 = enemylightFields(getFieldsHorizontally(_fieldsBehind[1], 0, 1).slice(0,1), 0);
+                                            let bot2 = enemylightFields(getFieldsHorizontally(_fieldsBehind[1], 0, 0).slice(0,1), 0);
+                                            highlightFieldsInLine(bot1, 1);
+                                            highlightFieldsInLine(bot2, 1);
+                                        }
+                                    break;
+    
+                        default:
+                            break;
+                    }
+                }
+            }
+        }
+
+        
+    }
+
+/*         switch (figureType) {
 
             case 'pawn':
 
@@ -647,8 +1009,8 @@ function switchToPlayer1(){
                 
                 highlightFieldsInLine(_fieldsAhead, 1);
 
-                _fieldsLeftTop = enemylightFields(getFieldsDiagonally(_fieldNumber, 1, 0, 1), 1).slice(0, 1);
-                    _fieldsRightTop = enemylightFields(getFieldsDiagonally(_fieldNumber, 1, 1, 1), 1).slice(0, 1);
+                _fieldsLeftTop = enemylightFields(getFieldsDiagonally(_fieldNumber, 1, 0, 1).slice(0, 1), 1);
+                    _fieldsRightTop = enemylightFields(getFieldsDiagonally(_fieldNumber, 1, 1, 1).slice(0, 1), 1);
 
                     enemylightFields(_fieldsLeftTop, 1, 1);
                     enemylightFields(_fieldsRightTop, 1, 1);
@@ -668,8 +1030,8 @@ function switchToPlayer1(){
 
                         highlightFieldsInLine(_fieldsAhead, 1);
 
-                        _fieldsLeftTop = enemylightFields(getFieldsDiagonally(_fieldNumber, 0, 0, 1), 0).slice(0, 1);
-                    _fieldsRightTop = enemylightFields(getFieldsDiagonally(_fieldNumber, 0, 1, 1), 0).slice(0, 1);
+                        _fieldsLeftTop = enemylightFields(getFieldsDiagonally(_fieldNumber, 0, 0, 1).slice(0, 1), 0);
+                    _fieldsRightTop = enemylightFields(getFieldsDiagonally(_fieldNumber, 0, 1, 1).slice(0, 1), 0);
 
                     enemylightFields(_fieldsLeftTop, 0, 1);
                     enemylightFields(_fieldsRightTop, 0, 1);
@@ -800,9 +1162,7 @@ function switchToPlayer1(){
                     _fieldsRightBot = enemylightFields(getFieldsDiagonally(_fieldNumber, 1, 1, 0), 1);
                     _fieldsRightTop = enemylightFields(getFieldsDiagonally(_fieldNumber, 1, 1, 1), 1);
 
-                    /* highlightFieldsInLine(_fieldsLeftBot, 0); */
                     highlightFieldsInLine(_fieldsLeftTop, 0);
-                    /* highlightFieldsInLine(_fieldsRightBot, 0); */
                     highlightFieldsInLine(_fieldsRightTop, 0);
                 
                 break;
@@ -893,8 +1253,8 @@ function switchToPlayer1(){
             default:
                 break;
         }
+        } */
+        lastClickedField = _fieldNumber;
     }
-
     setup();
-
 });

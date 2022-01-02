@@ -146,7 +146,7 @@ body {
     translate(-50%, -50%)
     rotateX(0deg);
     top: 22.5em;
-    animation: revealUIBoard 1.5s ease-in-out 1;
+    animation: revealUIBoard 1.5s ease-out 1;
 }
 
 @keyframes revealUIBoard {
@@ -174,10 +174,10 @@ body {
     visibility: hidden;
     transform:
     translate(-50%, -50%)
-    rotateX(0deg)
-    translateZ(-2500px);
-    top: 25em;
-    animation: hideUIBoard 1.5s ease-in-out reverse 1;
+    rotateZ(0deg)
+    translateZ(-1000px);
+    top: 22.5em;
+    animation: hideUIBoard 1.5s ease-out reverse 1;
 }
 
 @keyframes hideUIBoard {
