@@ -32,6 +32,45 @@
                         </div>
                     </div>
                 </div>
+                <div class="ui-btn">
+                    <div class="figure figure-black">
+                        <div class="chessCard">
+                            <div class="card-top ">
+                            </div>
+                            <div class="card-bot"></div>
+                            <div class="card-left"></div>
+                            <div class="card-right"></div>
+                            <div class="card-front"></div>
+                            <div class="card-back"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ui-btn">
+                    <div class="figure figure-black">
+                        <div class="chessCard">
+                            <div class="card-top ">
+                            </div>
+                            <div class="card-bot"></div>
+                            <div class="card-left"></div>
+                            <div class="card-right"></div>
+                            <div class="card-front"></div>
+                            <div class="card-back"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ui-btn">
+                    <div class="figure figure-black">
+                        <div class="chessCard">
+                            <div class="card-top ">
+                            </div>
+                            <div class="card-bot"></div>
+                            <div class="card-left"></div>
+                            <div class="card-right"></div>
+                            <div class="card-front"></div>
+                            <div class="card-back"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="chessboard chessboard-assemble">

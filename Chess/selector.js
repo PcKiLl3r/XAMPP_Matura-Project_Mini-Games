@@ -127,6 +127,8 @@ let highlightedFields = [];
 
 let enemylightedFields = [];
 
+const uiBoard = document.querySelector('.ui-board');
+
 function setup(){
     switchToPlayer1();
     let _isOdd = true;
@@ -166,22 +168,20 @@ function setup(){
         toggleUIMenu();
     });
 
-    
-
     // DEV BUTTONS
-    for (let index = 0; index < fields.length; index++) {
-        if(index == fields.length - 1){
-            fields[index].addEventListener('click', () => {
+    for (let index = 0; index < uiBoard.children[0].children.length; index++) {
+        if(index == uiBoard.children[0].children.length - 1){
+            uiBoard.children[0].children[index].addEventListener('click', () => {
                 resetBoard();
             });
         }
-        if(index == fields.length - 2){
-            fields[index].addEventListener('click', () => {
+        if(index == uiBoard.children[0].children.length - 2){
+            uiBoard.children[0].children[index].addEventListener('click', () => {
                 wipeBoard();
             });
         }
-        if(index == fields.length - 3){
-            fields[index].addEventListener('click', () => {
+        if(index == uiBoard.children[0].children.length - 3){
+            uiBoard.children[0].children[index].addEventListener('click', () => {
                 if(currentPlayer == 1) {
                     switchToPlayer2();
                 } else {
@@ -189,8 +189,8 @@ function setup(){
                 }
             });
         }
-        if(index == fields.length - 4){
-            fields[index].addEventListener('click', () => {
+        if(index == uiBoard.children[0].children.length - 4){
+            uiBoard.children[0].children[index].addEventListener('click', () => {
                 killFigure(55);
                     setTimeout(() => {
                         moveFigureToGrave(55);
@@ -199,9 +199,9 @@ function setup(){
             });
         }
     }
+
 }
 function toggleUIMenu(){
-    const uiBoard = document.querySelector('.ui-board');
 
     if(uiBoard.classList.contains('ui-board-shown')){
         uiBoard.classList.remove('ui-board-shown');

@@ -145,7 +145,7 @@ body {
     transform:
     translate(-50%, -50%)
     rotateX(0deg);
-    top: 25em;
+    top: 22.5em;
     animation: revealUIBoard 1.5s ease-in-out 1;
 }
 
@@ -377,7 +377,7 @@ body {
     border: 3px solid var(--chessStructureColor);
 
     position: absolute;
-    top: 40em;
+    top: 42.5em;
     transform:
     translate(-50%, -50%)
     rotateX(90deg);
