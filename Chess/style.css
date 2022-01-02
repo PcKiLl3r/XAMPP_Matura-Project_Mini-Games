@@ -51,10 +51,11 @@ body {
 .scene {
     position: relative;
     transform-style: preserve-3d;
+    transform: translateZ(-3250px) translateX(250px) /* translateZ(-2750px) */ rotateY(90deg);
 }
 
 .scene.scene-empty {
-    transform: translateZ(-3250px) translateX(250px) rotateY(90deg);
+    transform: translateZ(-4750px) translateY(1000px) translateX(0px) rotateY(-90deg);
     /* animation-name:
     sceneChangeP2ToP1, sceneRotatePl1;
   animation-duration:
@@ -145,33 +146,21 @@ body {
     translate(-50%, -50%)
     rotateX(0deg);
     top: 25em;
-    animation: revealUIBoard 2s ease-in-out 1;
+    animation: revealUIBoard 1.5s ease-in-out 1;
 }
 
 @keyframes revealUIBoard {
     0% { transform:
         translate(-50%, -50%)
         rotateZ(0deg)
-        translateY(-2500px); visibility: hidden; }
-        16% { transform:
-            translate(-50%, -50%)
-            rotateZ(22.5deg)
-            translateY(500px); visibility: visible; }
-        32% { transform:
-            translate(-50%, -50%)
-            rotateZ(0deg)
-            translateY(0px); visibility: visible; }
-    48% { transform:
+        translateY(-1000px); visibility: hidden; }
+    33% { transform:
         translate(-50%, -50%)
         rotateZ(-22.5deg)
-        translateY(0px); visibility: visible; }
-    64% { transform:
+        translateY(500px); visibility: visible; }
+    66% { transform:
         translate(-50%, -50%)
         rotateZ(0deg)
-        translateY(0px); visibility: visible; }
-    80% { transform:
-        translate(-50%, -50%)
-        rotateZ(22.5deg)
         translateY(0px); visibility: visible; }
     100% { transform:
         translate(-50%, -50%)
@@ -188,33 +177,21 @@ body {
     rotateX(0deg)
     translateZ(-2500px);
     top: 25em;
-    animation: hideUIBoard 2s ease-in-out reverse 1;
+    animation: hideUIBoard 1.5s ease-in-out reverse 1;
 }
 
 @keyframes hideUIBoard {
     0% { transform:
         translate(-50%, -50%)
         rotateZ(0deg)
-        translateY(-2500px); visibility: hidden; }
-        16% { transform:
-            translate(-50%, -50%)
-            rotateZ(22.5deg)
-            translateY(500px); visibility: visible; }
-        32% { transform:
-            translate(-50%, -50%)
-            rotateZ(0deg)
-            translateY(0px); visibility: visible; }
-    48% { transform:
-        translate(-50%, -50%)
-        rotateZ(-22.5deg)
-        translateY(0px); visibility: visible; }
-    64% { transform:
-        translate(-50%, -50%)
-        rotateZ(0deg)
-        translateY(0px); visibility: visible; }
-    80% { transform:
+        translateY(-1000px); visibility: hidden; }
+    33% { transform:
         translate(-50%, -50%)
         rotateZ(22.5deg)
+        translateY(500px); visibility: visible; }
+    66% { transform:
+        translate(-50%, -50%)
+        rotateZ(0deg)
         translateY(0px); visibility: visible; }
     100% { transform:
         translate(-50%, -50%)
@@ -415,6 +392,25 @@ body {
         #000 90deg 180deg);
     background-size: 100%, 1em 1em; */
 }
+
+/* .chessboard-assemble{
+    animation: CBoardScaleOut 0.5s ease-in-out 1;
+}
+
+@keyframes CBoardScaleOut {
+    0% { transform:
+        scaleX(0.1)
+        scaleY(0.1)
+        scaleZ(0.1)
+        translate(-50%, -50%)
+        rotateX(90deg); }
+    100% { transform:
+        scaleX(1)
+        scaleY(1)
+        scaleZ(1)
+        translate(-50%, -50%)
+        rotateX(90deg); }
+    } */
 
 .row{
     display: flex;

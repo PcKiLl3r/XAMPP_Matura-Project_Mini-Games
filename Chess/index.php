@@ -16,7 +16,7 @@
 </head>
 
 <body>
-    <div class="scene">
+    <div class="scene scene-empty">
         <div class="ui-board">
             <div class="ui-bar">
                 <div class="ui-btn">
@@ -34,7 +34,7 @@
                 </div>
             </div>
         </div>
-        <div class="chessboard">
+        <div class="chessboard chessboard-assemble">
             <div class="blackQuickActions blackQuickActions-hidden">
                 <div class="figure figure-black">
                     <div class="chessCard">

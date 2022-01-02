@@ -848,8 +848,8 @@ function switchToPlayer1(){
                     }
 
                     if(_fieldsBehind[1] != null){
-                        let bot1 = enemylightFields(getFieldsVertically(_fieldsBehind[1], 1, 1).slice(0,1), 1);
-                        let bot2 = enemylightFields(getFieldsVertically(_fieldsBehind[1], 1, 0).slice(0,1), 1)
+                        let bot1 = enemylightFields(getFieldsHorizontally(_fieldsBehind[1], 1, 1).slice(0,1), 1);
+                        let bot2 = enemylightFields(getFieldsHorizontally(_fieldsBehind[1], 1, 0).slice(0,1), 1)
                         highlightFieldsInLine(bot1, 1);
                         highlightFieldsInLine(bot2, 1);
                     }
@@ -864,28 +864,28 @@ function switchToPlayer1(){
 
                     if(_fieldsAhead[1] != null){
                         let top1 = enemylightFields(getFieldsHorizontally(_fieldsAhead[1], 0, 0).slice(0,1), 0);
-                        let top2 = enemylightFields(getFieldsHorizontally(_fieldsAhead[1], 0, 1).slice(0,1), 0)
+                        let top2 = enemylightFields(getFieldsHorizontally(_fieldsAhead[1], 0, 1).slice(0,1), 0);
                         highlightFieldsInLine(top1, 1);
                         highlightFieldsInLine(top2, 1);
                     }
                     
                     if(_fieldsRight[1] != null){
                         let right1 = enemylightFields(getFieldsVertically(_fieldsRight[1], 0, 1).slice(0,1), 0);
-                        let right2 = enemylightFields(getFieldsVertically(_fieldsRight[1], 0, 0).slice(0,1), 0)
+                        let right2 = enemylightFields(getFieldsVertically(_fieldsRight[1], 0, 0).slice(0,1), 0);
                         highlightFieldsInLine(right1, 1);
                         highlightFieldsInLine(right2, 1);
                     }
 
                     if(_fieldsLeft[1] != null){
                         let left1 = enemylightFields(getFieldsVertically(_fieldsLeft[1], 0, 1).slice(0,1), 0);
-                        let left2 = enemylightFields(getFieldsVertically(_fieldsLeft[1], 0, 0).slice(0,1), 0)
+                        let left2 = enemylightFields(getFieldsVertically(_fieldsLeft[1], 0, 0).slice(0,1), 0);
                         highlightFieldsInLine(left1, 1);
                         highlightFieldsInLine(left2, 1);
                     }
 
                     if(_fieldsBehind[1] != null){
-                        let bot1 = enemylightFields(getFieldsVertically(_fieldsBehind[1], 0, 1).slice(0,1), 0);
-                        let bot2 = enemylightFields(getFieldsVertically(_fieldsBehind[1], 0, 0).slice(0,1), 0)
+                        let bot1 = enemylightFields(getFieldsHorizontally(_fieldsBehind[1], 0, 1).slice(0,1), 0);
+                        let bot2 = enemylightFields(getFieldsHorizontally(_fieldsBehind[1], 0, 0).slice(0,1), 0);
                         highlightFieldsInLine(bot1, 1);
                         highlightFieldsInLine(bot2, 1);
                     }
