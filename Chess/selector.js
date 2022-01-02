@@ -128,6 +128,7 @@ let highlightedFields = [];
 let enemylightedFields = [];
 
 function setup(){
+    switchToPlayer1();
     let _isOdd = true;
     let _count = 0;
     fields.forEach(field => {
@@ -194,7 +195,7 @@ function setup(){
                     setTimeout(() => {
                         moveFigureToGrave(55);
                     }, 1000)
-                    
+                fields[47].children[0].classList.add('figure-attack');
             });
         }
     }
@@ -351,7 +352,6 @@ function switchToPlayer1(){
         }
         enemylightedFields = [];
     }
-    
     function enemylightFields(_fields, isWhite, canKill = true){
         // MAYBE SELECT CHILD USING QUERY SELECTOR
         if(_fields.length == 0){
@@ -821,13 +821,10 @@ function switchToPlayer1(){
                 break;
                 case 'knight':
 
-                    // SLICE AT 2 and check sides again
                     _fieldsAhead = getFieldsVertically(_fieldNumber, 1, 1).slice(0, 2);
                     _fieldsBehind = getFieldsVertically(_fieldNumber, 1, 0).slice(0, 2);
                     _fieldsLeft = getFieldsHorizontally(_fieldNumber, 1, 0).slice(0, 2);
                     _fieldsRight = getFieldsHorizontally(_fieldNumber, 1, 1).slice(0, 2);
-
-
 
                     if(_fieldsAhead[1] != null){
                         let top1 = enemylightFields(getFieldsHorizontally(_fieldsAhead[1], 1, 0).slice(0,1), 1);
@@ -836,24 +833,62 @@ function switchToPlayer1(){
                         highlightFieldsInLine(top2, 1);
                     }
                     
+                    if(_fieldsRight[1] != null){
+                        let right1 = enemylightFields(getFieldsVertically(_fieldsRight[1], 1, 1).slice(0,1), 1);
+                        let right2 = enemylightFields(getFieldsVertically(_fieldsRight[1], 1, 0).slice(0,1), 1)
+                        highlightFieldsInLine(right1, 1);
+                        highlightFieldsInLine(right2, 1);
+                    }
 
-/*                     _fieldsLeftBot = enemylightFields(getFieldsDiagonally(_fieldNumber, 1, 0, 0).slice(0, 1), 1);
-                    _fieldsLeftTop = enemylightFields(getFieldsDiagonally(_fieldNumber, 1, 0, 1).slice(0, 1), 1);
-                    _fieldsRightBot = enemylightFields(getFieldsDiagonally(_fieldNumber, 1, 1, 0).slice(0, 1), 1);
-                    _fieldsRightTop = enemylightFields(getFieldsDiagonally(_fieldNumber, 1, 1, 1).slice(0, 1), 1); */
+                    if(_fieldsLeft[1] != null){
+                        let left1 = enemylightFields(getFieldsVertically(_fieldsLeft[1], 1, 1).slice(0,1), 1);
+                        let left2 = enemylightFields(getFieldsVertically(_fieldsLeft[1], 1, 0).slice(0,1), 1)
+                        highlightFieldsInLine(left1, 1);
+                        highlightFieldsInLine(left2, 1);
+                    }
 
-/*                     highlightFieldsInLine(_fieldsAhead, 1);
-                    highlightFieldsInLine(_fieldsBehind, 1);
-                    highlightFieldsInLine(_fieldsLeft, 1);
-                    highlightFieldsInLine(_fieldsRight, 1);
-
-                    highlightFieldsInLine(_fieldsLeftBot, 0);
-                    highlightFieldsInLine(_fieldsLeftTop, 0);
-                    highlightFieldsInLine(_fieldsRightBot, 0);
-                    highlightFieldsInLine(_fieldsRightTop, 0); */
+                    if(_fieldsBehind[1] != null){
+                        let bot1 = enemylightFields(getFieldsVertically(_fieldsBehind[1], 1, 1).slice(0,1), 1);
+                        let bot2 = enemylightFields(getFieldsVertically(_fieldsBehind[1], 1, 0).slice(0,1), 1)
+                        highlightFieldsInLine(bot1, 1);
+                        highlightFieldsInLine(bot2, 1);
+                    }
                 
                 break;
                 case 'knight-white':
+
+                    _fieldsAhead = getFieldsVertically(_fieldNumber, 0, 1).slice(0, 2);
+                    _fieldsBehind = getFieldsVertically(_fieldNumber, 0, 0).slice(0, 2);
+                    _fieldsLeft = getFieldsHorizontally(_fieldNumber, 0, 0).slice(0, 2);
+                    _fieldsRight = getFieldsHorizontally(_fieldNumber, 0, 1).slice(0, 2);
+
+                    if(_fieldsAhead[1] != null){
+                        let top1 = enemylightFields(getFieldsHorizontally(_fieldsAhead[1], 0, 0).slice(0,1), 0);
+                        let top2 = enemylightFields(getFieldsHorizontally(_fieldsAhead[1], 0, 1).slice(0,1), 0)
+                        highlightFieldsInLine(top1, 1);
+                        highlightFieldsInLine(top2, 1);
+                    }
+                    
+                    if(_fieldsRight[1] != null){
+                        let right1 = enemylightFields(getFieldsVertically(_fieldsRight[1], 0, 1).slice(0,1), 0);
+                        let right2 = enemylightFields(getFieldsVertically(_fieldsRight[1], 0, 0).slice(0,1), 0)
+                        highlightFieldsInLine(right1, 1);
+                        highlightFieldsInLine(right2, 1);
+                    }
+
+                    if(_fieldsLeft[1] != null){
+                        let left1 = enemylightFields(getFieldsVertically(_fieldsLeft[1], 0, 1).slice(0,1), 0);
+                        let left2 = enemylightFields(getFieldsVertically(_fieldsLeft[1], 0, 0).slice(0,1), 0)
+                        highlightFieldsInLine(left1, 1);
+                        highlightFieldsInLine(left2, 1);
+                    }
+
+                    if(_fieldsBehind[1] != null){
+                        let bot1 = enemylightFields(getFieldsVertically(_fieldsBehind[1], 0, 1).slice(0,1), 0);
+                        let bot2 = enemylightFields(getFieldsVertically(_fieldsBehind[1], 0, 0).slice(0,1), 0)
+                        highlightFieldsInLine(bot1, 1);
+                        highlightFieldsInLine(bot2, 1);
+                    }
 
             default:
                 break;

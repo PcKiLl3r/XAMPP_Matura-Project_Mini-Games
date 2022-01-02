@@ -16,7 +16,7 @@
 </head>
 
 <body>
-    <div class="scene scene-playerOne">
+    <div class="scene">
         <div class="ui-board">
             <div class="ui-bar">
                 <div class="ui-btn">
@@ -200,7 +200,7 @@
             </div>
             <div id="row1" class="row">
                 <div tabindex="1" class="field">
-                    <div class="figure figure-black">
+                    <div class="figure figure-black figure-attack">
                         <div class="chessCard">
                             <div class="card-top bg-rook-white">
                             </div>
