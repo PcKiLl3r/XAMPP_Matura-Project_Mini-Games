@@ -812,7 +812,8 @@ blackGrave.innerHTML = "Black Graveyard";
             togglePlayer();
         }
 
-        // FIX EMPTY GRAVE WAIT
+        // TODO FIX EMPTY GRAVE WAIT
+        // TODO FIX PAWN KILL PAWN
     }
     function performAttack(_desiredFieldNum, _lastFieldNum){
         // fix pawn reaching end
