@@ -122,6 +122,9 @@ const fieldWidth = '5em';
 const quickActWhite = document.querySelector('.whiteQuickActions');
 const quickActBlack = document.querySelector('.blackQuickActions');
 
+const whiteGrave = document.querySelector('.whiteGraveyard');
+const blackGrave = document.querySelector('.blackGraveyard');
+
 let scene = document.querySelector('.scene');
 
 let currentPlayer = 1;
@@ -133,6 +136,9 @@ let enemylightedFields = [];
 const uiBoard = document.querySelector('.ui-board');
 
 let lastClickedField = undefined;
+
+let whitePawnEndField;
+let blackPawnEndField;
 
 function setup(){
     switchToPlayer1();
@@ -173,6 +179,8 @@ function setup(){
         toggleUIMenu();
     });
 
+    resetBoard();
+
     // DEV BUTTONS
     for (let index = 0; index < uiBoard.children[0].children.length; index++) {
         if(index == uiBoard.children[0].children.length - 1){
@@ -185,16 +193,28 @@ function setup(){
                 wipeBoard();
             });
         }
+
+        if(index == uiBoard.children[1].children.length - 1){
+            uiBoard.children[1].children[index].addEventListener('click', () => {
+                resetBoard();
+            });
+        }
+        if(index == uiBoard.children[1].children.length - 2){
+            uiBoard.children[1].children[index].addEventListener('click', () => {
+                wipeBoard();
+            });
+        }
         if(index == uiBoard.children[0].children.length - 3){
             uiBoard.children[0].children[index].addEventListener('click', () => {
-                if(currentPlayer == 1) {
+                /* if(currentPlayer == 1) {
                     switchToPlayer2();
                 } else {
                     switchToPlayer1();
-                }
+                } */
+                removeFigureFromGrave(32, 0, 1);
             });
         }
-        if(index == uiBoard.children[0].children.length - 4){
+        /* if(index == uiBoard.children[0].children.length - 4){
             uiBoard.children[0].children[index].addEventListener('click', () => {
                 killFigure(55);
                     setTimeout(() => {
@@ -202,7 +222,7 @@ function setup(){
                     }, 1000)
                 fields[47].children[0].classList.add('figure-attack');
             });
-        }
+        } */
     }
 
 }
@@ -254,6 +274,10 @@ function switchToPlayer1(){
     quickActBlack.classList.add('blackQuickActions-hidden');
 }
     function resetBoard(){
+
+whiteGrave.innerHTML = "White Graveyard";
+blackGrave.innerHTML = "Black Graveyard";
+
         console.log("Board Reset!");
         let fields = document.querySelectorAll('.field');
         for(let i = 0; i < fields.length; i++){
@@ -335,7 +359,7 @@ function switchToPlayer1(){
             setTimeout(() => {
             fields[_fieldNumber].children[0].classList.remove('figure-white-dead');
             }, 1000)
-        } else if(fields[_fieldNumber].children[0].classList.contains('figure-white')) {
+        } else if(fields[_fieldNumber].children[0].classList.contains('figure-black')) {
             fields[_fieldNumber].children[0].classList.add('figure-black-dead');
             setTimeout(() => {
                 fields[_fieldNumber].children[0].classList.remove('figure-black-dead');
@@ -345,15 +369,109 @@ function switchToPlayer1(){
     function moveFigureToGrave(_fieldNumber){
         
         if(fields[_fieldNumber].children[0].classList.contains('figure-white')){
-            const _whiteGrave = document.querySelector('.whiteGraveyard');
-            _whiteGrave.appendChild(fields[_fieldNumber].children[0].cloneNode(1));
+            fields[_fieldNumber].children[0].id = "graveW" + (whiteGrave.children.length + 1);
+            whiteGrave.appendChild(fields[_fieldNumber].children[0].cloneNode(1));
+
             fields[_fieldNumber].innerHTML = '';
+            
+            whiteGrave.lastChild.addEventListener('click', (e) => {
+                e.stopPropagation();
+                let _isWhite = null;
+        if(e.target.classList.contains('figure')){
+            _graveNumber = e.target.id.slice(5, e.target.id.length);
+            _isWhite = e.target.classList.contains('figure-white');
+        } else if(e.target.classList.contains('chessCard')){
+            _graveNumber = e.target.parentNode.id.slice(5, e.target.parentNode.id.length);
+            _isWhite = e.target.parentNode.classList.contains('figure-white');
+        } else if(e.target.classList.contains('card-top')){
+            _graveNumber = e.target.parentNode.parentNode.id.slice(5, e.target.parentNode.parentNode.id.length);
+            _isWhite = e.target.parentNode.parentNode.classList.contains('figure-white');
+        } else if(e.target.classList.contains('card-front') || e.target.classList.contains('card-back') || e.target.classList.contains('card-left') || e.target.classList.contains('card-right') || e.target.classList.contains('card-bot')){
+            _graveNumber = e.target.parentNode.parentNode.id.slice(5, e.target.parentNode.parentNode.id.length);
+            _isWhite = e.target.parentNode.parentNode.classList.contains('figure-white');
+        }
+        _graveNumber = parseInt(_graveNumber.slice(1, _graveNumber.length)) - 1;
+        console.log("gravenum: " + _graveNumber);
+
+        if(_isWhite){
+            if(whitePawnEndField == null) return;
+            whiteGrave.children[_graveNumber].classList.add('figure-white-revieve');
+            setTimeout(() => {
+            whiteGrave.children[_graveNumber].classList.remove('figure-white-revieve');
+            
+            let _figure = whiteGrave.children[_graveNumber].cloneNode(1);
+            whiteGrave.children[_graveNumber].remove();
+            console.log("figure: " + _figure + "\r\n");
+            console.log("wp end field: " + whitePawnEndField + "\r\n");
+            fields[whitePawnEndField].appendChild(_figure);
+            whitePawnEndField = null;
+            }, 1000)
+            
+        } else {
+            if(blackPawnEndField == null) return;
+            blackGrave.children[_graveNumber].classList.add('figure-black-revieve');
+            setTimeout(() => {
+            blackGrave.children[_graveNumber].classList.remove('figure-black-revieve');
+
+            let _figure = blackGrave.children[_graveNumber].cloneNode(1);
+            blackGrave.children[_graveNumber].remove();
+            
+            fields[blackPawnEndField].appendChild(_figure);
+            blackPawnEndField = null;
+            }, 1000)
+
+            
+        }
+            });
+
         } else if(fields[_fieldNumber].children[0].classList.contains('figure-black')) {
-            const _blackGrave = document.querySelector('.blackGraveyard');
-            _blackGrave.appendChild(fields[_fieldNumber].children[0].cloneNode(1));
+            fields[_fieldNumber].children[0].id = "graveB" + (blackGrave.children.length + 1);
+            blackGrave.appendChild(fields[_fieldNumber].children[0].cloneNode(1));
+
             fields[_fieldNumber].innerHTML = '';
+
+            /* blackGrave.lastChild.addEventListener('click', removeFigureFromGrave(blackPawnEndField, this, 0)); */
         }
     }
+    /* function removeFigureFromGrave(_fieldNumber, _e, _isWhite){
+        _e = _e || window.event;
+        var src = _e.target || _e.srcElement;
+        if(_e.target.classList.contains('figure')){
+            _graveNumber = _e.target.id.slice(5, e.target.id.length);
+        } else if(_e.target.classList.contains('chessCard')){
+            _graveNumber = _e.target.parentNode.id.slice(5, e.target.id.length);
+        } else if(_e.target.classList.contains('card-top')){
+            _graveNumber = _e.target.parentNode.parentNode.id.slice(5, e.target.id.length);
+        } else if(_e.target.classList.contains('card-front') || _e.target.classList.contains('card-back') || _e.target.classList.contains('card-left') || _e.target.classList.contains('card-right') || _e.target.classList.contains('card-bot')){
+            _graveNumber = -e.target.parentNode.parentNode.id.slice(5, e.target.id.length);
+        }
+
+        console.log(_graveNumber);
+
+        if(_isWhite){
+            whiteGrave.children[_graveNumber].classList.add('figure-white-revieve');
+            setTimeout(() => {
+            whiteGrave.children[_graveNumber].classList.remove('figure-white-revieve');
+            
+            let _figure = whiteGrave.children[_graveNumber].cloneNode(1);
+            whiteGrave.children[_graveNumber].remove();
+            fields[_fieldNumber].appendChild(_figure);
+            }, 1000)
+
+            whitePawnEndField = null;
+        } else {
+            blackGrave.children[_graveNumber].classList.add('figure-black-revieve');
+            setTimeout(() => {
+            blackGrave.children[_graveNumber].classList.remove('figure-black-revieve');
+
+            let _figure = blackGrave.children[_graveNumber].cloneNode(1);
+            blackGrave.children[_graveNumber].remove();
+            fields[_fieldNumber].appendChild(_figure);
+            }, 1000)
+
+            blackPawnEndField = null;
+        }
+    } */
     function clearHighlightedFields(){
         for (let index = 0; index < highlightedFields.length; index++) {
             if(fields[highlightedFields[index]].classList.contains('focusedFieldBlack')){
@@ -602,16 +720,27 @@ function switchToPlayer1(){
          return(_fieldsAvail);
     }
     function performMove(_desiredFieldNum, _lastFieldNum){
-        let _figure = fields[_lastFieldNum].innerHTML;
+        let _figure = fields[_lastFieldNum].lastChild.cloneNode(1);
         fields[_lastFieldNum].innerHTML = '';
-        fields[_desiredFieldNum].innerHTML = _figure;
+        fields[_desiredFieldNum].appendChild(_figure);
         
         clearEnemylightedFields();
         clearHighlightedFields();
         togglePlayer();
+
+        if(fields[_desiredFieldNum].children[0].children[0].children[0].classList.contains('bg-pawn')) {
+                        
+            if(_desiredFieldNum - 1 >= 0 && _desiredFieldNum - 1 < 8){
+                whitePawnEndField = _desiredFieldNum;
+            }
+        } else if(fields[_desiredFieldNum].children[0].children[0].children[0].classList.contains('bg-pawn-white')) {
+            if(_desiredFieldNum - 1 > 55 && _desiredFieldNum - 1 < 64){
+                blackPawnEndField = _desiredFieldNum;
+            }
+        }
     }
     function performAttack(_desiredFieldNum, _lastFieldNum){
-        // let Attacker
+        // fix pawn reaching end
         let _figureAttacker = fields[_lastFieldNum].innerHTML;
 
         killFigure(_desiredFieldNum);
@@ -624,9 +753,19 @@ function switchToPlayer1(){
         clearEnemylightedFields();
         clearHighlightedFields();
         togglePlayer();
+
+        
+        if(fields[_desiredFieldNum].children[0].children[0].children[0].classList.contains('bg-pawn')) {
+            if(_desiredFieldNum >= 0 && _desiredFieldNum < 8){
+                whitePawnEndField = _desiredFieldNum;
+            }
+        } else if(fields[_desiredFieldNum].children[0].children[0].children[0].classList.contains('bg-pawn-white')) {
+            if(_desiredFieldNum  > 55 && _desiredFieldNum < 64){
+                blackPawnEndField = _desiredFieldNum;
+            }
+        }
     }
     function handleFieldClick(e) {
-
         let figureType;
 
         let _fieldNumber;
@@ -738,8 +877,6 @@ function switchToPlayer1(){
     
                         enemylightFields(_fieldsLeftTop, 1, 1);
                         enemylightFields(_fieldsRightTop, 1, 1);
-    
-                    // TODO ATTACK CHECK PAWN
                     
                     break;
                     case 'rook':

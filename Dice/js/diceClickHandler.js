@@ -543,7 +543,7 @@ function playAnimation1(isRev, frameSkip){
 
             document.querySelectorAll('form').forEach(form => {
                 form.addEventListener('submit', (e) => {
-                    e.preventDefault();
+                    /* e.preventDefault(); */
                     
                     // Send dice click info
 

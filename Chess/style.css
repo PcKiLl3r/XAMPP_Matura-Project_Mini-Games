@@ -214,6 +214,24 @@ body {
         gap: calc(var(--fieldHeight) / 16) calc(var(--fieldHeight) / 16);
 }
 
+.ui-bar-black{
+    /* padding: calc(var(--fieldHeight) / 8); */
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: gray;
+        width: calc(var(--fieldWidth) * 8 );
+        height: calc(var(--fieldHeight) * 1 ) ;
+        display: flex;
+        flex-flow: wrap-reverse;
+        flex-direction: row-reverse;
+        justify-content: flex-end;
+        border: solid 3px var(--chessStructureColor);
+        transform-style: preserve-3d;
+        transform: rotateZ(180deg) rotateX(180deg) /* translateX(calc(0 - calc(var(--fieldHeight)))) */;
+        gap: calc(var(--fieldHeight) / 16) calc(var(--fieldHeight) / 16);
+}
+
 .ui-btn{
     position: relative;
     height: 100%;
@@ -424,6 +442,14 @@ body {
 } */
 
 .row > .field{
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+
     position: relative;
     display: flex;
     width: var(--fieldWidth);
@@ -540,6 +566,15 @@ body {
 }
 
 .whiteGraveyard{
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+
+    color: #fff;
     padding: calc(var(--fieldHeight) / 16) 0;
     position: absolute;
     left: 110%;
@@ -585,6 +620,14 @@ body {
         }
 
 .blackGraveyard{
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+
     padding: calc(var(--fieldHeight) / 16) 0;
     position: absolute;
     right: 110%;
@@ -629,6 +672,14 @@ body {
         }
 
 .mark{
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+
     color: var(--whiteMarksTextColor);
     text-align: center;
     background-color: var(--whiteMarksColor);
@@ -643,11 +694,11 @@ body {
 }
 
 .fieldMarksVertical > .mark{
-    line-height: calc(var(--fieldWidth) / 2);
+    line-height: calc(var(--fieldWidth) / 3);
     text-align: center;
     align-content: center;
     width: calc(var(--fieldWidth) / 4);
-    height: calc(var(--fieldWidth) / 2) ;
+    height: calc(var(--fieldWidth) / 3);
 }
 
 .fieldMarksHorizontal2 > .mark{
@@ -659,11 +710,11 @@ body {
 }
 
 .fieldMarksVertical2 > .mark{
-    line-height: calc(var(--fieldWidth) / 2);
+    line-height: calc(var(--fieldWidth) / 3);
     text-align: center;
     align-content: center;
     width: calc(var(--fieldWidth) / 4);
-    height: calc(var(--fieldWidth) / 2) ;
+    height: calc(var(--fieldWidth) / 3);
 }
 
 .mark:nth-child(2n){
@@ -712,7 +763,7 @@ to { transform: translateZ(0px) rotateX(var(--figureRotateAmount)) rotateY(0deg)
 }
 
 .figure-white-dead {
-    animation: figureWhiteDead var(--figureDieSpeed) linear !important;
+    animation: figureWhiteDead var(--figureDieSpeed) ease-in-out !important;
 }
 
 @keyframes figureWhiteDead {
@@ -723,15 +774,37 @@ to { transform: translateZ(0px) rotateX(var(--figureRotateAmount)) rotateY(0deg)
     }
 
     .figure-black-dead {
-        animation: figureBlackDead var(--figureDieSpeed) linear !important;
+        animation: figureBlackDead var(--figureDieSpeed) ease-in-out !important;
     }
     
     @keyframes figureBlackDead {
         0% { transform: translateZ(0px) }
-        33% { transform: translateZ(-250px) translateX(1625px) }
-        66% { transform: translateZ(0px) translateX(3250px) }
-        100% { transform: translateZ(0px) translateX(3250px) }
+        33% { transform: translateZ(250px) translateX(-1625px) }
+        66% { transform: translateZ(0px) translateX(-3250px) }
+        100% { transform: translateZ(0px) translateX(-3250px) }
         }
+
+        .figure-white-revieve {
+            animation: figureWhiteRevive var(--figureDieSpeed) ease-in-out !important;
+        }
+        
+        @keyframes figureWhiteRevive {
+            0% { transform: translateZ(0px) }
+            33% { transform: translateZ(250px) translateX(1625px) translateY(-1625px) }
+            66% { transform: translateZ(0px) translateX(1625px) translateY(-1625px) }
+            100% { transform: translateZ(0px) translateX(1625px) translateY(-1625px) }
+            }
+
+            .figure-black-revieve {
+                animation: figureBlackRevieve var(--figureDieSpeed) ease-in-out !important;
+            }
+            
+            @keyframes figureBlackRevive {
+                0% { transform: translateZ(0px) }
+                33% { transform: translateZ(250px) translateX(-1625px) translateY(1625px) }
+                66% { transform: translateZ(0px) translateX(-1625px) translateY(1625px) }
+                100% { transform: translateZ(0px) translateX(-1625px) translateY(1625px) }
+                }
 
 .figure-attack{
     animation: figureAttack var(--figureAttackSpeed) ease-in-out 1;
