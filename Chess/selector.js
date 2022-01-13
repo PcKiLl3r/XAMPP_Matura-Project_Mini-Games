@@ -1,10 +1,9 @@
-document.addEventListener('DOMContentLoaded', () => {
+//#region Variables
+let whiteFigure = document.createElement('div');
+whiteFigure.classList.add('figure','figure-white');
 
-    let whiteFigure = document.createElement('div');
-    whiteFigure.classList.add('figure','figure-white');
-
-    let blackFigure = document.createElement('div');
-    blackFigure.classList.add('figure','figure-black');
+let blackFigure = document.createElement('div');
+blackFigure.classList.add('figure','figure-black');
 
 let whitePawnText = `<div class="chessCard">
     <div class="card-top bg-pawn-white"></div>
@@ -114,11 +113,6 @@ let blackQueenText = `<div class="chessCard">
     <div class="card-back"></div>
 </div>`;
 
-const fields = document.querySelectorAll('.field');
-
-const fieldHeight = '5em';
-const fieldWidth = '5em';
-
 const quickActWhite = document.querySelector('.whiteQuickActions');
 const quickActBlack = document.querySelector('.blackQuickActions');
 
@@ -127,7 +121,7 @@ const blackGrave = document.querySelector('.blackGraveyard');
 
 let scene = document.querySelector('.scene');
 
-let currentPlayer = 1;
+let currentPlayer = 'unset';
 
 let highlightedFields = [];
 
@@ -140,94 +134,54 @@ let lastClickedField = undefined;
 let whitePawnEndField;
 let blackPawnEndField;
 
-function setup(){
-    switchToPlayer1();
-    let _isOdd = true;
-    let _count = 0;
-    fields.forEach(field => {
+let hasCheck = 1;
 
-        if(_count == 8 || _count == 16 ||_count == 24 ||_count == 32
-            ||_count == 40 ||_count == 48 ||_count == 56){
-                _isOdd = !_isOdd;
-            }
-        if(!_isOdd){
-            field.classList.add('field-white');
-            _isOdd = !_isOdd;
-        } else {
-            field.classList.add('field-black');
-            _isOdd = !_isOdd;
-        }
-
-        _count++;
-
-        field.addEventListener('click', handleFieldClick);
-    });
-
-    quickActWhite.children[1].addEventListener('click', () => {
-
-    });
-
-    quickActWhite.children[0].addEventListener('click', () => {
-        toggleUIMenu();
-    });
-
-    quickActBlack.children[1].addEventListener('click', () => {
-
-    });
-
-    quickActBlack.children[0].addEventListener('click', () => {
-        toggleUIMenu();
-    });
-
-    resetBoard();
-
-    // DEV BUTTONS
-    for (let index = 0; index < uiBoard.children[0].children.length; index++) {
-        if(index == uiBoard.children[0].children.length - 1){
-            uiBoard.children[0].children[index].addEventListener('click', () => {
-                resetBoard();
-            });
-        }
-        if(index == uiBoard.children[0].children.length - 2){
-            uiBoard.children[0].children[index].addEventListener('click', () => {
-                wipeBoard();
-            });
-        }
-
-        if(index == uiBoard.children[1].children.length - 1){
-            uiBoard.children[1].children[index].addEventListener('click', () => {
-                resetBoard();
-            });
-        }
-        if(index == uiBoard.children[1].children.length - 2){
-            uiBoard.children[1].children[index].addEventListener('click', () => {
-                wipeBoard();
-            });
-        }
-        if(index == uiBoard.children[0].children.length - 3){
-            uiBoard.children[0].children[index].addEventListener('click', () => {
-                /* if(currentPlayer == 1) {
-                    switchToPlayer2();
-                } else {
-                    switchToPlayer1();
-                } */
-                /* removeFigureFromGrave(32, 0, 1); */
-            });
-        }
-        /* if(index == uiBoard.children[0].children.length - 4){
-            uiBoard.children[0].children[index].addEventListener('click', () => {
-                killFigure(55);
-                    setTimeout(() => {
-                        moveFigureToGrave(55);
-                    }, 1000)
-                fields[47].children[0].classList.add('figure-attack');
-            });
-        } */
+function reverseChildren(parent) {
+    for (var i = 1; i < parent.childNodes.length; i++){
+        parent.insertBefore(parent.childNodes[i], parent.firstChild);
     }
-
 }
-function toggleUIMenu(){
 
+function fixFields() {
+
+    for (var i = 0; i < 8; i++){
+        for (let i2 = 0; i2 < 8; i2++) {
+            
+            rows[i].insertBefore(rows[i].childNodes[i2], rows[i].firstChild);
+        }
+    }
+}
+
+let rows = document.querySelectorAll('.row');
+
+let _fieldTemplate = document.createElement('div');
+_fieldTemplate.classList.add('field');
+
+_fieldCounter = 64;
+for (let index = 0; index < rows.length; index++) {
+    for (let indexField = 8; indexField > 0; indexField--) {
+        _fieldTemplate.setAttribute('tabindex', _fieldCounter);
+        rows[index].appendChild(_fieldTemplate.cloneNode());
+        _fieldCounter--;
+    }
+    reverseChildren(rows[index]);
+}
+
+let fields = document.querySelectorAll('.field');
+
+/* fixFields(); */
+
+let connStatus = 'Unset';
+
+let gameStatus = 'Unknown';
+
+let infoMsg = '';
+
+let fieldData = [];
+//#endregion Variables
+//#region UI Methods
+
+function toggleUIMenu(){
     if(uiBoard.classList.contains('ui-board-shown')){
         uiBoard.classList.remove('ui-board-shown');
         uiBoard.classList.add('ui-board-hidden');
@@ -275,11 +229,7 @@ function switchToPlayer1(){
 }
     function resetBoard(){
 
-whiteGrave.innerHTML = "White Graveyard";
-blackGrave.innerHTML = "Black Graveyard";
-
         console.log("Board Reset!");
-        let fields = document.querySelectorAll('.field');
         for(let i = 0; i < fields.length; i++){
             fields[i].innerHTML = '';
             if(i < 16 && i > 7){
@@ -348,7 +298,6 @@ blackGrave.innerHTML = "Black Graveyard";
     }
     function wipeBoard(){
         console.log("Board Reset!");
-        let fields = document.querySelectorAll('.field');
         for(let i = 0; i < fields.length; i++){
             fields[i].innerHTML = i;
         }
@@ -503,45 +452,6 @@ blackGrave.innerHTML = "Black Graveyard";
             });
         }
     }
-    /* function removeFigureFromGrave(_fieldNumber, _e, _isWhite){
-        _e = _e || window.event;
-        var src = _e.target || _e.srcElement;
-        if(_e.target.classList.contains('figure')){
-            _graveNumber = _e.target.id.slice(5, e.target.id.length);
-        } else if(_e.target.classList.contains('chessCard')){
-            _graveNumber = _e.target.parentNode.id.slice(5, e.target.id.length);
-        } else if(_e.target.classList.contains('card-top')){
-            _graveNumber = _e.target.parentNode.parentNode.id.slice(5, e.target.id.length);
-        } else if(_e.target.classList.contains('card-front') || _e.target.classList.contains('card-back') || _e.target.classList.contains('card-left') || _e.target.classList.contains('card-right') || _e.target.classList.contains('card-bot')){
-            _graveNumber = -e.target.parentNode.parentNode.id.slice(5, e.target.id.length);
-        }
-
-        console.log(_graveNumber);
-
-        if(_isWhite){
-            whiteGrave.children[_graveNumber].classList.add('figure-white-revieve');
-            setTimeout(() => {
-            whiteGrave.children[_graveNumber].classList.remove('figure-white-revieve');
-            
-            let _figure = whiteGrave.children[_graveNumber].cloneNode(1);
-            whiteGrave.children[_graveNumber].remove();
-            fields[_fieldNumber].appendChild(_figure);
-            }, 1000)
-
-            whitePawnEndField = null;
-        } else {
-            blackGrave.children[_graveNumber].classList.add('figure-black-revieve');
-            setTimeout(() => {
-            blackGrave.children[_graveNumber].classList.remove('figure-black-revieve');
-
-            let _figure = blackGrave.children[_graveNumber].cloneNode(1);
-            blackGrave.children[_graveNumber].remove();
-            fields[_fieldNumber].appendChild(_figure);
-            }, 1000)
-
-            blackPawnEndField = null;
-        }
-    } */
     function clearHighlightedFields(){
         for (let index = 0; index < highlightedFields.length; index++) {
             if(fields[highlightedFields[index]].classList.contains('focusedFieldBlack')){
@@ -733,20 +643,39 @@ blackGrave.innerHTML = "Black Graveyard";
                         if(_fieldNumber - 7 - (7 * index) < 0) {
                             break;
                         }
+                        if(parseInt(fields[_fieldNumber - 7 - (7 * index)].parentNode.id.slice(3, 4)) >= parseInt(fields[_fieldNumber - (7 * index)].parentNode.id.slice(3, 4))){
+                            break;
+                        }
+                        if(parseInt(fields[_fieldNumber - 7 - (7 * index)].parentNode.id.slice(3, 4)) - parseInt(fields[_fieldNumber - (7 * index)].parentNode.id.slice(3, 4)) < -1){
+                            break;
+                        }
+                        /* if(parseInt(fields[_fieldNumber - (7 * index)].parentNode.id.slice(3, 4)) - parseInt(fields[_fieldNumber - 7 - (7 * index)].parentNode.id.slice(3, 4)) > 1){
+                            break;    
+                        } */
                             _fieldsAvail[index] = _fieldNumber - 7 - (7 * index);
-                            if(fields[_fieldNumber - 7 - (7 * index)].nextElementSibling == null || fields[_fieldNumber - 7 - (7 * index)].previousElementSibling == null) {
+                            
+                            /* if(fields[_fieldNumber - 7 - (7 * index)].nextElementSibling == null || fields[_fieldNumber - 7 - (7 * index)].previousElementSibling == null) {
                                 break;
-                            }
+                            } */
                     }
                 } else {
                     for (let index = 0; index < 7; index++) {
                         if(_fieldNumber + 9 + (9 * index) > 63) {
                             break;
                         }
+                        if(parseInt(fields[_fieldNumber + 9 + (9 * index)].parentNode.id.slice(3, 4)) <= parseInt(fields[_fieldNumber + (9 * index)].parentNode.id.slice(3, 4))){
+                            break;
+                        }
+                        if(parseInt(fields[_fieldNumber + 9 + (9 * index)].parentNode.id.slice(3, 4)) - parseInt(fields[_fieldNumber + (9 * index)].parentNode.id.slice(3, 4)) > 1){
+                            break;
+                        }
                             _fieldsAvail[index] = _fieldNumber + 9 + (9 * index);
-                            if(fields[_fieldNumber + 9 + (9 * index)].nextElementSibling == null || fields[_fieldNumber + 9 + (9 * index)].previousElementSibling == null) {
+                            /* if(parseInt(fields[_fieldNumber + 9 + (9 * index)].parentNode.id.slice(3, 4)) - parseInt(fields[_fieldNumber + 9 + 9 + (9 * index)].parentNode.id.slice(3, 4)) < -1){
+                                break;    
+                            } */
+                            /* if(fields[_fieldNumber + 9 + (9 * index)].nextElementSibling == null || fields[_fieldNumber + 9 + (9 * index)].previousElementSibling == null) {
                                 break;
-                            }
+                            } */
                     }
                 }
             } else {
@@ -755,20 +684,38 @@ blackGrave.innerHTML = "Black Graveyard";
                         if(_fieldNumber - 9 - (9 * index) < 0) {
                             break;
                         }
+                        if(parseInt(fields[_fieldNumber - 9 - (9 * index)].parentNode.id.slice(3, 4)) >= parseInt(fields[_fieldNumber - (9 * index)].parentNode.id.slice(3, 4))){
+                            break;
+                        }
+                        if(parseInt(fields[_fieldNumber - 9 - (9 * index)].parentNode.id.slice(3, 4)) - parseInt(fields[_fieldNumber - (9 * index)].parentNode.id.slice(3, 4)) < -1){
+                            break;
+                        }
                             _fieldsAvail[index] = _fieldNumber - 9 - (9 * index);
-                            if(fields[_fieldNumber - 9 - (9 * index)].nextElementSibling == null || fields[_fieldNumber - 9 - (9 * index)].previousElementSibling == null) {
+                            /* if(parseInt(fields[_fieldNumber - 9 - (9 * index)].parentNode.id.slice(3, 4)) - parseInt(fields[_fieldNumber - 9 - 9 - (9 * index)].parentNode.id.slice(3, 4)) > 1){
+                                break;    
+                            } */
+                            /* if(fields[_fieldNumber - 9 - (9 * index)].nextElementSibling == null || fields[_fieldNumber - 9 - (9 * index)].previousElementSibling == null) {
                                 break;
-                            }
+                            } */
                     }
                 } else {
                     for (let index = 0; index < 7; index++) {
                         if(_fieldNumber + 7 + (7 * index) > 63) {
                             break;
                         }
-                            _fieldsAvail[index] = _fieldNumber + 7 + (7 * index);
-                            if(fields[_fieldNumber + 7 + (7 * index)].nextElementSibling == null || fields[_fieldNumber + 7 + (7 * index)].previousElementSibling == null) {
+                        if(parseInt(fields[_fieldNumber + 7 + (7 * index)].parentNode.id.slice(3, 4)) <= parseInt(fields[_fieldNumber + (7 * index)].parentNode.id.slice(3, 4))){
                             break;
                         }
+                        if(parseInt(fields[_fieldNumber + 7 + (7 * index)].parentNode.id.slice(3, 4)) - parseInt(fields[_fieldNumber + (7 * index)].parentNode.id.slice(3, 4)) > 1){
+                            break;
+                        }
+                            _fieldsAvail[index] = _fieldNumber + 7 + (7 * index);
+                            /* if(parseInt(fields[_fieldNumber + 7 + (7 * index)].parentNode.id.slice(3, 4)) - parseInt(fields[_fieldNumber + 7 + 7 + (7 * index)].parentNode.id.slice(3, 4)) < -1){
+                                break;    
+                            } */
+                            /* if(fields[_fieldNumber + 7 + (7 * index)].nextElementSibling == null || fields[_fieldNumber + 7 + (7 * index)].previousElementSibling == null) {
+                            break;
+                        } */
                     }
                 }
             }
@@ -842,7 +789,216 @@ blackGrave.innerHTML = "Black Graveyard";
         clearEnemylightedFields();
         clearHighlightedFields();
     }
-    function handleFieldClick(e) {
+    function remapFieldNumber(_fieldNum){
+        let _fixedNum;
+        switch (_fieldNum) {
+
+                case 56:
+                _fixedNum = 0;
+                break;
+                case 57:
+                _fixedNum = 1;
+                break;
+                case 58:
+                _fixedNum = 2;
+                break;
+                case 59:
+                _fixedNum = 3;
+                break;
+                case 60:
+                _fixedNum = 4;
+                break;
+                case 61:
+                _fixedNum = 5;
+                break;
+                case 62:
+                _fixedNum = 6;
+                break;
+                case 63:
+                _fixedNum = 7;
+                break;
+
+                case 48:
+                _fixedNum = 8;
+                break;
+                case 49:
+                _fixedNum = 9;
+                break;
+                case 50:
+                _fixedNum = 10;
+                break;
+                case 51:
+                _fixedNum = 11;
+                break;
+                case 52:
+                _fixedNum = 12;
+                break;
+                case 53:
+                _fixedNum = 13;
+                break;
+                case 54:
+                _fixedNum = 14;
+                break;
+                case 55:
+                _fixedNum = 15;
+                break;
+
+                case 40:
+                _fixedNum = 16;
+                break;
+                case 41:
+                _fixedNum = 17;
+                break;
+                case 42:
+                _fixedNum = 18;
+                break;
+                case 43:
+                _fixedNum = 19;
+                break;
+                case 44:
+                _fixedNum = 20;
+                break;
+                case 45:
+                _fixedNum = 21;
+                break;
+                case 46:
+                _fixedNum = 22;
+                break;
+                case 47:
+                _fixedNum = 23;
+                break;
+
+                case 32:
+                _fixedNum = 24;
+                break;
+                case 33:
+                _fixedNum = 25;
+                break;
+                case 34:
+                _fixedNum = 26;
+                break;
+                case 35:
+                _fixedNum = 27;
+                break;
+                case 36:
+                _fixedNum = 28;
+                break;
+                case 37:
+                _fixedNum = 29;
+                break;
+                case 38:
+                _fixedNum = 30;
+                break;
+                case 39:
+                _fixedNum = 31;
+                break;
+
+                case 24:
+                _fixedNum = 32;
+                break;
+                case 25:
+                _fixedNum = 33;
+                break;
+                case 26:
+                _fixedNum = 34;
+                break;
+                case 27:
+                _fixedNum = 35;
+                break;
+                case 28:
+                _fixedNum = 36;
+                break;
+                case 29:
+                _fixedNum = 37;
+                break;
+                case 30:
+                _fixedNum = 38;
+                break;
+                case 31:
+                _fixedNum = 39;
+                break;
+
+                case 16:
+                _fixedNum = 40;
+                break;
+                case 17:
+                _fixedNum = 41;
+                break;
+                case 18:
+                _fixedNum = 42;
+                break;
+                case 19:
+                _fixedNum = 43;
+                break;
+                case 20:
+                _fixedNum = 44;
+                break;
+                case 21:
+                _fixedNum = 45;
+                break;
+                case 22:
+                _fixedNum = 46;
+                break;
+                case 23:
+                _fixedNum = 47;
+                break;
+
+                case 8:
+                _fixedNum = 48;
+                break;
+                case 9:
+                _fixedNum = 49;
+                break;
+                case 10:
+                _fixedNum = 50;
+                break;
+                case 11:
+                _fixedNum = 51;
+                break;
+                case 12:
+                _fixedNum = 52;
+                break;
+                case 13:
+                _fixedNum = 53;
+                break;
+                case 14:
+                _fixedNum = 54;
+                break;
+                case 15:
+                _fixedNum = 55;
+                break;
+
+                case 0:
+                _fixedNum = 56;
+                break;
+                case 1:
+                _fixedNum = 57;
+                break;
+                case 2:
+                _fixedNum = 58;
+                break;
+                case 3:
+                _fixedNum = 59;
+                break;
+                case 4:
+                _fixedNum = 60;
+                break;
+                case 5:
+                _fixedNum = 61;
+                break;
+                case 6:
+                _fixedNum = 62;
+                break;
+                case 7:
+                _fixedNum = 63;
+                break;
+        
+            default:
+                break;
+        }
+        return(_fieldNum);
+    }
+    async function handleFieldClick(e) {
         let figureType;
 
         let _fieldNumber;
@@ -852,60 +1008,75 @@ blackGrave.innerHTML = "Black Graveyard";
         if(e.target.classList.contains('field')){
             _selectedField = e.target;
             if(e.target.children[0] == undefined){
-                _fieldNumber = parseInt(e.target.tabIndex);
-                _selectedField = fields[_fieldNumber - 1];
+                _fieldNumber = getFieldIndex(e.target);
+                remapFieldNumber(_fieldNumber);
                 console.log("Empty field: " + _fieldNumber);
             } else {
                 figureType = e.target.children[0].children[0].children[0].classList;
                 figureType = figureType[1];
-                _fieldNumber = parseInt(e.target.tabIndex);
-                _selectedField = fields[_fieldNumber - 1];
+                _fieldNumber = getFieldIndex(e.target);
+                /* _fieldNumber = parseInt(e.target.tabIndex); */
             }
         } else if(e.target.classList.contains('figure')){
             figureType = e.target.children[0].children[0].classList;
             figureType = figureType[1];
-                _fieldNumber = parseInt(e.target.parentNode.tabIndex);
-                _selectedField = fields[_fieldNumber - 1];
+            _fieldNumber = getFieldIndex(e.target.parentNode.tabIndex);
         } else if(e.target.classList.contains('chessCard')){
             figureType = e.target.children[0].classList;
             figureType = figureType[1];
-                _fieldNumber = parseInt(e.target.parentNode.parentNode.tabIndex);
-                _selectedField = fields[_fieldNumber - 1];
+            _fieldNumber = getFieldIndex(e.target.parentNode.parentNode.tabIndex);
         } else if(e.target.classList.contains('card-top')){
             figureType = e.target.classList;
             figureType = figureType[1];
-                _fieldNumber = parseInt(e.target.parentNode.parentNode.parentNode.tabIndex);
-                _selectedField = fields[_fieldNumber - 1];
+            _fieldNumber = getFieldIndex(e.target.parentNode.parentNode.parentNode);
         } else if(e.target.classList.contains('card-front') || e.target.classList.contains('card-back') || e.target.classList.contains('card-left') || e.target.classList.contains('card-right') || e.target.classList.contains('card-bot')){
             figureType = e.target.parentNode.children[0].classList;
             figureType = figureType[1];
-                _fieldNumber = parseInt(e.target.parentNode.parentNode.parentNode.tabIndex);
-                _selectedField = fields[_fieldNumber - 1];
+            _fieldNumber = getFieldIndex(e.target.parentNode.parentNode.parentNode);
         }
 
-        if(currentPlayer == 1){
-
+        function getFieldIndex(_field){
+            for (let index = 0; index < fields.length; index++) {
+                if(_field.isEqualNode(fields[index])){
+                    return index;
+                }
+            }
+            return ('error');
         }
+
+        remapFieldNumber(_fieldNumber);
+        _selectedField = fields[_fieldNumber];
+/*         _fieldNumber =
+
+        _fieldNumber--;
+
+        _fieldNumber = 62 - _fieldNumber; */
 
         if(_selectedField.classList.contains('focusedFieldWhite') || _selectedField.classList.contains('focusedFieldBlack')){
             // IF FIELD IS HIGHLIGHTED REGISTER MOVE
             if(currentPlayer == 1){
                 if(fields[lastClickedField].children[0].classList.contains('figure-white')){
-                    performMove(_fieldNumber - 1, lastClickedField);
+                    let _res = await SendPlayerMove(_fieldNumber, lastClickedField);
+                    if(_res == 'MoveOK'){
+                        performMove(_fieldNumber, lastClickedField);
+                    } else {
+                        console.log("Server: Invalid Move!");
+                    }
+                    //performMove(_fieldNumber, lastClickedField);
                 }
             } else {
                 if(fields[lastClickedField].children[0].classList.contains('figure-black')){
-                    performMove(_fieldNumber - 1, lastClickedField);
+                    performMove(_fieldNumber, lastClickedField);
                 }
             }
         } else if(_selectedField.classList.contains('enemyFieldBlack') || _selectedField.classList.contains('enemyFieldWhite')){
             if(currentPlayer == 1){
                 if(fields[lastClickedField].children[0].classList.contains('figure-white')){
-                    performAttack(_fieldNumber - 1, lastClickedField);
+                    performAttack(_fieldNumber, lastClickedField);
                 }
             } else {
                 if(fields[lastClickedField].children[0].classList.contains('figure-black')){
-                    performAttack(_fieldNumber - 1, lastClickedField);
+                    performAttack(_fieldNumber, lastClickedField);
                 }
             }
         } else {
@@ -914,7 +1085,7 @@ blackGrave.innerHTML = "Black Graveyard";
 
         clearEnemylightedFields();
 
-        _fieldNumber--;
+        
 
         if(figureType != null){
             figureType = figureType.slice(3, figureType.length);
@@ -931,6 +1102,8 @@ blackGrave.innerHTML = "Black Graveyard";
         let _fieldsRight;
         let _fieldsRightTop;
         let _fieldsRightBot;
+
+        
 
         if(figureType != null){
             if(currentPlayer == 1){
@@ -1022,9 +1195,9 @@ blackGrave.innerHTML = "Black Graveyard";
                         _fieldsRightBot = enemylightFields(getFieldsDiagonally(_fieldNumber, 1, 1, 0), 1);
                         _fieldsRightTop = enemylightFields(getFieldsDiagonally(_fieldNumber, 1, 1, 1), 1);
     
-                        /* highlightFieldsInLine(_fieldsLeftBot, 0); */
+                        highlightFieldsInLine(_fieldsLeftBot, 0);
                         highlightFieldsInLine(_fieldsLeftTop, 0);
-                        /* highlightFieldsInLine(_fieldsRightBot, 0); */
+                        highlightFieldsInLine(_fieldsRightBot, 0);
                         highlightFieldsInLine(_fieldsRightTop, 0);
                     
                     break;
@@ -1208,267 +1381,325 @@ blackGrave.innerHTML = "Black Graveyard";
 
         
     }
-
-/*         switch (figureType) {
-
-            case 'pawn':
-
-                _fieldsAhead = getFieldsVertically(_fieldNumber, 1, 1);
-                if(_fieldNumber >= 48 && _fieldNumber <= 55){
-                    _fieldsAhead = _fieldsAhead.slice(0, 2);
-                } else {
-                    _fieldsAhead = _fieldsAhead.slice(0, 1);
-                }
-                _fieldsAhead = enemylightFields(_fieldsAhead, 1, false);
-                
-                highlightFieldsInLine(_fieldsAhead, 1);
-
-                _fieldsLeftTop = enemylightFields(getFieldsDiagonally(_fieldNumber, 1, 0, 1).slice(0, 1), 1);
-                    _fieldsRightTop = enemylightFields(getFieldsDiagonally(_fieldNumber, 1, 1, 1).slice(0, 1), 1);
-
-                    enemylightFields(_fieldsLeftTop, 1, 1);
-                    enemylightFields(_fieldsRightTop, 1, 1);
-
-                // TODO ATTACK CHECK PAWN
-                
-                break;
-                case 'pawn-white':
-
-                    _fieldsAhead = getFieldsVertically(_fieldNumber, 0, 1);
-                    if(_fieldNumber >= 8 && _fieldNumber <= 15){
-                            _fieldsAhead = _fieldsAhead.slice(0, 2);
-                        } else {
-                            _fieldsAhead = _fieldsAhead.slice(0, 1);
-                        }
-                        _fieldsAhead = enemylightFields(_fieldsAhead, 0, false);
-
-                        highlightFieldsInLine(_fieldsAhead, 1);
-
-                        _fieldsLeftTop = enemylightFields(getFieldsDiagonally(_fieldNumber, 0, 0, 1).slice(0, 1), 0);
-                    _fieldsRightTop = enemylightFields(getFieldsDiagonally(_fieldNumber, 0, 1, 1).slice(0, 1), 0);
-
-                    enemylightFields(_fieldsLeftTop, 0, 1);
-                    enemylightFields(_fieldsRightTop, 0, 1);
-
-                break;
-                case 'rook':
-
-                    _fieldsAhead = enemylightFields(getFieldsVertically(_fieldNumber, 1, 1), 1);
-                    _fieldsBehind = enemylightFields(getFieldsVertically(_fieldNumber, 1, 0), 1);
-                    _fieldsLeft = enemylightFields(getFieldsHorizontally(_fieldNumber, 1, 0), 1);
-                    _fieldsRight = enemylightFields(getFieldsHorizontally(_fieldNumber, 1, 1), 1);
-                    
-                    highlightFieldsInLine(_fieldsAhead, 1);
-                    highlightFieldsInLine(_fieldsBehind, 1);
-                    highlightFieldsInLine(_fieldsLeft, 1);
-                    highlightFieldsInLine(_fieldsRight, 1);
-                
-                break;
-                case 'rook-white':
-
-                    _fieldsAhead = enemylightFields(getFieldsVertically(_fieldNumber, 0, 1), 0);
-                    _fieldsBehind = enemylightFields(getFieldsVertically(_fieldNumber, 0, 0), 0);
-                    _fieldsLeft = enemylightFields(getFieldsHorizontally(_fieldNumber, 0, 0), 0);
-                    _fieldsRight = enemylightFields(getFieldsHorizontally(_fieldNumber, 0, 1), 0);
-                    
-                    highlightFieldsInLine(_fieldsAhead, 1);
-                    highlightFieldsInLine(_fieldsBehind, 1);
-                    highlightFieldsInLine(_fieldsLeft, 1);
-                    highlightFieldsInLine(_fieldsRight, 1);
-
-                break;
-                case 'queen':
-
-                _fieldsAhead = enemylightFields(getFieldsVertically(_fieldNumber, 1, 1), 1);
-                _fieldsBehind = enemylightFields(getFieldsVertically(_fieldNumber, 1, 0), 1);
-                _fieldsLeft = enemylightFields(getFieldsHorizontally(_fieldNumber, 1, 0), 1);
-                _fieldsRight = enemylightFields(getFieldsHorizontally(_fieldNumber, 1, 1), 1);
-
-                _fieldsLeftBot = enemylightFields(getFieldsDiagonally(_fieldNumber, 1, 0, 0), 1);
-                    _fieldsLeftTop = enemylightFields(getFieldsDiagonally(_fieldNumber, 1, 0, 1), 1);
-                    _fieldsRightBot = enemylightFields(getFieldsDiagonally(_fieldNumber, 1, 1, 0), 1);
-                    _fieldsRightTop = enemylightFields(getFieldsDiagonally(_fieldNumber, 1, 1, 1), 1);
-
-                    highlightFieldsInLine(_fieldsLeftBot, 0);
-                    highlightFieldsInLine(_fieldsLeftTop, 0);
-                    highlightFieldsInLine(_fieldsRightBot, 0);
-                    highlightFieldsInLine(_fieldsRightTop, 0);
-
-                highlightFieldsInLine(_fieldsAhead, 1);
-                highlightFieldsInLine(_fieldsBehind, 1);
-                highlightFieldsInLine(_fieldsLeft, 1);
-                highlightFieldsInLine(_fieldsRight, 1);
-                
-                break;
-                case 'queen-white':
-
-                    _fieldsAhead = enemylightFields(getFieldsVertically(_fieldNumber, 0, 1), 0);
-                    _fieldsBehind = enemylightFields(getFieldsVertically(_fieldNumber, 0, 0), 0);
-                    _fieldsLeft = enemylightFields(getFieldsHorizontally(_fieldNumber, 0, 0), 0);
-                    _fieldsRight = enemylightFields(getFieldsHorizontally(_fieldNumber, 0, 1), 0);
-
-                    _fieldsLeftBot = enemylightFields(getFieldsDiagonally(_fieldNumber, 0, 0, 0), 0);
-                    _fieldsLeftTop = enemylightFields(getFieldsDiagonally(_fieldNumber, 0, 0, 1), 0);
-                    _fieldsRightBot = enemylightFields(getFieldsDiagonally(_fieldNumber, 0, 1, 0), 0);
-                    _fieldsRightTop = enemylightFields(getFieldsDiagonally(_fieldNumber, 0, 1, 1), 0);
-
-                    highlightFieldsInLine(_fieldsLeftBot, 0);
-                    highlightFieldsInLine(_fieldsLeftTop, 0);
-                    highlightFieldsInLine(_fieldsRightBot, 0);
-                    highlightFieldsInLine(_fieldsRightTop, 0);
-    
-                    highlightFieldsInLine(_fieldsAhead, 1);
-                    highlightFieldsInLine(_fieldsBehind, 1);
-                    highlightFieldsInLine(_fieldsLeft, 1);
-                    highlightFieldsInLine(_fieldsRight, 1);
-
-                break;
-                case 'king':
-
-                    _fieldsAhead = enemylightFields(getFieldsVertically(_fieldNumber, 1, 1).slice(0, 1), 1);
-                    _fieldsBehind = enemylightFields(getFieldsVertically(_fieldNumber, 1, 0).slice(0, 1), 1);
-                    _fieldsLeft = enemylightFields(getFieldsHorizontally(_fieldNumber, 1, 0).slice(0, 1), 1);
-                    _fieldsRight = enemylightFields(getFieldsHorizontally(_fieldNumber, 1, 1).slice(0, 1), 1);
-
-                    _fieldsLeftBot = enemylightFields(getFieldsDiagonally(_fieldNumber, 1, 0, 0).slice(0, 1), 1);
-                    _fieldsLeftTop = enemylightFields(getFieldsDiagonally(_fieldNumber, 1, 0, 1).slice(0, 1), 1);
-                    _fieldsRightBot = enemylightFields(getFieldsDiagonally(_fieldNumber, 1, 1, 0).slice(0, 1), 1);
-                    _fieldsRightTop = enemylightFields(getFieldsDiagonally(_fieldNumber, 1, 1, 1).slice(0, 1), 1);
-
-                    highlightFieldsInLine(_fieldsAhead, 1);
-                    highlightFieldsInLine(_fieldsBehind, 1);
-                    highlightFieldsInLine(_fieldsLeft, 1);
-                    highlightFieldsInLine(_fieldsRight, 1);
-
-                    highlightFieldsInLine(_fieldsLeftBot, 0);
-                    highlightFieldsInLine(_fieldsLeftTop, 0);
-                    highlightFieldsInLine(_fieldsRightBot, 0);
-                    highlightFieldsInLine(_fieldsRightTop, 0);
-                
-                break;
-                case 'king-white':
-
-                    _fieldsAhead = enemylightFields(getFieldsVertically(_fieldNumber, 0, 1).slice(0, 1), 0);
-                    _fieldsBehind = enemylightFields(getFieldsVertically(_fieldNumber, 0, 0).slice(0, 1), 0);
-                    _fieldsLeft = enemylightFields(getFieldsHorizontally(_fieldNumber, 0, 0).slice(0, 1), 0);
-                    _fieldsRight = enemylightFields(getFieldsHorizontally(_fieldNumber, 0, 1).slice(0, 1), 0);
-
-                    _fieldsLeftBot = enemylightFields(getFieldsDiagonally(_fieldNumber, 0, 0, 0).slice(0, 1), 0);
-                    _fieldsLeftTop = enemylightFields(getFieldsDiagonally(_fieldNumber, 0, 0, 1).slice(0, 1), 0);
-                    _fieldsRightBot = enemylightFields(getFieldsDiagonally(_fieldNumber, 0, 1, 0).slice(0, 1), 0);
-                    _fieldsRightTop = enemylightFields(getFieldsDiagonally(_fieldNumber, 0, 1, 1).slice(0, 1), 0);
-
-                    highlightFieldsInLine(_fieldsAhead, 1);
-                    highlightFieldsInLine(_fieldsBehind, 1);
-                    highlightFieldsInLine(_fieldsLeft, 1);
-                    highlightFieldsInLine(_fieldsRight, 1);
-
-                    highlightFieldsInLine(_fieldsLeftBot, 0);
-                    highlightFieldsInLine(_fieldsLeftTop, 0);
-                    highlightFieldsInLine(_fieldsRightBot, 0);
-                    highlightFieldsInLine(_fieldsRightTop, 0);
-
-                break;
-                case 'bishop':
-
-                    _fieldsLeftBot = enemylightFields(getFieldsDiagonally(_fieldNumber, 1, 0, 0), 1);
-                    _fieldsLeftTop = enemylightFields(getFieldsDiagonally(_fieldNumber, 1, 0, 1), 1);
-                    _fieldsRightBot = enemylightFields(getFieldsDiagonally(_fieldNumber, 1, 1, 0), 1);
-                    _fieldsRightTop = enemylightFields(getFieldsDiagonally(_fieldNumber, 1, 1, 1), 1);
-
-                    highlightFieldsInLine(_fieldsLeftTop, 0);
-                    highlightFieldsInLine(_fieldsRightTop, 0);
-                
-                break;
-                case 'bishop-white':
-
-                    _fieldsLeftBot = enemylightFields(getFieldsDiagonally(_fieldNumber, 0, 0, 0), 0);
-                    _fieldsLeftTop = enemylightFields(getFieldsDiagonally(_fieldNumber, 0, 0, 1), 0);
-                    _fieldsRightBot = enemylightFields(getFieldsDiagonally(_fieldNumber, 0, 1, 0), 0);
-                    _fieldsRightTop = enemylightFields(getFieldsDiagonally(_fieldNumber, 0, 1, 1), 0);
-
-                    highlightFieldsInLine(_fieldsLeftBot, 0);
-                    highlightFieldsInLine(_fieldsLeftTop, 0);
-                    highlightFieldsInLine(_fieldsRightBot, 0);
-                    highlightFieldsInLine(_fieldsRightTop, 0);
-
-                break;
-                case 'knight': 
-
-                    _fieldsAhead = getFieldsVertically(_fieldNumber, 1, 1).slice(0, 2);
-                    _fieldsBehind = getFieldsVertically(_fieldNumber, 1, 0).slice(0, 2);
-                    _fieldsLeft = getFieldsHorizontally(_fieldNumber, 1, 0).slice(0, 2);
-                    _fieldsRight = getFieldsHorizontally(_fieldNumber, 1, 1).slice(0, 2);
-
-                    if(_fieldsAhead[1] != null){
-                        let top1 = enemylightFields(getFieldsHorizontally(_fieldsAhead[1], 1, 0).slice(0,1), 1);
-                        let top2 = enemylightFields(getFieldsHorizontally(_fieldsAhead[1], 1, 1).slice(0,1), 1)
-                        highlightFieldsInLine(top1, 1);
-                        highlightFieldsInLine(top2, 1);
-                    }
-                    
-                    if(_fieldsRight[1] != null){
-                        let right1 = enemylightFields(getFieldsVertically(_fieldsRight[1], 1, 1).slice(0,1), 1);
-                        let right2 = enemylightFields(getFieldsVertically(_fieldsRight[1], 1, 0).slice(0,1), 1)
-                        highlightFieldsInLine(right1, 1);
-                        highlightFieldsInLine(right2, 1);
-                    }
-
-                    if(_fieldsLeft[1] != null){
-                        let left1 = enemylightFields(getFieldsVertically(_fieldsLeft[1], 1, 1).slice(0,1), 1);
-                        let left2 = enemylightFields(getFieldsVertically(_fieldsLeft[1], 1, 0).slice(0,1), 1)
-                        highlightFieldsInLine(left1, 1);
-                        highlightFieldsInLine(left2, 1);
-                    }
-
-                    if(_fieldsBehind[1] != null){
-                        let bot1 = enemylightFields(getFieldsHorizontally(_fieldsBehind[1], 1, 1).slice(0,1), 1);
-                        let bot2 = enemylightFields(getFieldsHorizontally(_fieldsBehind[1], 1, 0).slice(0,1), 1)
-                        highlightFieldsInLine(bot1, 1);
-                        highlightFieldsInLine(bot2, 1);
-                    }
-                
-                break;
-                case 'knight-white':
-
-                    _fieldsAhead = getFieldsVertically(_fieldNumber, 0, 1).slice(0, 2);
-                    _fieldsBehind = getFieldsVertically(_fieldNumber, 0, 0).slice(0, 2);
-                    _fieldsLeft = getFieldsHorizontally(_fieldNumber, 0, 0).slice(0, 2);
-                    _fieldsRight = getFieldsHorizontally(_fieldNumber, 0, 1).slice(0, 2);
-
-                    if(_fieldsAhead[1] != null){
-                        let top1 = enemylightFields(getFieldsHorizontally(_fieldsAhead[1], 0, 0).slice(0,1), 0);
-                        let top2 = enemylightFields(getFieldsHorizontally(_fieldsAhead[1], 0, 1).slice(0,1), 0);
-                        highlightFieldsInLine(top1, 1);
-                        highlightFieldsInLine(top2, 1);
-                    }
-                    
-                    if(_fieldsRight[1] != null){
-                        let right1 = enemylightFields(getFieldsVertically(_fieldsRight[1], 0, 1).slice(0,1), 0);
-                        let right2 = enemylightFields(getFieldsVertically(_fieldsRight[1], 0, 0).slice(0,1), 0);
-                        highlightFieldsInLine(right1, 1);
-                        highlightFieldsInLine(right2, 1);
-                    }
-
-                    if(_fieldsLeft[1] != null){
-                        let left1 = enemylightFields(getFieldsVertically(_fieldsLeft[1], 0, 1).slice(0,1), 0);
-                        let left2 = enemylightFields(getFieldsVertically(_fieldsLeft[1], 0, 0).slice(0,1), 0);
-                        highlightFieldsInLine(left1, 1);
-                        highlightFieldsInLine(left2, 1);
-                    }
-
-                    if(_fieldsBehind[1] != null){
-                        let bot1 = enemylightFields(getFieldsHorizontally(_fieldsBehind[1], 0, 1).slice(0,1), 0);
-                        let bot2 = enemylightFields(getFieldsHorizontally(_fieldsBehind[1], 0, 0).slice(0,1), 0);
-                        highlightFieldsInLine(bot1, 1);
-                        highlightFieldsInLine(bot2, 1);
-                    }
-
-            default:
-                break;
-        }
-        } */
         lastClickedField = _fieldNumber;
     }
-    setup();
+    function toggleHighlightKing(_isWhite = true){
+        if(_isWhite){
+            if(fields[getKingFieldNum(_isWhite)].classList.contains('checkFieldWhite')){
+                fields[getKingFieldNum(_isWhite)].classList.remove('checkFieldWhite');
+            } else {
+                fields[getKingFieldNum(_isWhite)].classList.add('checkFieldWhite');
+            }
+        } else {
+            if(fields[getKingFieldNum(_isWhite)].classList.contains('checkFieldBlack')){
+                fields[getKingFieldNum(_isWhite)].classList.remove('checkFieldBlack');
+            } else {
+                fields[getKingFieldNum(_isWhite)].classList.add('checkFieldBlack');
+            }
+        }
+    }
+    function getKingFieldNum(_isWhite = true){
+        _king = 'empty';
+        if(_isWhite){
+            for (let index = 0; index < fields.length; index++) {
+                if(fields[index].childElementCount > 0){
+                    if(fields[index].childNodes[0].children[0].children[0].classList.contains('bg-king')){
+                        _king = index;
+                    }
+                }
+            }
+        } else {
+            for (let index = 0; index < fields.length; index++) {
+                if(fields[index].childElementCount > 0){
+                    if(fields[index].childNodes[0].children[0].children[0].classList.contains('bg-king-white')){
+                        _king = index;
+                    }
+                }
+            }
+        }
+        return(_king);
+    }
+    function NewTurn(){
+        if(currentPlayer == 1 && hasCheck == 1){
+            toggleHighlightKing(1);
+        }
+        if(currentPlayer == 1 && hasCheck == 2){
+            // Player One wins
+        }
+        if(currentPlayer == 2 && hasCheck == 2){
+            /* figureType = "bg-king-white";
+            _fieldNumber = getKingFieldNum(0); */
+            toggleHighlightKing(0);
+        }
+        if(currentPlayer == 2 && hasCheck == 1){
+            // Player Two wins
+        }
+    }
+//#endregion UI Methods
+
+
+
+async function NewConn(){
+    const _connForm = document.querySelector('#connForm');
+    const _formattedFormData = new FormData(_connForm);
+    connStatus = 'NotConnected';
+    let _res = await PostData(_formattedFormData);
+    if(_res == 'ConnOK') connStatus = 'Connected';
+    else infoMsg += "Could not connect!\r\n";
+    return(connStatus);
+}
+async function CheckGameStatus(){
+        const _statusForm = document.querySelector('#statusForm');
+        const _formattedFormData = new FormData(_statusForm);
+        let _res = await PostData(_formattedFormData);
+        if(_res == null){
+            infoMsg += "No response for Game Status Check!\r\n";
+            gameStatus = "No response for Game Status Check!";
+        } else gameStatus = _res;
+        return(gameStatus);
+}
+async function GetFields(){
+    const _getFieldsForm = document.querySelector('#getFieldsForm');
+    const _formattedFormData = new FormData(_getFieldsForm);
+    let _res = await PostDataArray(_formattedFormData);
+
+    if(_res == []) infoMsg += "No response for Get Fields!\r\n";
+    else infoMsg += "Field data recieved!\r\n";
+    return(_res);
+}
+async function SendPlayerMove(_moveToField, _moveFromField){
+    const _playerMoveForm = document.querySelector('#playerMoveForm');
+    const _formattedFormData = new FormData(_playerMoveForm);
+    let _res = await PostData(_formattedFormData);
+    if(_res == null){
+        infoMsg += "No response for Player Move!\r\n";
+        /* gameStatus = "No response for Player Move!"; */
+    } /* else gameStatus = _res; */
+    return(_res);
+}
+async function GetCurrentPlayer(){
+    const _getPlayerForm = document.querySelector('#getPlayerForm');
+    const _formattedFormData = new FormData(_getPlayerForm);
+    let _res = await PostDataArray(_formattedFormData);
+
+    if(_res == null) infoMsg += "No response for Get Current Player!\r\n";
+    else infoMsg += "Current Player data recieved!\r\n";
+    return(_res);
+}
+async function PostData(formattedFormData){
+    const response = await fetch('./backend/handleChess.php',{
+        method: 'POST',
+        body: formattedFormData,
+        mode:"cors"
+    });
+    const data = await response.text();
+    if(Array.isArray(data)){
+        data.forEach(el => {
+            console.log(el);
+        });
+    } else {
+        console.log(data);
+    }
+    return(data);
+}
+async function PostDataArray(formattedFormData){
+    const response = await fetch('./backend/handleChess.php',{
+        method: 'POST',
+        body: formattedFormData,
+        mode:"cors"
+    });
+    const data = await response.json();
+    console.log(data);
+    /* if(Array.isArray(data)){
+        data.forEach(el => {
+            console.log(el);
+        });
+    } else {
+        console.log(data);
+    } */
+    return(data);
+}
+async function init(){
+    Setup();
+    if(await NewConn() == 'Connected'){
+        console.log("Connection established!");
+        if(await CheckGameStatus() == 'InProgress'){
+            console.log("Game Status: InProgress");
+            fieldData = await GetFields();
+            if(fieldData.length == 64){
+                console.log("Field data recieved!");
+                SyncFields(fieldData);
+                console.log("Fields sync complete!");
+                currentPlayer = parseInt(await GetCurrentPlayer());
+                console.log("Current player data recieved!");
+                console.log("Current player: " + currentPlayer);
+                /* PlayerMove(); */
+            } else {
+                // Popup msg
+            }
+        } else if(gameStatus == 'inactive') {
+            // Popup somethin
+        }
+    } else {
+        // Popup retry btn
+    }
+}
+function SyncFields(_fieldData){
+        for(let i = 0; i < fields.length; i++){
+            if(_fieldData[i] == 'black-rook'){
+                let figure = whiteFigure.cloneNode();
+                figure.innerHTML = blackRookText;
+                fields[i].appendChild(figure);
+            }
+            if(_fieldData[i] == 'black-knight'){
+                let figure = whiteFigure.cloneNode();
+                figure.innerHTML = blackKnightText;
+                fields[i].appendChild(figure);
+            }
+            if(_fieldData[i] == 'black-bishop'){
+                let figure = whiteFigure.cloneNode();
+                figure.innerHTML = blackBishopText;
+                fields[i].appendChild(figure);
+            }
+            if(_fieldData[i] == 'black-queen'){
+                let figure = whiteFigure.cloneNode();
+                figure.innerHTML = blackQueenText;
+                fields[i].appendChild(figure);
+            }
+            if(_fieldData[i] == 'black-king'){
+                let figure = whiteFigure.cloneNode();
+                figure.innerHTML = blackKingText;
+                fields[i].appendChild(figure);
+            }
+            if(_fieldData[i] == 'black-pawn'){
+                let figure = whiteFigure.cloneNode();
+                figure.innerHTML = blackPawnText;
+                fields[i].appendChild(figure);
+            }
+
+            if(_fieldData[i] == 'white-rook'){
+                let figure = blackFigure.cloneNode();
+                figure.innerHTML = whiteRookText;
+                fields[i].appendChild(figure);
+            }
+            if(_fieldData[i] == 'white-knight'){
+                let figure = blackFigure.cloneNode();
+                figure.innerHTML = whiteKnightText;
+                fields[i].appendChild(figure);
+            }
+            if(_fieldData[i] == 'white-bishop'){
+                let figure = blackFigure.cloneNode();
+                figure.innerHTML = whiteBishopText;
+                fields[i].appendChild(figure);
+            }
+            if(_fieldData[i] == 'white-queen'){
+                let figure = blackFigure.cloneNode();
+                figure.innerHTML = whiteQueenText;
+                fields[i].appendChild(figure);
+            }
+            if(_fieldData[i] == 'white-king'){
+                let figure = blackFigure.cloneNode();
+                figure.innerHTML = whiteKingText;
+                fields[i].appendChild(figure);
+            }
+            if(_fieldData[i] == 'white-pawn'){
+                let figure = blackFigure.cloneNode();
+                figure.innerHTML = whitePawnText;
+                fields[i].appendChild(figure);
+            }
+
+            if(_fieldData[i] == 'empty'){
+                fields[i].innerHTML = '';
+            }
+        }
+}
+function Setup(){
+
+    whiteGrave.innerHTML = "White Graveyard";
+blackGrave.innerHTML = "Black Graveyard";
+
+    /* switchToPlayer1(); */
+
+    let _isOdd = true;
+    let _count = 0;
+    fields.forEach(field => {
+
+        if(_count == 8 || _count == 16 ||_count == 24 ||_count == 32
+            ||_count == 40 ||_count == 48 ||_count == 56){
+                _isOdd = !_isOdd;
+            }
+        if(!_isOdd){
+            field.classList.add('field-white');
+            _isOdd = !_isOdd;
+        } else {
+            field.classList.add('field-black');
+            _isOdd = !_isOdd;
+        }
+
+        _count++;
+
+        field.addEventListener('click', handleFieldClick);
+    });
+
+    quickActWhite.children[1].addEventListener('click', () => {
+
+    });
+
+    quickActWhite.children[0].addEventListener('click', () => {
+        toggleUIMenu();
+    });
+
+    quickActBlack.children[1].addEventListener('click', () => {
+
+    });
+
+    quickActBlack.children[0].addEventListener('click', () => {
+        toggleUIMenu();
+    });
+
+    /* resetBoard(); */
+
+    // DEV BUTTONS
+    for (let index = 0; index < uiBoard.children[0].children.length; index++) {
+        if(index == uiBoard.children[0].children.length - 1){
+            uiBoard.children[0].children[index].addEventListener('click', () => {
+                resetBoard();
+            });
+        }
+        if(index == uiBoard.children[0].children.length - 2){
+            uiBoard.children[0].children[index].addEventListener('click', () => {
+                wipeBoard();
+            });
+        }
+        if(index == uiBoard.children[0].children.length - 3){
+            uiBoard.children[0].children[index].addEventListener('click', () => {
+                toggleHighlightKing(1);
+            });
+        }
+        if(index == uiBoard.children[1].children.length - 1){
+            uiBoard.children[1].children[index].addEventListener('click', () => {
+                resetBoard();
+            });
+        }
+        if(index == uiBoard.children[1].children.length - 2){
+            uiBoard.children[1].children[index].addEventListener('click', () => {
+                wipeBoard();
+            });
+        }
+        if(index == uiBoard.children[1].children.length - 3){
+            uiBoard.children[1].children[index].addEventListener('click', () => {
+                toggleHighlightKing(0);
+            });
+        }
+    }
+}
+
+
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    
+    init();
+
 });

@@ -44,7 +44,7 @@ body {
 
     overflow: hidden;
 
-    perspective: 10em;
+    perspective: 12em;
     perspective-origin: 50% calc(50% - 12em);
 }
 
@@ -145,7 +145,7 @@ body {
     transform:
     translate(-50%, -50%)
     rotateX(0deg);
-    top: 22.5em;
+    top: 17.5em;
     animation: revealUIBoard 1.5s ease-out 1;
 }
 
@@ -176,7 +176,7 @@ body {
     translate(-50%, -50%)
     rotateZ(0deg)
     translateZ(-1000px);
-    top: 22.5em;
+    top: 17.5em;
     animation: hideUIBoard 1.5s ease-out reverse 1;
 }
 
@@ -395,7 +395,7 @@ body {
     border: 3px solid var(--chessStructureColor);
 
     position: absolute;
-    top: 42.5em;
+    top: 37.5em;
     transform:
     translate(-50%, -50%)
     rotateX(90deg);
@@ -894,11 +894,11 @@ to { transform: translateZ(0px) rotateX(var(--figureRotateAmount)) rotateY(0deg)
 }
 .scene-playerOne > .chessboard > .row > .field > .figure {
     transform: rotateZ(0deg) translateZ(calc(calc(var(--fieldWidth) / 16) + 2px )) !important;
-    animation: iconsChangeP2ToP1 2s ease-in-out 1;
+    animation: iconsChangeP2ToP1 2s ease-in-out 1 !important;
 }
 .scene-playerTwo > .chessboard > .row > .field > .figure {
     transform: rotateZ(180deg) translateZ(calc(calc(var(--fieldWidth) / 16) + 2px )) !important;
-    animation: iconsChangeP1ToP2 2s ease-in-out 1;
+    animation: iconsChangeP1ToP2 2s ease-in-out 1 !important;
 }
 .bg-rook{
     background-image: url('../assets/svg/chess-rook-solid.svg');
@@ -1124,6 +1124,28 @@ to { transform: translateZ(0px) rotateX(var(--figureRotateAmount)) rotateY(0deg)
     animation: blinkFieldWhite var(--fieldBlinkSpeed) alternate ease-in-out infinite;
     border: #000 solid 5px;
 }
+
+.checkFieldBlack {
+    animation: blinkCheckFieldBlack var(--fieldBlinkSpeed) alternate ease-in-out infinite;
+    border: #000 solid 5px;
+}
+
+.checkFieldWhite {
+    animation: blinkCheckFieldWhite var(--fieldBlinkSpeed) alternate ease-in-out infinite;
+    border: #000 solid 5px;
+}
+
+@keyframes blinkCheckFieldBlack {
+    0% { background-color: #880; }
+    50% { background-color: #660; }
+    100% { background-color: #880; }
+    }
+
+    @keyframes blinkCheckFieldWhite {
+        0% { background-color: #aa0; }
+        50% { background-color: #880; }
+        100% { background-color: #aa0; }
+        }
 
 .field{
     border: #000 solid 5px;
