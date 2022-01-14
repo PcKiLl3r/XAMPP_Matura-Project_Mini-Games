@@ -755,9 +755,9 @@ function switchToPlayer1(){
             }
         }
 
-        if(whitePawnEndField == null && blackPawnEndField == null){
+        /* if(whitePawnEndField == null && blackPawnEndField == null){
             togglePlayer();
-        }
+        } */
 
         // TODO FIX EMPTY GRAVE WAIT
         // TODO FIX PAWN KILL PAWN
@@ -781,222 +781,436 @@ function switchToPlayer1(){
                     blackPawnEndField = _desiredFieldNum;
                 }
             }
-            if(whitePawnEndField == null && blackPawnEndField == null){
+            /* if(whitePawnEndField == null && blackPawnEndField == null){
                 togglePlayer();
-            }
+            } */
         }, 1000)
 
         clearEnemylightedFields();
         clearHighlightedFields();
     }
-    function remapFieldNumber(_fieldNum){
+    function remapFieldNumber(_fieldNum, _isReverse = false){
         let _fixedNum;
-        switch (_fieldNum) {
-
-                case 56:
-                _fixedNum = 0;
+        if(_isReverse){
+            switch (_fieldNum) {
+                case 0:
+                    _fixedNum = 56;
                 break;
-                case 57:
-                _fixedNum = 1;
+                case 1:
+                    _fixedNum = 57;
                 break;
-                case 58:
-                _fixedNum = 2;
+                case 2:
+                    _fixedNum = 58;
                 break;
-                case 59:
-                _fixedNum = 3;
+                case 3:
+                    _fixedNum = 59;
                 break;
-                case 60:
-                _fixedNum = 4;
+                case 4:
+                    _fixedNum = 60;
                 break;
-                case 61:
-                _fixedNum = 5;
+                case 5:
+                    _fixedNum = 61;
                 break;
-                case 62:
-                _fixedNum = 6;
+                case 6:
+                    _fixedNum = 62;
                 break;
-                case 63:
-                _fixedNum = 7;
-                break;
-
-                case 48:
-                _fixedNum = 8;
-                break;
-                case 49:
-                _fixedNum = 9;
-                break;
-                case 50:
-                _fixedNum = 10;
-                break;
-                case 51:
-                _fixedNum = 11;
-                break;
-                case 52:
-                _fixedNum = 12;
-                break;
-                case 53:
-                _fixedNum = 13;
-                break;
-                case 54:
-                _fixedNum = 14;
-                break;
-                case 55:
-                _fixedNum = 15;
-                break;
-
-                case 40:
-                _fixedNum = 16;
-                break;
-                case 41:
-                _fixedNum = 17;
-                break;
-                case 42:
-                _fixedNum = 18;
-                break;
-                case 43:
-                _fixedNum = 19;
-                break;
-                case 44:
-                _fixedNum = 20;
-                break;
-                case 45:
-                _fixedNum = 21;
-                break;
-                case 46:
-                _fixedNum = 22;
-                break;
-                case 47:
-                _fixedNum = 23;
-                break;
-
-                case 32:
-                _fixedNum = 24;
-                break;
-                case 33:
-                _fixedNum = 25;
-                break;
-                case 34:
-                _fixedNum = 26;
-                break;
-                case 35:
-                _fixedNum = 27;
-                break;
-                case 36:
-                _fixedNum = 28;
-                break;
-                case 37:
-                _fixedNum = 29;
-                break;
-                case 38:
-                _fixedNum = 30;
-                break;
-                case 39:
-                _fixedNum = 31;
-                break;
-
-                case 24:
-                _fixedNum = 32;
-                break;
-                case 25:
-                _fixedNum = 33;
-                break;
-                case 26:
-                _fixedNum = 34;
-                break;
-                case 27:
-                _fixedNum = 35;
-                break;
-                case 28:
-                _fixedNum = 36;
-                break;
-                case 29:
-                _fixedNum = 37;
-                break;
-                case 30:
-                _fixedNum = 38;
-                break;
-                case 31:
-                _fixedNum = 39;
-                break;
-
-                case 16:
-                _fixedNum = 40;
-                break;
-                case 17:
-                _fixedNum = 41;
-                break;
-                case 18:
-                _fixedNum = 42;
-                break;
-                case 19:
-                _fixedNum = 43;
-                break;
-                case 20:
-                _fixedNum = 44;
-                break;
-                case 21:
-                _fixedNum = 45;
-                break;
-                case 22:
-                _fixedNum = 46;
-                break;
-                case 23:
-                _fixedNum = 47;
+                case 7:
+                    _fixedNum = 63;
                 break;
 
                 case 8:
-                _fixedNum = 48;
+                    _fixedNum = 48;
                 break;
                 case 9:
-                _fixedNum = 49;
+                    _fixedNum = 49;
                 break;
                 case 10:
-                _fixedNum = 50;
+                    _fixedNum = 50;
                 break;
                 case 11:
-                _fixedNum = 51;
+                    _fixedNum = 51;
                 break;
                 case 12:
-                _fixedNum = 52;
+                    _fixedNum = 52;
                 break;
                 case 13:
-                _fixedNum = 53;
+                    _fixedNum = 53;
                 break;
                 case 14:
-                _fixedNum = 54;
+                    _fixedNum = 54;
                 break;
                 case 15:
-                _fixedNum = 55;
+                    _fixedNum = 55;
                 break;
 
-                case 0:
-                _fixedNum = 56;
+                case 16:
+                    _fixedNum = 40;
                 break;
-                case 1:
-                _fixedNum = 57;
+                case 17:
+                    _fixedNum = 41;
                 break;
-                case 2:
-                _fixedNum = 58;
+                case 18:
+                    _fixedNum = 42;
                 break;
-                case 3:
-                _fixedNum = 59;
+                case 19:
+                    _fixedNum = 43;
                 break;
-                case 4:
-                _fixedNum = 60;
+                case 20:
+                    _fixedNum = 44;
                 break;
-                case 5:
-                _fixedNum = 61;
+                case 21:
+                    _fixedNum = 45;
                 break;
-                case 6:
-                _fixedNum = 62;
+                case 22:
+                    _fixedNum = 46;
                 break;
-                case 7:
-                _fixedNum = 63;
+                case 23:
+                    _fixedNum = 47;
+                break;
+
+                case 24:
+                    _fixedNum = 32;
+                break;
+                case 25:
+                    _fixedNum = 33;
+                break;
+                case 26:
+                    _fixedNum = 34;
+                break;
+                case 27:
+                    _fixedNum = 35;
+                break;
+                case 28:
+                    _fixedNum = 36;
+                break;
+                case 29:
+                    _fixedNum = 37;
+                break;
+                case 30:
+                    _fixedNum = 38;
+                break;
+                case 31:
+                    _fixedNum = 39;
+                break;
+
+                case 32:
+                    _fixedNum = 24;
+                break;
+                case 33:
+                    _fixedNum = 25;
+                break;
+                case 34:
+                    _fixedNum = 26;
+                break;
+                case 35:
+                    _fixedNum = 27;
+                break;
+                case 36:
+                    _fixedNum = 28;
+                break;
+                case 37:
+                    _fixedNum = 29;
+                break;
+                case 38:
+                    _fixedNum = 30;
+                break;
+                case 39:
+                    _fixedNum = 31;
+                break;
+// jure
+                case 40:
+                    _fixedNum = 16;
+                break;
+                case 41:
+                    _fixedNum = 17;
+                break;
+                case 42:
+                    _fixedNum = 18;
+                break;
+                case 43:
+                    _fixedNum = 19;
+                break;
+                case 44:
+                    _fixedNum = 20;
+                break;
+                case 45:
+                    _fixedNum = 21;
+                break;
+                case 46:
+                    _fixedNum = 22;
+                break;
+                case 47:
+                    _fixedNum = 23;
+                break;
+
+                case 48:
+                    _fixedNum = 8;
+                break;
+                case 49:
+                    _fixedNum = 9;
+                break;
+                case 50:
+                    _fixedNum = 10;
+                break;
+                case 51:
+                    _fixedNum = 11;
+                break;
+                case 52:
+                    _fixedNum = 12;
+                break;
+                case 53:
+                    _fixedNum = 13;
+                break;
+                case 54:
+                    _fixedNum = 14;
+                break;
+                case 55:
+                    _fixedNum = 15;
+                break;
+
+                case 56:
+                    _fixedNum = 0;
+                break;
+                case 57:
+                    _fixedNum = 1;
+                break;
+                case 58:
+                    _fixedNum = 2;
+                break;
+                case 59:
+                    _fixedNum = 3;
+                break;
+                case 60:
+                    _fixedNum = 4;
+                break;
+                case 61:
+                    _fixedNum = 5;
+                break;
+                case 62:
+                    _fixedNum = 6;
+                break;
+                case 63:
+                    _fixedNum = 7;
                 break;
         
             default:
                 break;
         }
-        return(_fieldNum);
+        } else {
+        switch (_fieldNum) {
+                case 56:
+                    _fixedNum = 0;
+                break;
+                case 57:
+                    _fixedNum = 1;
+                break;
+                case 58:
+                    _fixedNum = 2;
+                break;
+                case 59:
+                    _fixedNum = 3;
+                break;
+                case 60:
+                    _fixedNum = 4;
+                break;
+                case 61:
+                    _fixedNum = 5;
+                break;
+                case 62:
+                    _fixedNum = 6;
+                break;
+                case 63:
+                    _fixedNum = 7;
+                break;
+
+                case 48:
+                    _fixedNum = 8;
+                break;
+                case 49:
+                    _fixedNum = 9;
+                break;
+                case 50:
+                    _fixedNum = 10;
+                break;
+                case 51:
+                    _fixedNum = 11;
+                break;
+                case 52:
+                    _fixedNum = 12;
+                break;
+                case 53:
+                    _fixedNum = 13;
+                break;
+                case 54:
+                    _fixedNum = 14;
+                break;
+                case 55:
+                    _fixedNum = 15;
+                break;
+
+                case 40:
+                    _fixedNum = 16;
+                break;
+                case 41:
+                    _fixedNum = 17;
+                break;
+                case 42:
+                    _fixedNum = 18;
+                break;
+                case 43:
+                    _fixedNum = 19;
+                break;
+                case 44:
+                    _fixedNum = 20;
+                break;
+                case 45:
+                    _fixedNum = 21;
+                break;
+                case 46:
+                    _fixedNum = 22;
+                break;
+                case 47:
+                    _fixedNum = 23;
+                break;
+
+                case 32:
+                    _fixedNum = 24;
+                break;
+                case 33:
+                    _fixedNum = 25;
+                break;
+                case 34:
+                    _fixedNum = 26;
+                break;
+                case 35:
+                    _fixedNum = 27;
+                break;
+                case 36:
+                    _fixedNum = 28;
+                break;
+                case 37:
+                    _fixedNum = 29;
+                break;
+                case 38:
+                    _fixedNum = 30;
+                break;
+                case 39:
+                    _fixedNum = 31;
+                break;
+
+                case 24:
+                    _fixedNum = 32;
+                break;
+                case 25:
+                    _fixedNum = 33;
+                break;
+                case 26:
+                    _fixedNum = 34;
+                break;
+                case 27:
+                    _fixedNum = 35;
+                break;
+                case 28:
+                    _fixedNum = 36;
+                break;
+                case 29:
+                    _fixedNum = 37;
+                break;
+                case 30:
+                    _fixedNum = 38;
+                break;
+                case 31:
+                    _fixedNum = 39;
+                break;
+
+                case 16:
+                    _fixedNum = 40;
+                break;
+                case 17:
+                    _fixedNum = 41;
+                break;
+                case 18:
+                    _fixedNum = 42;
+                break;
+                case 19:
+                    _fixedNum = 43;
+                break;
+                case 20:
+                    _fixedNum = 44;
+                break;
+                case 21:
+                    _fixedNum = 45;
+                break;
+                case 22:
+                    _fixedNum = 46;
+                break;
+                case 23:
+                    _fixedNum = 47;
+                break;
+
+                case 8:
+                    _fixedNum = 48;
+                break;
+                case 9:
+                    _fixedNum = 49;
+                break;
+                case 10:
+                    _fixedNum = 50;
+                break;
+                case 11:
+                    _fixedNum = 51;
+                break;
+                case 12:
+                    _fixedNum = 52;
+                break;
+                case 13:
+                    _fixedNum = 53;
+                break;
+                case 14:
+                    _fixedNum = 54;
+                break;
+                case 15:
+                    _fixedNum = 55;
+                break;
+
+                case 0:
+                    _fixedNum = 56;
+                break;
+                case 1:
+                    _fixedNum = 57;
+                break;
+                case 2:
+                    _fixedNum = 58;
+                break;
+                case 3:
+                    _fixedNum = 59;
+                break;
+                case 4:
+                    _fixedNum = 60;
+                break;
+                case 5:
+                    _fixedNum = 61;
+                break;
+                case 6:
+                    _fixedNum = 62;
+                break;
+                case 7:
+                    _fixedNum = 63;
+                break;
+        
+            default:
+                break;
+        }
+    }
+        return(_fixedNum);
+    }
+    function getFieldIndex(_field){
+        for (let index = 0; index < fields.length; index++) {
+            if(_field.isEqualNode(fields[index])){
+                return index;
+            }
+        }
+        return ('error');
     }
     async function handleFieldClick(e) {
         let figureType;
@@ -1009,22 +1223,21 @@ function switchToPlayer1(){
             _selectedField = e.target;
             if(e.target.children[0] == undefined){
                 _fieldNumber = getFieldIndex(e.target);
-                remapFieldNumber(_fieldNumber);
-                console.log("Empty field: " + _fieldNumber);
+                _remapedFieldNumber = remapFieldNumber(_fieldNumber);
+                console.log("Field Nr: " + _remapedFieldNumber + "\r\nFigure: " + "empty");
             } else {
                 figureType = e.target.children[0].children[0].children[0].classList;
                 figureType = figureType[1];
                 _fieldNumber = getFieldIndex(e.target);
-                /* _fieldNumber = parseInt(e.target.tabIndex); */
             }
         } else if(e.target.classList.contains('figure')){
             figureType = e.target.children[0].children[0].classList;
             figureType = figureType[1];
-            _fieldNumber = getFieldIndex(e.target.parentNode.tabIndex);
+            _fieldNumber = getFieldIndex(e.target.parentNode);
         } else if(e.target.classList.contains('chessCard')){
             figureType = e.target.children[0].classList;
             figureType = figureType[1];
-            _fieldNumber = getFieldIndex(e.target.parentNode.parentNode.tabIndex);
+            _fieldNumber = getFieldIndex(e.target.parentNode.parentNode);
         } else if(e.target.classList.contains('card-top')){
             figureType = e.target.classList;
             figureType = figureType[1];
@@ -1035,16 +1248,8 @@ function switchToPlayer1(){
             _fieldNumber = getFieldIndex(e.target.parentNode.parentNode.parentNode);
         }
 
-        function getFieldIndex(_field){
-            for (let index = 0; index < fields.length; index++) {
-                if(_field.isEqualNode(fields[index])){
-                    return index;
-                }
-            }
-            return ('error');
-        }
-
-        remapFieldNumber(_fieldNumber);
+        _remapedFieldNumber = remapFieldNumber(_fieldNumber);
+        _remapedLastFieldNumber = remapFieldNumber(lastClickedField);
         _selectedField = fields[_fieldNumber];
 /*         _fieldNumber =
 
@@ -1056,9 +1261,22 @@ function switchToPlayer1(){
             // IF FIELD IS HIGHLIGHTED REGISTER MOVE
             if(currentPlayer == 1){
                 if(fields[lastClickedField].children[0].classList.contains('figure-white')){
-                    let _res = await SendPlayerMove(_fieldNumber, lastClickedField);
-                    if(_res == 'MoveOK'){
+                    let _moveRes = await SendPlayerMove(_remapedFieldNumber, _remapedLastFieldNumber);
+                    if(_moveRes == "MoveOK"){
                         performMove(_fieldNumber, lastClickedField);
+                        console.log("White player moved:\r\nFrom: " + _remapedLastFieldNumber + "\r\nTo: " + _remapedFieldNumber);
+                        let _getPlayer = await GetCurrentPlayer();
+                        if(_getPlayer == currentPlayer){
+
+                        } else {
+                            togglePlayer();
+                        }
+                        /* let _canTogglePlayer = await CanTogglePlayer();
+                        if(_canTogglePlayer == "ToggleOK"){
+                            togglePlayer();
+                        } else {
+                            console.log("Cant toggle cuz: " + _canTogglePlayer);
+                        } */
                     } else {
                         console.log("Server: Invalid Move!");
                     }
@@ -1066,22 +1284,79 @@ function switchToPlayer1(){
                 }
             } else {
                 if(fields[lastClickedField].children[0].classList.contains('figure-black')){
-                    performMove(_fieldNumber, lastClickedField);
+                    let _moveRes = await SendPlayerMove(_remapedFieldNumber, _remapedLastFieldNumber);
+                    if(_moveRes == "MoveOK"){
+                        performMove(_fieldNumber, lastClickedField);
+                        console.log("Black player moved:\r\nFrom: " + _remapedLastFieldNumber + "\r\nTo: " + _remapedFieldNumber);
+                        let _getPlayer = await GetCurrentPlayer();
+                        if(_getPlayer == currentPlayer){
+
+                        } else {
+                            togglePlayer();
+                        }
+                        /* let _canTogglePlayer = await CanTogglePlayer();
+                        if(_canTogglePlayer == "ToggleOK"){
+                            togglePlayer();
+                        } else {
+                            console.log("Cant toggle cuz: " + _canTogglePlayer);
+                        } */
+                    } else {
+                        console.log("Server: Invalid Move!");
+                    }
+                    //performMove(_fieldNumber, lastClickedField);
                 }
             }
         } else if(_selectedField.classList.contains('enemyFieldBlack') || _selectedField.classList.contains('enemyFieldWhite')){
             if(currentPlayer == 1){
                 if(fields[lastClickedField].children[0].classList.contains('figure-white')){
-                    performAttack(_fieldNumber, lastClickedField);
+                    let _moveRes = await SendPlayerMove(_remapedFieldNumber, _remapedLastFieldNumber);
+                    if(_moveRes == "MoveOK"){
+                        performAttack(_fieldNumber, lastClickedField);
+                        let _getPlayer = await GetCurrentPlayer();
+                        if(_getPlayer == currentPlayer){
+
+                        } else {
+                            togglePlayer();
+                        }
+                        console.log("White player attacked:\r\nFrom: " + _remapedLastFieldNumber + "\r\nTo: " + _remapedFieldNumber);
+                        /* let _canTogglePlayer = await CanTogglePlayer();
+                        if(_canTogglePlayer == "ToggleOK"){
+                            togglePlayer();
+                        } else {
+                            console.log("Cant toggle cuz: " + _canTogglePlayer);
+                        } */
+                    } else {
+                        console.log("Server: Invalid Move!");
+                    }
+                    //performAttack(_fieldNumber, lastClickedField);
                 }
             } else {
                 if(fields[lastClickedField].children[0].classList.contains('figure-black')){
-                    performAttack(_fieldNumber, lastClickedField);
+                    let _moveRes = await SendPlayerMove(_remapedFieldNumber, _remapedLastFieldNumber);
+                    if(_moveRes == "MoveOK"){
+                        performAttack(_fieldNumber, lastClickedField);
+                        let _getPlayer = await GetCurrentPlayer();
+                        if(_getPlayer == currentPlayer){
+
+                        } else {
+                            togglePlayer();
+                        }
+                        console.log("Black player attacked:\r\nFrom: " + _remapedLastFieldNumber + "\r\nTo: " + _remapedFieldNumber);
+                        /* let _canTogglePlayer = await CanTogglePlayer();
+                        if(_canTogglePlayer == "ToggleOK"){
+                            togglePlayer();
+                        } else {
+                            console.log("Cant toggle cuz: " + _canTogglePlayer);
+                        } */
+                    } else {
+                        console.log("Server: Invalid Move!");
+                    }
+                    //performAttack(_fieldNumber, lastClickedField);
                 }
             }
         } else {
             // ELSE PERFORM NORMAL CLICK
-            clearHighlightedFields();
+        clearHighlightedFields();
 
         clearEnemylightedFields();
 
@@ -1089,7 +1364,7 @@ function switchToPlayer1(){
 
         if(figureType != null){
             figureType = figureType.slice(3, figureType.length);
-            console.log("Field Nr: " + _fieldNumber + "\r\nFigure: " + figureType);
+            console.log("Field Nr: " + _remapedFieldNumber + "\r\nFigure: " + figureType);
         }
 
         // Switch figureType
@@ -1469,12 +1744,46 @@ async function GetFields(){
 }
 async function SendPlayerMove(_moveToField, _moveFromField){
     const _playerMoveForm = document.querySelector('#playerMoveForm');
-    const _formattedFormData = new FormData(_playerMoveForm);
+    let _formattedFormData = new FormData(_playerMoveForm);
+    _formattedFormData.append('moveToField', _moveToField);
+    _formattedFormData.append('moveFromField', _moveFromField);
     let _res = await PostData(_formattedFormData);
     if(_res == null){
         infoMsg += "No response for Player Move!\r\n";
         /* gameStatus = "No response for Player Move!"; */
-    } /* else gameStatus = _res; */
+    } else if(_res == "MoveBAD") infoMsg += "Player Move Response: Bad Move!\r\n";
+    return(_res);
+}
+async function CanTogglePlayer(){
+    const _canTogglePlayerForm = document.querySelector('#canTogglePlayerForm');
+    let _formattedFormData = new FormData(_canTogglePlayerForm);
+    let _res = await PostData(_formattedFormData);
+    if(_res == null){
+        infoMsg += "No response for CanTogglePlayer!\r\n";
+        /* gameStatus = "No response for Player Move!"; */
+    } else {
+        // _res: (Error, Check, Promotion, ToggleOK, End(Win, Lose, Tie))
+        /* switch (_res) {
+            case "Promotion":
+                console.log("Promotion!");
+            break;
+            case "Check":
+                console.log("Check!");
+            break;
+            case "End":
+                // TODO CHECK FOR WIN, LOSE, TIE
+                console.log("End!");
+            break;
+            case "ToggleOK":
+                togglePlayer();
+            break;
+        
+            // Error
+            default:
+                break;
+        } */
+        infoMsg += "Player Move Response: Bad Move!\r\n";
+    }
     return(_res);
 }
 async function GetCurrentPlayer(){
@@ -1532,6 +1841,11 @@ async function init(){
                 console.log("Fields sync complete!");
                 currentPlayer = parseInt(await GetCurrentPlayer());
                 console.log("Current player data recieved!");
+                if(currentPlayer == 1){
+                    switchToPlayer1();
+                } else if(currentPlayer == 2){
+                    switchToPlayer2();
+                } 
                 console.log("Current player: " + currentPlayer);
                 /* PlayerMove(); */
             } else {
@@ -1547,69 +1861,69 @@ async function init(){
 function SyncFields(_fieldData){
         for(let i = 0; i < fields.length; i++){
             if(_fieldData[i] == 'black-rook'){
-                let figure = whiteFigure.cloneNode();
-                figure.innerHTML = blackRookText;
-                fields[i].appendChild(figure);
+                let figure = blackFigure.cloneNode();
+                figure.innerHTML = whiteRookText;
+                fields[remapFieldNumber(i, true)].appendChild(figure);
             }
             if(_fieldData[i] == 'black-knight'){
-                let figure = whiteFigure.cloneNode();
-                figure.innerHTML = blackKnightText;
-                fields[i].appendChild(figure);
+                let figure = blackFigure.cloneNode();
+                figure.innerHTML = whiteKnightText;
+                fields[remapFieldNumber(i, true)].appendChild(figure);
             }
             if(_fieldData[i] == 'black-bishop'){
-                let figure = whiteFigure.cloneNode();
-                figure.innerHTML = blackBishopText;
-                fields[i].appendChild(figure);
+                let figure = blackFigure.cloneNode();
+                figure.innerHTML = whiteBishopText;
+                fields[remapFieldNumber(i, true)].appendChild(figure);
             }
             if(_fieldData[i] == 'black-queen'){
-                let figure = whiteFigure.cloneNode();
-                figure.innerHTML = blackQueenText;
-                fields[i].appendChild(figure);
+                let figure = blackFigure.cloneNode();
+                figure.innerHTML = whiteQueenText;
+                fields[remapFieldNumber(i, true)].appendChild(figure);
             }
             if(_fieldData[i] == 'black-king'){
-                let figure = whiteFigure.cloneNode();
-                figure.innerHTML = blackKingText;
-                fields[i].appendChild(figure);
+                let figure = blackFigure.cloneNode();
+                figure.innerHTML = whiteKingText;
+                fields[remapFieldNumber(i, true)].appendChild(figure);
             }
             if(_fieldData[i] == 'black-pawn'){
-                let figure = whiteFigure.cloneNode();
-                figure.innerHTML = blackPawnText;
-                fields[i].appendChild(figure);
+                let figure = blackFigure.cloneNode();
+                figure.innerHTML = whitePawnText;
+                fields[remapFieldNumber(i, true)].appendChild(figure);
             }
 
             if(_fieldData[i] == 'white-rook'){
-                let figure = blackFigure.cloneNode();
-                figure.innerHTML = whiteRookText;
-                fields[i].appendChild(figure);
+                let figure = whiteFigure.cloneNode();
+                figure.innerHTML = blackRookText;
+                fields[remapFieldNumber(i, true)].appendChild(figure);
             }
             if(_fieldData[i] == 'white-knight'){
-                let figure = blackFigure.cloneNode();
-                figure.innerHTML = whiteKnightText;
-                fields[i].appendChild(figure);
+                let figure = whiteFigure.cloneNode();
+                figure.innerHTML = blackKnightText;
+                fields[remapFieldNumber(i, true)].appendChild(figure);
             }
             if(_fieldData[i] == 'white-bishop'){
-                let figure = blackFigure.cloneNode();
-                figure.innerHTML = whiteBishopText;
-                fields[i].appendChild(figure);
+                let figure = whiteFigure.cloneNode();
+                figure.innerHTML = blackBishopText;
+                fields[remapFieldNumber(i, true)].appendChild(figure);
             }
             if(_fieldData[i] == 'white-queen'){
-                let figure = blackFigure.cloneNode();
-                figure.innerHTML = whiteQueenText;
-                fields[i].appendChild(figure);
+                let figure = whiteFigure.cloneNode();
+                figure.innerHTML = blackQueenText;
+                fields[remapFieldNumber(i, true)].appendChild(figure);
             }
             if(_fieldData[i] == 'white-king'){
-                let figure = blackFigure.cloneNode();
-                figure.innerHTML = whiteKingText;
-                fields[i].appendChild(figure);
+                let figure = whiteFigure.cloneNode();
+                figure.innerHTML = blackKingText;
+                fields[remapFieldNumber(i, true)].appendChild(figure);
             }
             if(_fieldData[i] == 'white-pawn'){
-                let figure = blackFigure.cloneNode();
-                figure.innerHTML = whitePawnText;
-                fields[i].appendChild(figure);
+                let figure = whiteFigure.cloneNode();
+                figure.innerHTML = blackPawnText;
+                fields[remapFieldNumber(i, true)].appendChild(figure);
             }
 
             if(_fieldData[i] == 'empty'){
-                fields[i].innerHTML = '';
+                fields[remapFieldNumber(i, true)].innerHTML = '';
             }
         }
 }

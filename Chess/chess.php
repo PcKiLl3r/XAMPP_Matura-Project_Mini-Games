@@ -39,6 +39,10 @@ unset($_SESSION['gameStatus']);
         <input type="hidden" name="process" value="getCurrentPlayer">
         <button type="submit" name="submit">Submit</button>
     </form>
+    <form style="display: none;" id="canTogglePlayerForm" action="./backend/handleChess.php" method="POST">
+        <input type="hidden" name="process" value="canTogglePlayer">
+        <button type="submit" name="submit">Submit</button>
+    </form>
 
     <form style="display: none;" id="playerMoveForm" action="./backend/handleChess.php" method="POST">
         <input type="hidden" name="process" value="playerMove">
