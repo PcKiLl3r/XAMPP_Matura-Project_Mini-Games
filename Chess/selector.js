@@ -323,7 +323,7 @@ function switchToPlayer1(){
 
             fields[_fieldNumber].innerHTML = '';
             
-            whiteGrave.lastChild.addEventListener('click', (e) => {
+            /* whiteGrave.lastChild.addEventListener('click', (e) => {
                 e.stopPropagation();
                 let _isWhite = null;
         if(e.target.classList.contains('figure')){
@@ -349,9 +349,7 @@ function switchToPlayer1(){
             whiteGrave.children[_graveNumber].classList.remove('figure-white-revieve');
             
             let _figure = whiteGrave.children[_graveNumber].cloneNode(1);
-            whiteGrave.children[_graveNumber].remove();/* 
-            console.log("figure: " + _figure + "\r\n");
-            console.log("wp end field: " + whitePawnEndField + "\r\n"); */
+            whiteGrave.children[_graveNumber].remove();
 
             if(fields[whitePawnEndField].children[0].classList.contains('figure-white')){
                 whiteGrave.appendChild(fields[whitePawnEndField].children[0].cloneNode(1));
@@ -389,7 +387,7 @@ function switchToPlayer1(){
 
             
         }
-            });
+            }); */
 
         } else if(fields[_fieldNumber].children[0].classList.contains('figure-black')) {
             fields[_fieldNumber].children[0].id = "graveB" + (blackGrave.children.length + 1);
@@ -397,7 +395,7 @@ function switchToPlayer1(){
 
             fields[_fieldNumber].innerHTML = '';
 
-            blackGrave.lastChild.addEventListener('click', (e) => {
+            /* blackGrave.lastChild.addEventListener('click', (e) => {
                 e.stopPropagation();
                 let _isWhite = null;
         if(e.target.classList.contains('figure')){
@@ -423,9 +421,7 @@ function switchToPlayer1(){
             whiteGrave.children[_graveNumber].classList.remove('figure-white-revieve');
             
             let _figure = whiteGrave.children[_graveNumber].cloneNode(1);
-            whiteGrave.children[_graveNumber].remove();/* 
-            console.log("figure: " + _figure + "\r\n");
-            console.log("wp end field: " + whitePawnEndField + "\r\n"); */
+            whiteGrave.children[_graveNumber].remove();
             fields[whitePawnEndField].innerHTML = '';
             fields[whitePawnEndField].appendChild(_figure);
             whitePawnEndField = null;
@@ -449,7 +445,7 @@ function switchToPlayer1(){
 
             
         }
-            });
+            }); */
         }
     }
     function clearHighlightedFields(){
@@ -1269,7 +1265,7 @@ function switchToPlayer1(){
                         if(_getPlayer == currentPlayer){
                             // Send req to figure what caused break
                             let _breakOption = await GetBreakOption();
-                            console.log(_breakOption);
+                            console.log("Break option data recieved!");
                             switch (_breakOption) {
                                 case 'Promotion':
                                     // Popup Promotion UI
@@ -1308,7 +1304,7 @@ function switchToPlayer1(){
                         let _getPlayer = await GetCurrentPlayer();
                         if(_getPlayer == currentPlayer){
                             let _breakOption = await GetBreakOption();
-                            console.log(_breakOption);
+                            console.log("Break option data recieved!");
                             switch (_breakOption) {
                                 case 'Promotion':
                                     // Popup Promotion UI
@@ -1348,7 +1344,7 @@ function switchToPlayer1(){
                         let _getPlayer = await GetCurrentPlayer();
                         if(_getPlayer == currentPlayer){
                             let _breakOption = await GetBreakOption();
-                            console.log(_breakOption);
+                            console.log("Break option data recieved!");
                             switch (_breakOption) {
                                 case 'Promotion':
                                     // Popup Promotion UI
@@ -1387,7 +1383,7 @@ function switchToPlayer1(){
                         let _getPlayer = await GetCurrentPlayer();
                         if(_getPlayer == currentPlayer){
                             let _breakOption = await GetBreakOption();
-                            console.log(_breakOption);
+                            console.log("Break option data recieved!");
                             switch (_breakOption) {
                                 case 'Promotion':
                                     // Popup Promotion UI
@@ -2025,6 +2021,15 @@ function SyncFields(_fieldData){
             }
         }
 }
+async function GetPromotedPick(){
+    const _getPromotedPickForm = document.querySelector('#getPromotedPickForm');
+    const _formattedFormData = new FormData(_getPromotedPickForm);
+    let _res = await PostData(_formattedFormData);
+
+    if(_res == null) infoMsg += "No response for Get Promoted Pick!\r\n";
+    else infoMsg += "Get Promoted Pick data recieved!\r\n";
+    return(_res);
+}
 function Setup(){
 
     whiteGrave.innerHTML = "White Graveyard";
@@ -2123,6 +2128,61 @@ blackGrave.innerHTML = "Black Graveyard";
                 if(_promotionRes == "PromotionOK"){
                     let _promotionPickForm = document.querySelector('#sendPromotionPickForm');
                     _promotionPickForm.style.visibility = 'hidden';
+                    let _promotedPick = await GetPromotedPick();
+                    if(_promotedPick != null){
+                        let _splitPick = _promotedPick.split(" ");
+                        console.log(_splitPick[0]);
+                        console.log(_splitPick[1]);
+                        _splitPick[1] = parseInt(_splitPick[1]);
+                        _splitPick[1] = remapFieldNumber(_splitPick[1], true);
+                        console.log("Promoted figure data recieved!");
+
+                        killFigure(_splitPick[1]);
+                        moveFigureToGrave(_splitPick[1]);
+                        /* fields[_splitPick[1]].innerHTML = ''; */
+                        if(_splitPick[0] == 'black-rook'){
+                            let figure = blackFigure.cloneNode();
+                            figure.innerHTML = whiteRookText;
+                            fields[_splitPick[1]].appendChild(figure);
+                        }
+                        if(_splitPick[0] == 'black-knight'){
+                            let figure = blackFigure.cloneNode();
+                            figure.innerHTML = whiteKnightText;
+                            fields[_splitPick[1]].appendChild(figure);
+                        }
+                        if(_splitPick[0] == 'black-bishop'){
+                            let figure = blackFigure.cloneNode();
+                            figure.innerHTML = whiteBishopText;
+                            fields[_splitPick[1]].appendChild(figure);
+                        }
+                        if(_splitPick[0] == 'black-queen'){
+                            let figure = blackFigure.cloneNode();
+                            figure.innerHTML = whiteQueenText;
+                            fields[_splitPick[1]].appendChild(figure);
+                        }
+            
+                        if(_splitPick[0] == 'white-rook'){
+                            let figure = whiteFigure.cloneNode();
+                            figure.innerHTML = blackRookText;
+                            fields[_splitPick[1]].appendChild(figure);
+                        }
+                        if(_splitPick[0] == 'white-knight'){
+                            let figure = whiteFigure.cloneNode();
+                            figure.innerHTML = blackKnightText;
+                            fields[_splitPick[1]].appendChild(figure);
+                        }
+                        if(_splitPick[0] == 'white-bishop'){
+                            let figure = whiteFigure.cloneNode();
+                            figure.innerHTML = blackBishopText;
+                            fields[_splitPick[1]].appendChild(figure);
+                        }
+                        if(_splitPick[0] == 'white-queen'){
+                            let figure = whiteFigure.cloneNode();
+                            figure.innerHTML = blackQueenText;
+                            fields[_splitPick[1]].appendChild(figure);
+                        }
+
+                    }
                     togglePlayer();
                 } 
             });

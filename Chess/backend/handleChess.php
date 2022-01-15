@@ -444,8 +444,14 @@ function PromotePawn($_figure)
     } else {
         $_promOK = "PromotionBAD";
     }
+    $_SESSION['pawnPromotedTo'][0] = $_SESSION['fields'][$promField];
+    $_SESSION['pawnPromotedTo'][1] = $promField;
     echo($_promOK);
     return($_promOK);
+}
+function SendPromotedFigure()
+{
+    echo $_SESSION['pawnPromotedTo'][0] . ' ' . $_SESSION['pawnPromotedTo'][1];
 }
 function GetPawnPromotionField()
 {
@@ -497,7 +503,7 @@ function SendPromotionPick()
         $promotionFigure = trim(htmlspecialchars($_POST['figure']));
 
         if (!empty($promotionFigure)) {
-            echo($promotionFigure);
+            /* echo($promotionFigure); */
             
             if(PromotePawn($promotionFigure) == "PromotionOK"){
                 TogglePlayer();
@@ -553,6 +559,12 @@ if (filter_has_var(INPUT_POST, 'process')) {
         SendPromotionPick();
     }
     // End of CanTogglePlayer
+
+    // Start of GetPromotedPick
+    if ($_POST['process'] == "getPromotedPick") {
+        SendPromotedFigure();
+    }
+    // End of GetPromotedPick
 
     // Start of NewGame
     if ($_POST['process'] == "newGame") {
@@ -850,4 +862,37 @@ function GetAttackFields($_fields, $_isWhite, $_canKill = true)
         }
     }
     return ($_canAttackFields);
+}
+function CheckForCheck(){
+    $_SESSION['whiteCanAttack'] = [];
+    $_SESSION['blackCanAttack'] = [];
+    $_whiteKing = null;
+    $_blackKing = null;
+    for ($i=0; $i < count($_SESSION['fields']); $i++) {
+        if(CheckIfFieldEmpty($_SESSION['fields'][$i]) == false){
+            if(GetFieldFigureColor($_SESSION['fields'][$i]) == "white"){
+                $_SESSION['whiteCanAttack'][] = PerformAttackCheck($_SESSION['fields'][$i]);
+
+                if(GetFieldFigure($_SESSION['fields'][$i]) == "king") $_whiteKing = $i;
+            } else if(GetFieldFigureColor($_SESSION['fields'][$i]) == "black") {
+                $_SESSION['blackCanAttack'][] = PerformAttackCheck($_SESSION['fields'][$i]);
+
+                if(GetFieldFigure($_SESSION['fields'][$i]) == "king") $_blackKing = $i;
+            }
+        }
+    }
+    $_whiteHasCheck = false;
+    $_blackHasCheck = false;
+    for ($i=0; $i < count($_SESSION['whiteCanAttack']); $i++) { 
+        if($_blackKing == $_SESSION['whiteCanAttack'][$i]) $_blackHasCheck = true;
+    }
+    for ($i=0; $i < count($_SESSION['blackCanAttack']); $i++) { 
+        if($_whiteKing == $_SESSION['blackCanAttack'][$i]) $_whiteHasCheck = true;
+    }
+}
+// Must return all fields a figure can attack
+function PerformAttackCheck($_field){
+    // GET figure
+    // GET color
+    // CHECK in switch 
 }
