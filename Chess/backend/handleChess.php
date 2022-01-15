@@ -433,8 +433,41 @@ function GetFieldsDiagonally($_field, $_isAhead = true, $_isRight = true, $_isWh
     return ($_fieldsAvail);
 }
 // END MOVEMENT CHECK METHODS
-function PromotePawn($_fieldNum, $_isWhite)
+function PromotePawn($_figure)
 {
+    $promField = GetPawnPromotionField();
+    $_promOK = "PromotionOK";
+    if($_SESSION['playerTurn'] == 1){
+        $_SESSION['fields'][$promField] = 'white-' . $_figure;
+    } else if($_SESSION['playerTurn'] == 2){
+        $_SESSION['fields'][$promField] = 'black-' . $_figure;
+    } else {
+        $_promOK = "PromotionBAD";
+    }
+    echo($_promOK);
+    return($_promOK);
+}
+function GetPawnPromotionField()
+{
+    $_pawnPromField = null;
+    if($_SESSION['playerTurn'] == 1){
+        for ($i=0; $i < count($_SESSION['fields']); $i++){
+            if(GetFieldFigure($i) == 'pawn'){
+                if($i <= 63 && $i >= 56){
+                    $_pawnPromField = $i;
+                }
+            }
+        }
+    } else if($_SESSION['playerTurn'] == 2){
+        for ($i=0; $i < count($_SESSION['fields']); $i++){
+            if(GetFieldFigure($i) == 'pawn'){
+                if($i <= 7 && $i >= 0){
+                    $_pawnPromField = $i;
+                }
+            }
+        }
+    }
+    return($_pawnPromField);
 }
 function CanTogglePlayer()
 {
@@ -444,42 +477,38 @@ function CanTogglePlayer()
     // 3. CHECK FOR END
 
     // CHECK FOR PROMOTION
-    if($_SESSION['playerTurn'] == 1) {
-        for ($i = 0; $i < count($_SESSION['fields']); $i++) {
-            if (CheckIfFieldEmpty($i) == false) {
-                if (GetFieldFigure($i) == 'pawn') {
-                    if (GetFieldFigureColor($i) == 'white') {
-                        if ($i <= 63 && $i >= 56) {
-                            return("Promotion");
-                            // PROMOTION
-                            /* PromotePawn($i, true); */
-                        }
-                    }
-                }
-            }
-        }
-    } else if($_SESSION['playerTurn'] == 2) {
-        for ($i = 0; $i < count($_SESSION['fields']); $i++) {
-            if (CheckIfFieldEmpty($i) == false) {
-                if (GetFieldFigure($i) == 'pawn') {
-                    if (GetFieldFigureColor($i) == 'black') {
-                        if ($i <= 7 && $i >= 0) {
-                            return("Promotion");
-                            // PROMOTION
-                            /* PromotePawn($i, false); */
-                        }
-                    }
-                }
-            }
-        }
-    }
-    // END CHECK FOR PROMOTION
-
-    // PASSED ALL CHECKS ALLOW TOGGLE PLAYER
-    TogglePlayer();
-    return("ToggleOK");
+    if(GetPawnPromotionField() != null) $_SESSION['breakOption'] = "Promotion";
+    else $_SESSION['breakOption'] = "ToggleOK";
+    return($_SESSION['breakOption']);
 }
+function GetBreakOption()
+{
+    echo($_SESSION['breakOption']);
+}
+function SendPromotionPick()
+{
+    if (isset($_POST['figure'])) {
 
+        if ($_SESSION['winner'] != "unset") {
+            $_SESSION['msg'] .= "Error: Someone already won! \r\n";
+            exit();
+        }
+
+        $promotionFigure = trim(htmlspecialchars($_POST['figure']));
+
+        if (!empty($promotionFigure)) {
+            echo($promotionFigure);
+            
+            if(PromotePawn($promotionFigure) == "PromotionOK"){
+                TogglePlayer();
+            }
+        } else {
+            $_SESSION['msg'] .= "Error: Some data was empty! \r\n";
+        }
+    } else {
+        $_SESSION['msg'] .= "Error: Some data was not sent/set in session! \r\n";
+    }
+}
 // Check if form was submitted
 if (filter_has_var(INPUT_POST, 'process')) {
 
@@ -513,11 +542,17 @@ if (filter_has_var(INPUT_POST, 'process')) {
     }
     // End of PlayerMove
 
-/*     // Start of CanTogglePlayer
-    if ($_POST['process'] == "canTogglePlayer") {
-        CanTogglePlayer();
+    // Start of CanTogglePlayer
+    if ($_POST['process'] == "getBreakOption") {
+        GetBreakOption();
     }
-    // End of CanTogglePlayer */
+    // End of CanTogglePlayer
+
+    // Start of SendPromotionPick
+    if ($_POST['process'] == "sendPromotionPick") {
+        SendPromotionPick();
+    }
+    // End of CanTogglePlayer
 
     // Start of NewGame
     if ($_POST['process'] == "newGame") {
@@ -734,7 +769,7 @@ function HandlePawnMove($_moveToField, $_moveFromField, $_isWhite = true)
             # code...
         break;
         case 'ToggleOK':
-            // Toggled good to go
+            TogglePlayer();
         break;
         
         default:

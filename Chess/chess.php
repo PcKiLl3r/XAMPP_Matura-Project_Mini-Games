@@ -1,6 +1,7 @@
 <?php
 session_start();
-unset($_SESSION['gameStatus']);
+unset($_SESSION['gameStatus']);/* 
+$_SESSION['playerTurn'] = 1; */
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -35,13 +36,19 @@ unset($_SESSION['gameStatus']);
         <button type="submit" name="submit">Submit</button>
     </form>
 
-    <form style="z-index: 100;" id="getPlayerForm" action="./backend/handleChess.php" method="POST">
+    <form style="display: none;" id="getPlayerForm" action="./backend/handleChess.php" method="POST">
         <input type="hidden" name="process" value="getCurrentPlayer">
         <button type="submit" name="submit">Submit</button>
     </form>
-    <form style="display: none;" id="canTogglePlayerForm" action="./backend/handleChess.php" method="POST">
-        <input type="hidden" name="process" value="canTogglePlayer">
+    <form style="display: none;" id="getBreakOptionForm" action="./backend/handleChess.php" method="POST">
+        <input type="hidden" name="process" value="getBreakOption">
         <button type="submit" name="submit">Submit</button>
+    </form>
+
+    <form style="z-index: 100; visibility: hidden;" id="sendPromotionPickForm" action="./backend/handleChess.php" method="POST">
+        <input type="hidden" name="process" value="sendPromotionPick">
+        <button type="submit" id="queen-btn" name="figure" value="queen">Queen</button>
+        <button type="submit" id="knight-btn" name="figure" value="knight">Knight</button>
     </form>
 
     <form style="display: none;" id="playerMoveForm" action="./backend/handleChess.php" method="POST">

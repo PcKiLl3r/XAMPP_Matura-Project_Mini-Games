@@ -1267,11 +1267,28 @@ function switchToPlayer1(){
                         console.log("White player moved:\r\nFrom: " + _remapedLastFieldNumber + "\r\nTo: " + _remapedFieldNumber);
                         let _getPlayer = await GetCurrentPlayer();
                         if(_getPlayer == currentPlayer){
-
+                            // Send req to figure what caused break
+                            let _breakOption = await GetBreakOption();
+                            console.log(_breakOption);
+                            switch (_breakOption) {
+                                case 'Promotion':
+                                    // Popup Promotion UI
+                                    let _promotionPickForm = document.querySelector('#sendPromotionPickForm');
+                                    _promotionPickForm.style.visibility = 'visible';
+                                    /* let _promotionFigure = prompt("Select Figure:\r\n- queen,\r\n- knight", "queen");
+                                    let _promotionRes = await PromotePawn(_remapedFieldNumber, _promotionFigure);
+                                    if(_promotionRes == "PromotionOK"){
+                                        togglePlayer();
+                                    } */
+                                break;
+                            
+                                default:
+                                break;
+                            }
                         } else {
                             togglePlayer();
                         }
-                        /* let _canTogglePlayer = await CanTogglePlayer();
+                        /* let _canTogglePlayer = await GetBreakOption();
                         if(_canTogglePlayer == "ToggleOK"){
                             togglePlayer();
                         } else {
@@ -1290,11 +1307,27 @@ function switchToPlayer1(){
                         console.log("Black player moved:\r\nFrom: " + _remapedLastFieldNumber + "\r\nTo: " + _remapedFieldNumber);
                         let _getPlayer = await GetCurrentPlayer();
                         if(_getPlayer == currentPlayer){
-
+                            let _breakOption = await GetBreakOption();
+                            console.log(_breakOption);
+                            switch (_breakOption) {
+                                case 'Promotion':
+                                    // Popup Promotion UI
+                                    let _promotionPickForm = document.querySelector('#sendPromotionPickForm');
+                                    _promotionPickForm.style.visibility = 'visible';
+                                    /* let _promotionFigure = await prompt("Select Figure:\r\n- queen,\r\n- knight", "queen");
+                                    let _promotionRes = await PromotePawn(_remapedFieldNumber, _promotionFigure);
+                                    if(_promotionRes == "PromotionOK"){
+                                        togglePlayer();
+                                    } */
+                                break;
+                            
+                                default:
+                                break;
+                            }
                         } else {
                             togglePlayer();
                         }
-                        /* let _canTogglePlayer = await CanTogglePlayer();
+                        /* let _canTogglePlayer = await GetBreakOption();
                         if(_canTogglePlayer == "ToggleOK"){
                             togglePlayer();
                         } else {
@@ -1314,12 +1347,28 @@ function switchToPlayer1(){
                         performAttack(_fieldNumber, lastClickedField);
                         let _getPlayer = await GetCurrentPlayer();
                         if(_getPlayer == currentPlayer){
-
+                            let _breakOption = await GetBreakOption();
+                            console.log(_breakOption);
+                            switch (_breakOption) {
+                                case 'Promotion':
+                                    // Popup Promotion UI
+                                    let _promotionPickForm = document.querySelector('#sendPromotionPickForm');
+                                    _promotionPickForm.style.visibility = 'visible';
+                                    /* let _promotionFigure = prompt("Select Figure:\r\n- queen,\r\n- knight", "queen");
+                                    let _promotionRes = await PromotePawn(_remapedFieldNumber, _promotionFigure);
+                                    if(_promotionRes == "PromotionOK"){
+                                        togglePlayer();
+                                    } */
+                                break;
+                            
+                                default:
+                                break;
+                            }
                         } else {
                             togglePlayer();
                         }
                         console.log("White player attacked:\r\nFrom: " + _remapedLastFieldNumber + "\r\nTo: " + _remapedFieldNumber);
-                        /* let _canTogglePlayer = await CanTogglePlayer();
+                        /* let _canTogglePlayer = await GetBreakOption();
                         if(_canTogglePlayer == "ToggleOK"){
                             togglePlayer();
                         } else {
@@ -1337,12 +1386,28 @@ function switchToPlayer1(){
                         performAttack(_fieldNumber, lastClickedField);
                         let _getPlayer = await GetCurrentPlayer();
                         if(_getPlayer == currentPlayer){
-
+                            let _breakOption = await GetBreakOption();
+                            console.log(_breakOption);
+                            switch (_breakOption) {
+                                case 'Promotion':
+                                    // Popup Promotion UI
+                                    let _promotionPickForm = document.querySelector('#sendPromotionPickForm');
+                                    _promotionPickForm.style.visibility = 'visible';
+                                    /* let _promotionFigure = await prompt("Select Figure:\r\n- queen,\r\n- knight", "queen");
+                                    let _promotionRes = await PromotePawn(_remapedFieldNumber, _promotionFigure);
+                                    if(_promotionRes == "PromotionOK"){
+                                        togglePlayer();
+                                    } */
+                                break;
+                            
+                                default:
+                                break;
+                            }
                         } else {
                             togglePlayer();
                         }
                         console.log("Black player attacked:\r\nFrom: " + _remapedLastFieldNumber + "\r\nTo: " + _remapedFieldNumber);
-                        /* let _canTogglePlayer = await CanTogglePlayer();
+                        /* let _canTogglePlayer = await GetBreakOption();
                         if(_canTogglePlayer == "ToggleOK"){
                             togglePlayer();
                         } else {
@@ -1754,12 +1819,45 @@ async function SendPlayerMove(_moveToField, _moveFromField){
     } else if(_res == "MoveBAD") infoMsg += "Player Move Response: Bad Move!\r\n";
     return(_res);
 }
-async function CanTogglePlayer(){
-    const _canTogglePlayerForm = document.querySelector('#canTogglePlayerForm');
-    let _formattedFormData = new FormData(_canTogglePlayerForm);
+async function GetBreakOption(){
+    const _getBreakOptionForm = document.querySelector('#getBreakOptionForm');
+    let _formattedFormData = new FormData(_getBreakOptionForm);
     let _res = await PostData(_formattedFormData);
     if(_res == null){
-        infoMsg += "No response for CanTogglePlayer!\r\n";
+        infoMsg += "No response for getBreakOption!\r\n";
+        /* gameStatus = "No response for Player Move!"; */
+    } else {
+        // _res: (Error, Check, Promotion, ToggleOK, End(Win, Lose, Tie))
+        /* switch (_res) {
+            case "Promotion":
+                console.log("Promotion!");
+            break;
+            case "Check":
+                console.log("Check!");
+            break;
+            case "End":
+                // TODO CHECK FOR WIN, LOSE, TIE
+                console.log("End!");
+            break;
+            case "ToggleOK":
+                togglePlayer();
+            break;
+        
+            // Error
+            default:
+                break;
+        } */
+        infoMsg += "Player Move Response: Bad Move!\r\n";
+    }
+    return(_res);
+}
+async function PromotePawn(/* _remapedFieldNumber *//* ,  */_promotionFigure){
+    const _getBreakOptionForm = document.querySelector('#sendPromotionPickForm');
+    let _formattedFormData = new FormData(_getBreakOptionForm);
+    _formattedFormData.append("figure", _promotionFigure);
+    let _res = await PostData(_formattedFormData);
+    if(_res == null){
+        infoMsg += "No response for getBreakOption!\r\n";
         /* gameStatus = "No response for Player Move!"; */
     } else {
         // _res: (Error, Check, Promotion, ToggleOK, End(Win, Lose, Tie))
@@ -2006,8 +2104,39 @@ blackGrave.innerHTML = "Black Graveyard";
             });
         }
     }
-}
 
+    let _promForm = document.querySelector('#sendPromotionPickForm');
+    let _promBtns = _promForm.querySelectorAll('button');
+
+    for (let index = 0; index < _promBtns.length; index++) {
+        
+            _promBtns[index].addEventListener('click', async (e) => {
+                e.preventDefault();
+                let _promotionRes;
+                if(_promBtns[index].id == "queen-btn"){
+                    _promotionRes = await PromotePawn('queen');
+                    
+                } else if(_promBtns[index].id == "knight-btn"){
+                    _promotionRes = await PromotePawn('knight');
+                }
+
+                if(_promotionRes == "PromotionOK"){
+                    let _promotionPickForm = document.querySelector('#sendPromotionPickForm');
+                    _promotionPickForm.style.visibility = 'hidden';
+                    togglePlayer();
+                } 
+            });
+        
+        
+    }
+}
+/* async function SendPromotionPick(e, _promotionFigure){
+    e.preventDefault();
+    let _promotionRes = await PromotePawn(_remapedFieldNumber, _promotionFigure);
+    if(_promotionRes == "PromotionOK"){
+        togglePlayer();
+    } 
+} */
 
 
 
