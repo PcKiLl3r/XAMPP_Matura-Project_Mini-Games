@@ -63,13 +63,12 @@ function PlayerMove()
         if (!empty($MoveToField) && !empty($MoveFromField)) {
 
             if ($MoveToField >= 0 && $MoveFromField <= 63 && $MoveFromField >= 0 && $MoveFromField <= 63) {
-                
                 if ($_SESSION['playerTurn'] == "1") {
-                    if (GetFieldFigureColor($MoveFromField) == "white") {
+                    if (GetFieldFigureColor($MoveFromField) == 1) {
                         $_moveFigure = GetFieldFigure($MoveFromField);
                         switch ($_moveFigure) {
                             case 'pawn':
-                                HandlePawnMove($MoveToField, $MoveFromField, true);
+                                HandlePawnMove($MoveToField, $MoveFromField, 1);
                                 break;
                             case 'rook':
 
@@ -92,14 +91,15 @@ function PlayerMove()
                         }
                     } else {
                         //Error NOT your turn!
-                        echo("Not your turn");
+                        echo("Not your figure");
                     }
                 } else if ($_SESSION['playerTurn'] == "2") {
-                    if (GetFieldFigureColor($MoveFromField) == "black") {
+                    if (GetFieldFigureColor($MoveFromField) == 0) {
+                        
                         $_moveFigure = GetFieldFigure($MoveFromField);
                         switch ($_moveFigure) {
                             case 'pawn':
-                                HandlePawnMove($MoveToField, $MoveFromField, false);
+                                HandlePawnMove($MoveToField, $MoveFromField, 0);
                                 break;
                             case 'rook':
 
@@ -122,7 +122,7 @@ function PlayerMove()
                         }
                     } else {
                         //Error NOT your turn!
-                        echo("Not your turn");
+                        echo("Not your figure");
                     }
                 } else if ($_SESSION['playerTurn'] == 'unset') {
                     header("Location: ../../index.php");
@@ -180,8 +180,11 @@ function TogglePlayer()
 }
 function GetFieldFigureColor($_field)
 {
+    $_color = 'noColor';
     $_color = substr($_SESSION['fields'][$_field], 0, 5);
-    if ($_color != 'white' && $_color != 'black') $_color = 'noColor';
+    
+    if($_color == "white") {$_color = 1;}
+    else if($_color == "black") {$_color = 0;}
     return ($_color);
 }
 function GetFieldFigure($_field)
@@ -192,9 +195,9 @@ function GetFieldFigure($_field)
 function CheckIfFieldEmpty($_field)
 {
     if ($_SESSION['fields'][$_field] == "empty") {
-        $_isEmpty = true;
+        $_isEmpty = 1;
     } else {
-        $_isEmpty = false;
+        $_isEmpty = 0;
     }
     return ($_isEmpty);
 }
@@ -235,10 +238,10 @@ function MoveFigureToField($_startField, $_endField)
 }
 function MoveFigureToGrave($_field)
 {
-    if (GetFieldFigureColor($_field) == 'white') {
+    if (GetFieldFigureColor($_field) == 1) {
         $graveWhite[] = $_SESSION['fields'][$_field];
         $_SESSION['fields'][$_field] = 'empty';
-    } else if (GetFieldFigureColor($_field) == 'black') {
+    } else if (GetFieldFigureColor($_field) == 0) {
         $graveBlack[] = $_SESSION['fields'][$_field];
         $_SESSION['fields'][$_field] = 'empty';
     } else {
@@ -271,7 +274,7 @@ function MoveFigureToGrave($_field)
 // END UTILITY METHODS
 
 // MOVEMENT CHECK METHODS
-function GetFieldsHorizontally($_field, $_isRight = true, $_isWhite = true)
+function GetFieldsHorizontally($_field, $_isRight = 1, $_isWhite = 1)
 {
     $_fieldsAvail = [];
 
@@ -303,7 +306,7 @@ function GetFieldsHorizontally($_field, $_isRight = true, $_isWhite = true)
     }
     return ($_fieldsAvail);
 }
-function GetFieldsVertically($_field, $_isAhead = true, $_isWhite = true)
+function GetFieldsVertically($_field, $_isAhead = 1, $_isWhite = 1)
 {
     $_fieldsAvail = [];
     $_row = GetFieldRow($_field);
@@ -340,7 +343,7 @@ function GetFieldsVertically($_field, $_isAhead = true, $_isWhite = true)
     }
     return ($_fieldsAvail);
 }
-function GetFieldsDiagonally($_field, $_isAhead = true, $_isRight = true, $_isWhite = true)
+function GetFieldsDiagonally($_field, $_isAhead = 1, $_isRight = 1, $_isWhite = 1)
 {
     $_fieldsAvail = [];
 
@@ -701,35 +704,14 @@ if (filter_has_var(INPUT_POST, 'process')) {
     exit();
 }
 
-function HandlePawnMove($_moveToField, $_moveFromField, $_isWhite = true)
+function HandlePawnMove($_moveToField, $_moveFromField, $_isWhite = 1)
 {
-
-    $_fieldsAhead = [];
-    $_fieldsLeftTop = [];
-    $_fieldsRightTop = [];
-
-    $_canAttackFields = [];
-    $_canMoveToFields = null;
 
     $_moveOK = "MoveBAD";
 
-    if ($_isWhite) {
-        $_fieldsAhead = GetFieldsVertically($_moveFromField, true, $_isWhite);
-        if ($_moveFromField >= 8 && $_moveFromField <= 15) {
-            $_fieldsAhead = array_slice($_fieldsAhead, 0, 2);
-        } else {
-            $_fieldsAhead = array_slice($_fieldsAhead, 0, 1);
-        }
-        $_fieldsAhead = CutFieldsAtEnemyOrAlly($_fieldsAhead, $_isWhite, false);
+        $_canMoveToFields = GetPawnMoveFields($_moveFromField, $_isWhite);
 
-        $_canMoveToFields = $_fieldsAhead;
-
-        $_fieldsLeftTop = CutFieldsAtEnemyOrAlly(array_slice(getFieldsDiagonally($_moveFromField, 1, 0, $_isWhite), 0, 1), $_isWhite);
-        $_fieldsRightTop = CutFieldsAtEnemyOrAlly(array_slice(getFieldsDiagonally($_moveFromField, 1, 1, $_isWhite), 0, 1), $_isWhite);
-
-        $_canAttackFields = GetAttackFields(array_slice(getFieldsDiagonally($_moveFromField, 1, 0, !$_isWhite), 0, 1), $_isWhite);
-        $_canAttackFields = array_merge($_canAttackFields, GetAttackFields(array_slice(getFieldsDiagonally($_moveFromField, 1, 1, !$_isWhite), 0, 1), $_isWhite));
-        /* print_r($_canAttackFields); */
+        $_canAttackFields = GetPawnAttackFields($_moveFromField, $_isWhite);
 
         for ($i = 0; $i < count($_canAttackFields); $i++) {
             if ($_moveToField == $_canAttackFields[$i]) {
@@ -741,37 +723,7 @@ function HandlePawnMove($_moveToField, $_moveFromField, $_isWhite = true)
                 $_moveOK = "MoveOK";
             }
         }
-    } else {
-        $_fieldsAhead = GetFieldsVertically($_moveFromField, true, $_isWhite);
-        if ($_moveFromField >= 47 && $_moveFromField <= 55) {
-            $_fieldsAhead = array_slice($_fieldsAhead, 0, 2);
-        } else {
-            $_fieldsAhead = array_slice($_fieldsAhead, 0, 1);
-        }
-        $_fieldsAhead = CutFieldsAtEnemyOrAlly($_fieldsAhead, $_isWhite, false);
 
-        $_canMoveToFields = $_fieldsAhead;
-
-        $_fieldsLeftTop = CutFieldsAtEnemyOrAlly(array_slice(getFieldsDiagonally($_moveFromField, 1, 0, $_isWhite), 0, 1), $_isWhite);
-        $_fieldsRightTop = CutFieldsAtEnemyOrAlly(array_slice(getFieldsDiagonally($_moveFromField, 1, 1, $_isWhite), 0, 1), $_isWhite);
-
-        $_canAttackFields = GetAttackFields(array_slice(getFieldsDiagonally($_moveFromField, 1, 0, !$_isWhite), 0, 1), $_isWhite);
-        $_canAttackFields = array_merge($_canAttackFields, GetAttackFields(array_slice(getFieldsDiagonally($_moveFromField, 1, 1, !$_isWhite), 0, 1), $_isWhite));
-        /* print_r($_canAttackFields); */
-
-        for ($i = 0; $i < count($_canAttackFields); $i++) {
-            if ($_moveToField == $_canAttackFields[$i]) {
-                $_moveOK = "MoveOK";
-            }
-        }
-        for ($i = 0; $i < count($_canMoveToFields); $i++) {
-            if ($_moveToField == $_canMoveToFields[$i]) {
-                $_moveOK = "MoveOK";
-            }
-        }
-    }
-
-    // TODO actually move figure in session
     echo ($_moveOK);
     if($_moveOK == "MoveBAD") exit();
     MoveFigureToField($_moveFromField, $_moveToField);
@@ -793,7 +745,7 @@ function HandlePawnMove($_moveToField, $_moveFromField, $_isWhite = true)
 // array_push($_SESSION['whiteAttackFields'], $_fields[$index])
 
 // RENAME TO CutFieldsAtEnemyOrAlly
-function CutFieldsAtEnemyOrAlly($_fields, $_isWhite, $_canKill = true)
+function CutFieldsAtEnemyOrAlly($_fields, $_isWhite = 1, $_canKill = 1)
 {
     // MAYBE SELECT CHILD USING QUERY SELECTOR
     if (count($_fields) == 0) {
@@ -803,20 +755,20 @@ function CutFieldsAtEnemyOrAlly($_fields, $_isWhite, $_canKill = true)
 
         if ($_SESSION['fields'][$_fields[$index]] != 'empty') {
             if ($_isWhite) {
-                if (GetFieldFigureColor($_fields[$index]) == 'black') {
+                if (GetFieldFigureColor($_fields[$index]) == 0) {
                     $_fields = array_slice($_fields, 0, $index);
                     break;
                 }
-                if (GetFieldFigureColor($_fields[$index]) == 'white') {
+                if (GetFieldFigureColor($_fields[$index]) == 1) {
                     $_fields = array_slice($_fields, 0, $index);
                     break;
                 }
             } else {
-                if (GetFieldFigureColor($_fields[$index]) == 'white') {
+                if (GetFieldFigureColor($_fields[$index]) == 1) {
                     $_fields = array_slice($_fields, 0, $index);
                     break;
                 }
-                if (GetFieldFigureColor($_fields[$index]) == 'black') {
+                if (GetFieldFigureColor($_fields[$index]) == 0) {
                     $_fields = array_slice($_fields, 0, $index);
                     break;
                 }
@@ -825,7 +777,7 @@ function CutFieldsAtEnemyOrAlly($_fields, $_isWhite, $_canKill = true)
     }
     return ($_fields);
 }
-function GetAttackFields($_fields, $_isWhite, $_canKill = true)
+function GetAttackFields($_fields, $_isWhite = 1, $_canKill = 1)
 {
     $_canAttackFields = [];
     if (count($_fields) == 0) {
@@ -835,26 +787,26 @@ function GetAttackFields($_fields, $_isWhite, $_canKill = true)
 
         if ($_SESSION['fields'][$_fields[$index]] != 'empty') {
             if ($_isWhite) {
-                if (GetFieldFigureColor($_fields[$index]) == 'black') {
+                if (GetFieldFigureColor($_fields[$index]) == 0) {
                     if ($_canKill) {
                         array_push($_canAttackFields, $_fields[$index]);
                     }
                     $_fields = array_slice($_fields, 0, $index);
                     break;
                 }
-                if (GetFieldFigureColor($_fields[$index]) == 'white') {
+                if (GetFieldFigureColor($_fields[$index]) == 1) {
                     $_fields = array_slice($_fields, 0, $index);
                     break;
                 }
             } else {
-                if (GetFieldFigureColor($_fields[$index]) == 'white') {
+                if (GetFieldFigureColor($_fields[$index]) == 1) {
                     if ($_canKill) {
                         array_push($_canAttackFields, $_fields[$index]);
                     }
                     $_fields = array_slice($_fields, 0, $index);
                     break;
                 }
-                if (GetFieldFigureColor($_fields[$index]) == 'black') {
+                if (GetFieldFigureColor($_fields[$index]) == 0) {
                     $_fields = array_slice($_fields, 0, $index);
                     break;
                 }
@@ -869,30 +821,73 @@ function CheckForCheck(){
     $_whiteKing = null;
     $_blackKing = null;
     for ($i=0; $i < count($_SESSION['fields']); $i++) {
-        if(CheckIfFieldEmpty($_SESSION['fields'][$i]) == false){
-            if(GetFieldFigureColor($_SESSION['fields'][$i]) == "white"){
+        if(CheckIfFieldEmpty($_SESSION['fields'][$i]) == 0){
+            if(GetFieldFigureColor($_SESSION['fields'][$i]) == 1){
                 $_SESSION['whiteCanAttack'][] = PerformAttackCheck($_SESSION['fields'][$i]);
 
                 if(GetFieldFigure($_SESSION['fields'][$i]) == "king") $_whiteKing = $i;
-            } else if(GetFieldFigureColor($_SESSION['fields'][$i]) == "black") {
+            } else if(GetFieldFigureColor($_SESSION['fields'][$i]) == 0) {
                 $_SESSION['blackCanAttack'][] = PerformAttackCheck($_SESSION['fields'][$i]);
 
                 if(GetFieldFigure($_SESSION['fields'][$i]) == "king") $_blackKing = $i;
             }
         }
     }
-    $_whiteHasCheck = false;
-    $_blackHasCheck = false;
+    $_whiteHasCheck = 0;
+    $_blackHasCheck = 0;
     for ($i=0; $i < count($_SESSION['whiteCanAttack']); $i++) { 
-        if($_blackKing == $_SESSION['whiteCanAttack'][$i]) $_blackHasCheck = true;
+        if($_blackKing == $_SESSION['whiteCanAttack'][$i]) $_blackHasCheck = 1;
     }
     for ($i=0; $i < count($_SESSION['blackCanAttack']); $i++) { 
-        if($_whiteKing == $_SESSION['blackCanAttack'][$i]) $_whiteHasCheck = true;
+        if($_whiteKing == $_SESSION['blackCanAttack'][$i]) $_whiteHasCheck = 1;
     }
 }
 // Must return all fields a figure can attack
 function PerformAttackCheck($_field){
-    // GET figure
-    // GET color
-    // CHECK in switch 
+    $_figure = GetFieldFigure($_field);
+    $_isWhite = GetFieldFigureColor($_field);
+    switch ($_figure) {
+        case 'pawn':
+            if($_isWhite == 1) $_SESSION['whiteCanAttackFields'] = GetPawnAttackFields($_field, $_isWhite);
+            else if($_isWhite == 0) $_SESSION['blackCanAttackFields'] = GetPawnAttackFields($_field, $_isWhite);
+        break;
+        
+        default:
+            # code...
+            break;
+    }
 }
+
+#region GetFigureMoveFields
+function GetPawnMoveFields($_moveFromField, $_isWhite = 1){
+    $_moveFieldsAvail = [];
+    $_moveFieldsAvail = GetFieldsVertically($_moveFromField, 1, $_isWhite);
+    
+// white check
+    if($_isWhite == 1){
+        if ($_moveFromField >= 8 && $_moveFromField <= 15) {
+            $_moveFieldsAvail = array_slice($_moveFieldsAvail, 0, 2);
+        } else {
+            $_moveFieldsAvail = array_slice($_moveFieldsAvail, 0, 1);
+        }
+    } else if($_isWhite == 0){
+        if ($_moveFromField >= 47 && $_moveFromField <= 55) {
+            $_moveFieldsAvail = array_slice($_moveFieldsAvail, 0, 2);
+        } else {
+            $_moveFieldsAvail = array_slice($_moveFieldsAvail, 0, 1);
+        }
+    }
+    $_moveFieldsAvail = CutFieldsAtEnemyOrAlly($_moveFieldsAvail, $_isWhite, 0);
+    return($_moveFieldsAvail);
+}
+#endregion GetFigureMoveFields
+
+#region GetFigureAttackFields
+function GetPawnAttackFields($_moveFromField, $_isWhite = 1){
+    $_attackFieldsAvail = [];
+    $_attackFieldsAvail = [];
+    $_attackFieldsAvail = GetAttackFields(array_slice(getFieldsDiagonally($_moveFromField, 1, 0, !$_isWhite), 0, 1), $_isWhite);
+    $_attackFieldsAvail = array_merge($_attackFieldsAvail, GetAttackFields(array_slice(getFieldsDiagonally($_moveFromField, 1, 1, !$_isWhite), 0, 1), $_isWhite));
+    return($_attackFieldsAvail);
+}
+#endregion GetFigureAttackFields

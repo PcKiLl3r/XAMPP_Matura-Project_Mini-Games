@@ -2,6 +2,7 @@
 session_start();
 unset($_SESSION['gameStatus']);/* 
 $_SESSION['playerTurn'] = 1; */
+$_SESSION['playerTurn'] = '1';
 ?>
 <!DOCTYPE html>
 <html lang="en">
