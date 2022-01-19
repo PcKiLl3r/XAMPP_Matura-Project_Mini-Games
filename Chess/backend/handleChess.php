@@ -15,7 +15,7 @@ $_SESSION['winner'] = 'unset';
 
 $_SESSION['msg'] = '';
 
-// UTILITY METHODS
+#region UTILITY METHODS
 function NewConn()
 {
     // send test response
@@ -248,32 +248,9 @@ function MoveFigureToGrave($_field)
         $_SESSION['msg'] .= "Error: Color undefined can't be moved to grave.\r\n";
     }
 }
-/* function RemoveFigureFromGrave($_field, $_figure, $_isWhite)
-{
-    if ($_SESSION['fields'][$_endField] != 'empty') {
-        // check if is pawn
-        if (GetFieldFigure($_field) == 'pawn') {
-            if ($_isWhite) {
-                MoveFigureToGrave($_field);
-                $_field = $graveWhite[$_figure];
-                unset($graveWhite[$_figure]);
-                $graveWhite = array_values($graveWhite);
-            } else {
-                MoveFigureToGrave($_field);
-                $_field = $graveBlack[$_figure];
-                unset($graveBlack[$_figure]);
-                $graveBlack = array_values($graveBlack);
-            }
-        } else {
-            $_SESSION['msg'] .= "Error: Figure is not a pawn!\r\n";
-        }
-    } else {
-        $_SESSION['msg'] .= "Error: Field is empty!\r\n";
-    }
-} */
-// END UTILITY METHODS
+#endregion END UTILITY METHODS
 
-// MOVEMENT CHECK METHODS
+#region MOVEMENT CHECK METHODS
 function GetFieldsHorizontally($_field, $_isRight = 1, $_isWhite = 1)
 {
     $_fieldsAvail = [];
@@ -435,7 +412,7 @@ function GetFieldsDiagonally($_field, $_isAhead = 1, $_isRight = 1, $_isWhite = 
     }
     return ($_fieldsAvail);
 }
-// END MOVEMENT CHECK METHODS
+#endregion END MOVEMENT CHECK METHODS
 function PromotePawn($_figure)
 {
     $promField = GetPawnPromotionField();
@@ -703,7 +680,7 @@ if (filter_has_var(INPUT_POST, 'process')) {
     unset($_POST);
     exit();
 }
-
+// TODO Remake to HandleMove and pass figure
 function HandlePawnMove($_moveToField, $_moveFromField, $_isWhite = 1)
 {
 
@@ -863,7 +840,6 @@ function GetPawnMoveFields($_moveFromField, $_isWhite = 1){
     $_moveFieldsAvail = [];
     $_moveFieldsAvail = GetFieldsVertically($_moveFromField, 1, $_isWhite);
     
-// white check
     if($_isWhite == 1){
         if ($_moveFromField >= 8 && $_moveFromField <= 15) {
             $_moveFieldsAvail = array_slice($_moveFieldsAvail, 0, 2);

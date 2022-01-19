@@ -2,3 +2,10 @@ TODO
 
 - track each figures attack fields
 - checks for king movement
+
+client
+
+calc 1 field transform
+field x rows to move
+=>
+same for horizontal
