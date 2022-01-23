@@ -1255,6 +1255,7 @@ function switchToPlayer1(){
 
         if(_selectedField.classList.contains('focusedFieldWhite') || _selectedField.classList.contains('focusedFieldBlack')){
             // IF FIELD IS HIGHLIGHTED REGISTER MOVE
+            console.log("Figure Clicked on Field: " + _remapedLastFieldNumber + "\r\n" + "Field To Move: " + _remapedFieldNumber);
             if(currentPlayer == 1){
                 if(fields[lastClickedField].children[0].classList.contains('figure-white')){
                     let _moveRes = await SendPlayerMove(_remapedFieldNumber, _remapedLastFieldNumber);
@@ -1880,6 +1881,39 @@ async function PromotePawn(/* _remapedFieldNumber *//* ,  */_promotionFigure){
     }
     return(_res);
 }
+async function NewContGame(_selection){
+    const _newGameContinueForm = document.querySelector('#NewGameContinueForm');
+    let _formattedFormData = new FormData(_newGameContinueForm);
+    _formattedFormData.append("selection", _selection);
+    let _res = await PostData(_formattedFormData);
+    if(_res == null){
+        infoMsg += "No response for Select New/Continue Old Game!\r\n";
+        /* gameStatus = "No response for Player Move!"; */
+    } else {
+        // _res: (Error, Check, Promotion, ToggleOK, End(Win, Lose, Tie))
+        /* switch (_res) {
+            case "Promotion":
+                console.log("Promotion!");
+            break;
+            case "Check":
+                console.log("Check!");
+            break;
+            case "End":
+                // TODO CHECK FOR WIN, LOSE, TIE
+                console.log("End!");
+            break;
+            case "ToggleOK":
+                togglePlayer();
+            break;
+        
+            // Error
+            default:
+                break;
+        } */
+        /* infoMsg += "Player Move Response: Bad Move!\r\n"; */
+    }
+    return(_res);
+}
 async function GetCurrentPlayer(){
     const _getPlayerForm = document.querySelector('#getPlayerForm');
     const _formattedFormData = new FormData(_getPlayerForm);
@@ -1928,7 +1962,17 @@ async function init(){
         console.log("Connection established!");
         if(await CheckGameStatus() == 'InProgress'){
             console.log("Game Status: InProgress");
-            fieldData = await GetFields();
+            // TODO show continue/newGame
+            let _newGameForm = document.querySelector('#NewGameContinueForm');
+            _newGameForm.style.visibility = "visible";
+
+            
+        } else if(gameStatus == 'Inactive') {
+            console.log("Game Status: Inactive");
+            // Start New Game
+            let _newGameReq = await NewContGame('new');
+            if(_newGameReq == "NewGameOK"){
+fieldData = await GetFields();
             if(fieldData.length == 64){
                 console.log("Field data recieved!");
                 SyncFields(fieldData);
@@ -1941,12 +1985,12 @@ async function init(){
                     switchToPlayer2();
                 } 
                 console.log("Current player: " + currentPlayer);
-                /* PlayerMove(); */
             } else {
                 // Popup msg
             }
-        } else if(gameStatus == 'inactive') {
-            // Popup somethin
+            } else {
+                // Popup msg
+            }
         }
     } else {
         // Popup retry btn
@@ -2189,6 +2233,49 @@ blackGrave.innerHTML = "Black Graveyard";
         
         
     }
+
+    let _newContGameForm = document.querySelector('#NewGameContinueForm');
+    let _newContBtns =_newContGameForm.querySelectorAll('button');
+
+    for (let index = 0; index < _newContBtns.length; index++) {
+        
+        _newContBtns[index].addEventListener('click', async (e) => {
+            e.preventDefault();
+            let _NewContGameRes;
+            if(_newContBtns[index].id == "newGame-btn"){
+                _NewContGameRes = await NewContGame('new');
+                
+            } else if(_newContBtns[index].id == "continue-btn"){
+                _NewContGameRes = await NewContGame('old');
+            }
+
+            if(_NewContGameRes == "NewGameOK" || _NewContGameRes == "ContGameOK"){
+                _newContGameForm.style.visibility = 'hidden';
+
+                fieldData = await GetFields();
+                if(fieldData.length == 64){
+                    console.log("Field data recieved!");
+                    SyncFields(fieldData);
+                    console.log("Fields sync complete!");
+                    currentPlayer = parseInt(await GetCurrentPlayer());
+                    console.log("Current player data recieved!");
+                    if(currentPlayer == 1){
+                        switchToPlayer1();
+                    } else if(currentPlayer == 2){
+                        switchToPlayer2();
+                    } 
+                    console.log("Current player: " + currentPlayer);
+                /* PlayerMove(); */
+                } else {
+                    // Popup msg
+                }
+            } else {
+                // Popup msg
+            }
+        });
+    
+    
+}
 }
 /* async function SendPromotionPick(e, _promotionFigure){
     e.preventDefault();

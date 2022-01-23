@@ -9,3 +9,5 @@ calc 1 field transform
 field x rows to move
 =>
 same for horizontal
+
+FIX DIAGONALLY MOVE

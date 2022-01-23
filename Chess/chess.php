@@ -1,8 +1,8 @@
 <?php
 session_start();
-unset($_SESSION['gameStatus']);/* 
+/* unset($_SESSION['gameStatus']); *//* 
 $_SESSION['playerTurn'] = 1; */
-$_SESSION['playerTurn'] = '1';
+/* $_SESSION['playerTurn'] = '1'; */
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -60,6 +60,13 @@ $_SESSION['playerTurn'] = '1';
     <form style="display: none;" id="playerMoveForm" action="./backend/handleChess.php" method="POST">
         <input type="hidden" name="process" value="playerMove">
         <button type="submit" name="submit">Submit</button>
+    </form>
+
+    <!-- Start Game - Ask for new game / Continue old one -->
+    <form style="z-index: 100; visibility: hidden;" id="NewGameContinueForm" action="./backend/handleChess.php" method="POST">
+        <input type="hidden" name="process" value="newGameContinue">
+        <button type="submit" id="newGame-btn" name="selection" value="new">New Game</button>
+        <button type="submit" id="continue-btn" name="selection" value="old">Continue</button>
     </form>
 
 
