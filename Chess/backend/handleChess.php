@@ -30,7 +30,11 @@ function GetFieldFigureColor($_field)
 }
 function GetFieldFigure($_field)
 {
-    $_figure = substr($_SESSION['fields'][$_field], 6);
+    if($_SESSION['fields'][$_field] == "empty") {
+        $_figure = "empty";
+    } else {
+        $_figure = substr($_SESSION['fields'][$_field], 6);
+    }
     return ($_figure);
 }
 function CheckIfFieldEmpty($_field)
@@ -807,6 +811,9 @@ if (filter_has_var(INPUT_POST, 'process')) {
 #region HandleFigureMoves
 function HandleFigureMove($_moveToField, $_moveFromField, $_isWhite = 1)
 {
+    $_canMoveToFields = [];
+    $_canAttackFields = [];
+
     $_moveOK = "MoveBAD";
 
     $_moveFigure = GetFieldFigure($_moveFromField);
@@ -820,14 +827,16 @@ function HandleFigureMove($_moveToField, $_moveFromField, $_isWhite = 1)
             $_canAttackFields = GetRookAttackFields($_moveFromField, $_isWhite);
             break;
         case 'knight':
-
+            $_canMoveToFields = GetKnightMoveFields($_moveFromField, $_isWhite);
+            $_canAttackFields = GetKnightAttackFields($_moveFromField, $_isWhite);
             break;
         case 'bishop':
             $_canMoveToFields = GetBishopMoveFields($_moveFromField, $_isWhite);
             $_canAttackFields = GetBishopAttackFields($_moveFromField, $_isWhite);
             break;
         case 'queen':
-
+            $_canMoveToFields = GetQueenMoveFields($_moveFromField, $_isWhite);
+            $_canAttackFields = GetQueenAttackFields($_moveFromField, $_isWhite);
             break;
         case 'king':
 
@@ -974,6 +983,71 @@ function GetBishopMoveFields($_moveFromField, $_isWhite = 1)
 
     return ($_moveFieldsAvail);
 }
+function GetKnightMoveFields($_moveFromField, $_isWhite = 1)
+{
+    $_moveFieldsAvail = [];
+
+    $_fieldsAhead = array_slice(GetFieldsVertically($_moveFromField, 1, $_isWhite), 0, 2);
+                            $_fieldsBehind = array_slice(GetFieldsVertically($_moveFromField, 0, $_isWhite), 0, 2);
+                            $_fieldsLeft = array_slice(GetFieldsHorizontally($_moveFromField, 0, $_isWhite), 0, 2);
+                            $_fieldsRight = array_slice(GetFieldsHorizontally($_moveFromField, 1, $_isWhite), 0, 2);
+                            
+                            if(isset($_fieldsAhead[1])){
+                                
+                                $_top1 = CutFieldsAtEnemyOrAlly(array_slice(GetFieldsHorizontally($_fieldsAhead[1], 1, $_isWhite), 0, 1), $_isWhite, 1);
+                                $_top2 = CutFieldsAtEnemyOrAlly(array_slice(GetFieldsHorizontally($_fieldsAhead[1], 0, $_isWhite), 0, 1), $_isWhite, 1);
+                                $_moveFieldsAvail = array_merge($_moveFieldsAvail, $_top1);
+                                $_moveFieldsAvail = array_merge($_moveFieldsAvail, $_top2);
+                            }
+                            
+                            if(isset($_fieldsRight[1])){
+                                $_right1 = CutFieldsAtEnemyOrAlly(array_slice(GetFieldsVertically($_fieldsRight[1], 1, $_isWhite), 0, 1), $_isWhite, 1);
+                                $_right2 = CutFieldsAtEnemyOrAlly(array_slice(GetFieldsVertically($_fieldsRight[1], 0, $_isWhite), 0, 1), $_isWhite, 1);
+                                $_moveFieldsAvail = array_merge($_moveFieldsAvail, $_right1);
+                                $_moveFieldsAvail = array_merge($_moveFieldsAvail, $_right2);
+                            }
+        
+                            if(isset($_fieldsLeft[1])){
+                                $_left1 = CutFieldsAtEnemyOrAlly(array_slice(GetFieldsVertically($_fieldsLeft[1], 1, $_isWhite), 0, 1), $_isWhite, 1);
+                                $_left2 = CutFieldsAtEnemyOrAlly(array_slice(GetFieldsVertically($_fieldsLeft[1], 0, $_isWhite), 0, 1), $_isWhite, 1);
+                                $_moveFieldsAvail = array_merge($_moveFieldsAvail, $_left1);
+                                $_moveFieldsAvail = array_merge($_moveFieldsAvail, $_left2);
+                            }
+        
+                            if(isset($_fieldsBehind[1])){
+                                $_bot1 = CutFieldsAtEnemyOrAlly(array_slice(GetFieldsHorizontally($_fieldsBehind[1], 1, $_isWhite), 0, 1), $_isWhite, 1);
+                                $_bot2 = CutFieldsAtEnemyOrAlly(array_slice(GetFieldsHorizontally($_fieldsBehind[1], 0, $_isWhite), 0, 1), $_isWhite, 1);
+                                $_moveFieldsAvail = array_merge($_moveFieldsAvail, $_bot1);
+                                $_moveFieldsAvail = array_merge($_moveFieldsAvail, $_bot2);
+                            }
+
+    return ($_moveFieldsAvail);
+}
+function GetQueenMoveFields($_moveFromField, $_isWhite = 1)
+{
+    $_moveFieldsAvail = [];
+
+    $_fieldsAhead = CutFieldsAtEnemyOrAlly(GetFieldsVertically($_moveFromField, 1, $_isWhite), $_isWhite);
+    $_fieldsBehind = CutFieldsAtEnemyOrAlly(GetFieldsVertically($_moveFromField, 0, $_isWhite), $_isWhite);
+    $_fieldsLeft = CutFieldsAtEnemyOrAlly(GetFieldsHorizontally($_moveFromField, 0, $_isWhite), $_isWhite);
+    $_fieldsRight = CutFieldsAtEnemyOrAlly(GetFieldsHorizontally($_moveFromField, 1, $_isWhite), $_isWhite);
+
+    $_moveFieldsAvail = array_merge($_fieldsAhead, $_fieldsBehind);
+    $_moveFieldsAvail = array_merge($_moveFieldsAvail, $_fieldsLeft);
+    $_moveFieldsAvail = array_merge($_moveFieldsAvail, $_fieldsRight);
+
+    $_fieldsLeftBot = CutFieldsAtEnemyOrAlly(GetFieldsDiagonally($_moveFromField, 0, 0, $_isWhite), $_isWhite);
+    $_fieldsLeftTop = CutFieldsAtEnemyOrAlly(GetFieldsDiagonally($_moveFromField, 1, 0, $_isWhite), $_isWhite);
+    $_fieldsRightBot = CutFieldsAtEnemyOrAlly(GetFieldsDiagonally($_moveFromField, 0, 1, $_isWhite), $_isWhite);
+    $_fieldsRightTop = CutFieldsAtEnemyOrAlly(GetFieldsDiagonally($_moveFromField, 1, 1, $_isWhite), $_isWhite);
+
+    $_moveFieldsAvail = array_merge($_moveFieldsAvail, $_fieldsLeftTop);
+    $_moveFieldsAvail = array_merge($_moveFieldsAvail, $_fieldsRightBot);
+    $_moveFieldsAvail = array_merge($_moveFieldsAvail, $_fieldsLeftBot);
+    $_moveFieldsAvail = array_merge($_moveFieldsAvail, $_fieldsRightTop);
+
+    return ($_moveFieldsAvail);
+}
 #endregion GetFigureMoveFields
 
 #region GetFigureAttackFields
@@ -1009,6 +1083,70 @@ function GetBishopAttackFields($_moveFromField, $_isWhite = 1)
     $_fieldsRightTop = GetAttackField(GetFieldsDiagonally($_moveFromField, 1, 1, $_isWhite), $_isWhite);
 
     $_attackFieldsAvail = array_merge($_fieldsLeftBot, $_fieldsLeftTop);
+    $_attackFieldsAvail = array_merge($_attackFieldsAvail, $_fieldsRightBot);
+    $_attackFieldsAvail = array_merge($_attackFieldsAvail, $_fieldsRightTop);
+
+    return ($_attackFieldsAvail);
+}
+function GetKnightAttackFields($_moveFromField, $_isWhite = 1)
+{
+    $_attackFieldsAvail = [];
+
+    $_fieldsAhead = array_slice(GetFieldsVertically($_moveFromField, 1, $_isWhite), 0, 2);
+                            $_fieldsBehind = array_slice(GetFieldsVertically($_moveFromField, 0, $_isWhite), 0, 2);
+                            $_fieldsLeft = array_slice(GetFieldsHorizontally($_moveFromField, 0, $_isWhite), 0, 2);
+                            $_fieldsRight = array_slice(GetFieldsHorizontally($_moveFromField, 1, $_isWhite), 0, 2);
+                            
+                            if(isset($_fieldsAhead[1])){
+                                $_top1 = GetAttackField(array_slice(GetFieldsHorizontally($_fieldsAhead[1], 1, $_isWhite), 0, 1), $_isWhite);
+                                $_top2 = GetAttackField(array_slice(GetFieldsHorizontally($_fieldsAhead[1], 0, $_isWhite), 0, 1), $_isWhite);
+                                $_attackFieldsAvail = array_merge($_attackFieldsAvail, $_top1);
+                                $_attackFieldsAvail = array_merge($_attackFieldsAvail, $_top2);
+                            }
+                            
+                            if(isset($_fieldsRight[1])){
+                                $_right1 = GetAttackField(array_slice(GetFieldsVertically($_fieldsRight[1], 1, $_isWhite), 0, 1), $_isWhite);
+                                $_right2 = GetAttackField(array_slice(GetFieldsVertically($_fieldsRight[1], 0, $_isWhite), 0, 1), $_isWhite);
+                                $_attackFieldsAvail = array_merge($_attackFieldsAvail, $_right1);
+                                $_attackFieldsAvail = array_merge($_attackFieldsAvail, $_right2);
+                            }
+        
+                            if(isset($_fieldsLeft[1])){
+                                $_left1 = GetAttackField(array_slice(GetFieldsVertically($_fieldsLeft[1], 1, $_isWhite), 0, 1), $_isWhite);
+                                $_left2 = GetAttackField(array_slice(GetFieldsVertically($_fieldsLeft[1], 0, $_isWhite), 0, 1), $_isWhite);
+                                $_attackFieldsAvail = array_merge($_attackFieldsAvail, $_left1);
+                                $_attackFieldsAvail = array_merge($_attackFieldsAvail, $_left2);
+                            }
+        
+                            if(isset($_fieldsBehind[1])){
+                                $_bot1 = GetAttackField(array_slice(GetFieldsHorizontally($_fieldsBehind[1], 1, $_isWhite), 0, 1), $_isWhite);
+                                $_bot2 = GetAttackField(array_slice(GetFieldsHorizontally($_fieldsBehind[1], 0, $_isWhite), 0, 1), $_isWhite);
+                                $_attackFieldsAvail = array_merge($_attackFieldsAvail, $_bot1);
+                                $_attackFieldsAvail = array_merge($_attackFieldsAvail, $_bot2);
+                            }
+
+    return ($_attackFieldsAvail);
+}
+function GetQueenAttackFields($_moveFromField, $_isWhite = 1)
+{
+    $_attackFieldsAvail = [];
+
+    $_fieldsAhead = GetAttackField(GetFieldsVertically($_moveFromField, 1, $_isWhite), $_isWhite);
+    $_fieldsBehind = GetAttackField(GetFieldsVertically($_moveFromField, 0, $_isWhite), $_isWhite);
+    $_fieldsLeft = GetAttackField(GetFieldsHorizontally($_moveFromField, 0, $_isWhite), $_isWhite);
+    $_fieldsRight = GetAttackField(GetFieldsHorizontally($_moveFromField, 1, $_isWhite), $_isWhite);
+
+    $_attackFieldsAvail = array_merge($_fieldsAhead, $_fieldsBehind);
+    $_attackFieldsAvail = array_merge($_attackFieldsAvail, $_fieldsLeft);
+    $_attackFieldsAvail = array_merge($_attackFieldsAvail, $_fieldsRight);
+
+    $_fieldsLeftBot = GetAttackField(GetFieldsDiagonally($_moveFromField, 0, 0, $_isWhite), $_isWhite);
+    $_fieldsLeftTop = GetAttackField(GetFieldsDiagonally($_moveFromField, 1, 0, $_isWhite), $_isWhite);
+    $_fieldsRightBot = GetAttackField(GetFieldsDiagonally($_moveFromField, 0, 1, $_isWhite), $_isWhite);
+    $_fieldsRightTop = GetAttackField(GetFieldsDiagonally($_moveFromField, 1, 1, $_isWhite), $_isWhite);
+
+    $_attackFieldsAvail = array_merge($_attackFieldsAvail, $_fieldsLeftTop);
+    $_attackFieldsAvail = array_merge($_attackFieldsAvail, $_fieldsLeftBot);
     $_attackFieldsAvail = array_merge($_attackFieldsAvail, $_fieldsRightBot);
     $_attackFieldsAvail = array_merge($_attackFieldsAvail, $_fieldsRightTop);
 
