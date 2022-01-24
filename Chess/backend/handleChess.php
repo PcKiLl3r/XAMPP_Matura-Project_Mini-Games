@@ -80,6 +80,7 @@ function MoveFigureToField($_startField, $_endField)
         $_SESSION['fields'][$_endField] = $_SESSION['fields'][$_startField];
         $_SESSION['fields'][$_startField] = 'empty';
     }
+    
 }
 function MoveFigureToGrave($_field)
 {
@@ -305,6 +306,11 @@ function SendPromotedFigure()
 function GetBreakOption()
 {
     echo ($_SESSION['breakOption']);
+}
+function GetCheckStatus(){
+    $_check = CheckForCheck();
+
+    echo($_check);
 }
 #endregion ServerHandle REQUEST
 
@@ -608,6 +614,12 @@ if (filter_has_var(INPUT_POST, 'process')) {
     }
     // End of PlayerMove
 
+    // Start of PlayerMove
+    if ($_POST['process'] == "getCheckStatus") {
+        GetCheckStatus();
+    }
+    // End of PlayerMove
+
     // Start of CanTogglePlayer
     if ($_POST['process'] == "getBreakOption") {
         GetBreakOption();
@@ -813,6 +825,10 @@ function HandleFigureMove($_moveToField, $_moveFromField, $_isWhite = 1)
 
     // TODO FIX TO CHECK IF YOU CAN MOVE ON FIELD WITHOUT HAVING CHECK
     // IF  MOVE BAD
+
+    $_fieldsCopy = $_SESSION['fields'];
+    MoveFigureToField($_moveFromField, $_moveToField);
+
     $_check = CheckForCheck();
     if($_check[0] == "1"){
         if($_isWhite == 1){
@@ -824,8 +840,12 @@ function HandleFigureMove($_moveToField, $_moveFromField, $_isWhite = 1)
             $_moveOK = "MoveBAD";
         }
     }
+
     echo ($_moveOK);
-    if ($_moveOK == "MoveBAD") exit();
+    $_SESSION['fields'] = $_fieldsCopy;
+    if ($_moveOK == "MoveBAD"){
+        exit();
+    }
     MoveFigureToField($_moveFromField, $_moveToField);
     $_canTogglePlayer = CanTogglePlayer();
     switch ($_canTogglePlayer) {

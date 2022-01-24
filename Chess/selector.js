@@ -1260,6 +1260,7 @@ function switchToPlayer1(){
                 if(fields[lastClickedField].children[0].classList.contains('figure-white')){
                     let _moveRes = await SendPlayerMove(_remapedFieldNumber, _remapedLastFieldNumber);
                     if(_moveRes == "MoveOK"){
+                        dehighlightKings();
                         performMove(_fieldNumber, lastClickedField);
                         console.log("White player moved:\r\nFrom: " + _remapedLastFieldNumber + "\r\nTo: " + _remapedFieldNumber);
                         let _getPlayer = await GetCurrentPlayer();
@@ -1283,6 +1284,16 @@ function switchToPlayer1(){
                                 break;
                             }
                         } else {
+                            let _getCheckRes = await GetCheckStatus();
+                            if(_getCheckRes != null){
+                                let _whiteCheck = _getCheckRes[0];
+                                let _blackCheck = _getCheckRes[2];
+                                if(currentPlayer == 1 && _blackCheck == 1) {
+                                    toggleHighlightKing(0);
+                                } else if(currentPlayer == 2 && _whiteCheck == 1) {
+                                    toggleHighlightKing(1);
+                                }
+                            }
                             togglePlayer();
                         }
                         /* let _canTogglePlayer = await GetBreakOption();
@@ -1300,6 +1311,7 @@ function switchToPlayer1(){
                 if(fields[lastClickedField].children[0].classList.contains('figure-black')){
                     let _moveRes = await SendPlayerMove(_remapedFieldNumber, _remapedLastFieldNumber);
                     if(_moveRes == "MoveOK"){
+                        dehighlightKings();
                         performMove(_fieldNumber, lastClickedField);
                         console.log("Black player moved:\r\nFrom: " + _remapedLastFieldNumber + "\r\nTo: " + _remapedFieldNumber);
                         let _getPlayer = await GetCurrentPlayer();
@@ -1322,6 +1334,16 @@ function switchToPlayer1(){
                                 break;
                             }
                         } else {
+                            let _getCheckRes = await GetCheckStatus();
+                            if(_getCheckRes != null){
+                                let _whiteCheck = _getCheckRes[0];
+                                let _blackCheck = _getCheckRes[2];
+                                if(currentPlayer == 1 && _blackCheck == 1) {
+                                    toggleHighlightKing(0);
+                                } else if(currentPlayer == 2 && _whiteCheck == 1) {
+                                    toggleHighlightKing(1);
+                                }
+                            }
                             togglePlayer();
                         }
                         /* let _canTogglePlayer = await GetBreakOption();
@@ -1341,6 +1363,7 @@ function switchToPlayer1(){
                 if(fields[lastClickedField].children[0].classList.contains('figure-white')){
                     let _moveRes = await SendPlayerMove(_remapedFieldNumber, _remapedLastFieldNumber);
                     if(_moveRes == "MoveOK"){
+                        dehighlightKings();
                         performAttack(_fieldNumber, lastClickedField);
                         let _getPlayer = await GetCurrentPlayer();
                         if(_getPlayer == currentPlayer){
@@ -1362,6 +1385,16 @@ function switchToPlayer1(){
                                 break;
                             }
                         } else {
+                            let _getCheckRes = await GetCheckStatus();
+                            if(_getCheckRes != null){
+                                let _whiteCheck = _getCheckRes[0];
+                                let _blackCheck = _getCheckRes[2];
+                                if(currentPlayer == 1 && _blackCheck == 1) {
+                                    toggleHighlightKing(0);
+                                } else if(currentPlayer == 2 && _whiteCheck == 1) {
+                                    toggleHighlightKing(1);
+                                }
+                            }
                             togglePlayer();
                         }
                         console.log("White player attacked:\r\nFrom: " + _remapedLastFieldNumber + "\r\nTo: " + _remapedFieldNumber);
@@ -1380,6 +1413,7 @@ function switchToPlayer1(){
                 if(fields[lastClickedField].children[0].classList.contains('figure-black')){
                     let _moveRes = await SendPlayerMove(_remapedFieldNumber, _remapedLastFieldNumber);
                     if(_moveRes == "MoveOK"){
+                        dehighlightKings();
                         performAttack(_fieldNumber, lastClickedField);
                         let _getPlayer = await GetCurrentPlayer();
                         if(_getPlayer == currentPlayer){
@@ -1401,6 +1435,16 @@ function switchToPlayer1(){
                                 break;
                             }
                         } else {
+                            let _getCheckRes = await GetCheckStatus();
+                            if(_getCheckRes != null){
+                                let _whiteCheck = _getCheckRes[0];
+                                let _blackCheck = _getCheckRes[2];
+                                if(currentPlayer == 1 && _blackCheck == 1) {
+                                    toggleHighlightKing(0);
+                                } else if(currentPlayer == 2 && _whiteCheck == 1) {
+                                    toggleHighlightKing(1);
+                                }
+                            }
                             togglePlayer();
                         }
                         console.log("Black player attacked:\r\nFrom: " + _remapedLastFieldNumber + "\r\nTo: " + _remapedFieldNumber);
@@ -1735,6 +1779,10 @@ function switchToPlayer1(){
             }
         }
     }
+    function dehighlightKings(){
+                fields[getKingFieldNum(true)].classList.remove('checkFieldWhite');
+                fields[getKingFieldNum(false)].classList.remove('checkFieldBlack');
+    }
     function getKingFieldNum(_isWhite = true){
         _king = 'empty';
         if(_isWhite){
@@ -1814,6 +1862,16 @@ async function SendPlayerMove(_moveToField, _moveFromField){
         infoMsg += "No response for Player Move!\r\n";
         /* gameStatus = "No response for Player Move!"; */
     } else if(_res == "MoveBAD") infoMsg += "Player Move Response: Bad Move!\r\n";
+    return(_res);
+}
+async function GetCheckStatus(){
+    const _playerMoveForm = document.querySelector('#getCheckStatusForm');
+    let _formattedFormData = new FormData(_playerMoveForm);
+    let _res = await PostData(_formattedFormData);
+    if(_res == null){
+        infoMsg += "No response for Get Check Status!\r\n";
+        /* gameStatus = "No response for Player Move!"; */
+    }/*  else if(_res == "MoveBAD") infoMsg += "Player Move Response: Bad Move!\r\n"; */
     return(_res);
 }
 async function GetBreakOption(){

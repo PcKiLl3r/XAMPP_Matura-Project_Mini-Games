@@ -62,6 +62,11 @@ $_SESSION['playerTurn'] = 1; */
         <button type="submit" name="submit">Submit</button>
     </form>
 
+    <form style="display: none;" id="getCheckStatusForm" action="./backend/handleChess.php" method="POST">
+        <input type="hidden" name="process" value="getCheckStatus">
+        <button type="submit" name="submit">Submit</button>
+    </form>
+
     <!-- Start Game - Ask for new game / Continue old one -->
     <form style="z-index: 100; visibility: hidden;" id="NewGameContinueForm" action="./backend/handleChess.php" method="POST">
         <input type="hidden" name="process" value="newGameContinue">
