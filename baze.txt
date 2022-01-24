@@ -1,8 +1,0 @@
-Dijaki (#id_dijak, ime_dijak, {id_predmet, ime_predmet,} id_instructor, ime_instructor, kabinet, ocena)
-
-Dijak (#id_dijak, ime_dijak)
-Obiskuje (#id_dijaka + #id_predmet)
-Predmet (#id_predmet, ime_predmet)
-Uči (#id_predmet + #id_instruktor)
-Instruktor (#id_instruktor, ime_instruktor, kabinet)
-Ocena (#id_predmet + #id_dijak + #id_ocena, ocena)
