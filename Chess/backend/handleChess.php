@@ -157,7 +157,6 @@ function CheckGameStatus()
 }
 function NewGameContinue()
 {
-
     if (isset($_POST['selection'])) {
 
         $_selection = trim(htmlspecialchars($_POST['selection']));

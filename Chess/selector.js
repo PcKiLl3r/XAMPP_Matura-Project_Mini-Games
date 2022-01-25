@@ -1759,10 +1759,10 @@ function switchToPlayer1(){
                 }
             }
         }
-
+        lastClickedField = _fieldNumber;
         
     }
-        lastClickedField = _fieldNumber;
+        
     }
     function toggleHighlightKing(_isWhite = true){
         if(_isWhite){
@@ -2222,9 +2222,12 @@ blackGrave.innerHTML = "Black Graveyard";
                 let _promotionRes;
                 if(_promBtns[index].id == "queen-btn"){
                     _promotionRes = await PromotePawn('queen');
-                    
                 } else if(_promBtns[index].id == "knight-btn"){
                     _promotionRes = await PromotePawn('knight');
+                } else if(_promBtns[index].id == "rook-btn"){
+                    _promotionRes = await PromotePawn('rook');
+                } else if(_promBtns[index].id == "bishop-btn"){
+                    _promotionRes = await PromotePawn('bishop');
                 }
 
                 if(_promotionRes == "PromotionOK"){
@@ -2285,6 +2288,16 @@ blackGrave.innerHTML = "Black Graveyard";
                         }
 
                     }
+                    let _getCheckRes = await GetCheckStatus();
+                            if(_getCheckRes != null){
+                                let _whiteCheck = _getCheckRes[0];
+                                let _blackCheck = _getCheckRes[2];
+                                if(currentPlayer == 1 && _blackCheck == 1) {
+                                    toggleHighlightKing(0);
+                                } else if(currentPlayer == 2 && _whiteCheck == 1) {
+                                    toggleHighlightKing(1);
+                                }
+                            }
                     togglePlayer();
                 } 
             });

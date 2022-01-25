@@ -50,6 +50,8 @@ $_SESSION['playerTurn'] = 1; */
         <input type="hidden" name="process" value="sendPromotionPick">
         <button type="submit" id="queen-btn" name="figure" value="queen">Queen</button>
         <button type="submit" id="knight-btn" name="figure" value="knight">Knight</button>
+        <button type="submit" id="rook-btn" name="figure" value="rook">Rook</button>
+        <button type="submit" id="bishop-btn" name="figure" value="bishop">Bishop</button>
     </form>
 
     <form style="display: none;" id="getPromotedPickForm" action="./backend/handleChess.php" method="POST">

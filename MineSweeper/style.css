@@ -1,0 +1,37 @@
+.Field{
+    padding: 0;
+    margin: 0;
+    border: 0;
+    width: 100%;
+    height: 100%; 
+    border: 1px solid black;
+}
+
+.Field:hover{
+    background-color: #aaa;
+}
+
+.HiddenField{
+    background-color: gray;
+}
+
+table{
+    border-spacing: 0;
+    margin-top: 5em;
+}
+
+body{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    justify-items: center;
+}
+
+td{
+    width: 5em; 
+    height: 5em; 
+    margin: 0;
+    padding: 0;
+}
