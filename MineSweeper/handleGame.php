@@ -44,7 +44,6 @@ if (filter_has_var(INPUT_POST, 'process')) {
         exit();
     } 
 }
-
 function NewConn()
 {
     // send test response
@@ -129,6 +128,7 @@ function CreatMineField($_size)
     }
 
     $_SESSION['gameStatus'] = 'inprogress';
+    $_SESSION['size'] = $_size;
 }
 function HandlePlayerMove()
 {
@@ -211,53 +211,69 @@ function CheckNeighboursForMine($_field){
 
     //Check for max size min size offset
 
-    $_i1Temp = $_i1;
-    $_i1Temp--;
-    $_fieldTemp = $_i1Temp . ',' . $_i2;
-    if(GetFieldValue($_fieldTemp) == 'mine') $_neighbMineCount++;
+    if($_i1 - 1 > -1){
+        $_i1Temp = $_i1;
+        $_i1Temp--;
+        $_fieldTemp = $_i1Temp . ',' . $_i2;
+        if(GetFieldValue($_fieldTemp) == 'mine') $_neighbMineCount++;
+    }
 
-    $_i2Temp = $_i2;
-    $_i2Temp--;
-    $_fieldTemp = $_i1 . ',' . $_i2Temp;
-    if(GetFieldValue($_fieldTemp) == 'mine') $_neighbMineCount++;
+    if($_i2 - 1 > -1){
+        $_i2Temp = $_i2;
+        $_i2Temp--;
+        $_fieldTemp = $_i1 . ',' . $_i2Temp;
+        if(GetFieldValue($_fieldTemp) == 'mine') $_neighbMineCount++;
+    }
 
-    $_i1Temp = $_i1;
-    $_i1Temp++;
-    $_fieldTemp = $_i1Temp . ',' . $_i2;
-    if(GetFieldValue($_fieldTemp) == 'mine') $_neighbMineCount++;
+    if($_i1 + 1 < $_SESSION['size']){
+        $_i1Temp = $_i1;
+        $_i1Temp++;
+        $_fieldTemp = $_i1Temp . ',' . $_i2;
+        if(GetFieldValue($_fieldTemp) == 'mine') $_neighbMineCount++;
+    }
 
-    $_i2Temp = $_i2;
-    $_i2Temp++;
-    $_fieldTemp = $_i1 . ',' . $_i2Temp;
-    if(GetFieldValue($_fieldTemp) == 'mine') $_neighbMineCount++;
+    if($_i2 + 1 < $_SESSION['size']){
+        $_i2Temp = $_i2;
+        $_i2Temp++;
+        $_fieldTemp = $_i1 . ',' . $_i2Temp;
+        if(GetFieldValue($_fieldTemp) == 'mine') $_neighbMineCount++;
+    }
 
-    $_i1Temp = $_i1;
-    $_i2Temp = $_i2;
-    $_i1Temp--;
-    $_i2Temp--;
-    $_fieldTemp = $_i1Temp . ',' . $_i2Temp;
-    if(GetFieldValue($_fieldTemp) == 'mine') $_neighbMineCount++;
+    if($_i1 - 1 > -1 && $_i2 - 1 > -1){
+        $_i1Temp = $_i1;
+        $_i2Temp = $_i2;
+        $_i1Temp--;
+        $_i2Temp--;
+        $_fieldTemp = $_i1Temp . ',' . $_i2Temp;
+        if(GetFieldValue($_fieldTemp) == 'mine') $_neighbMineCount++;
+    }
 
-    $_i1Temp = $_i1;
-    $_i2Temp = $_i2;
-    $_i1Temp++;
-    $_i2Temp--;
-    $_fieldTemp = $_i1Temp . ',' . $_i2Temp;
-    if(GetFieldValue($_fieldTemp) == 'mine') $_neighbMineCount++;
+    if($_i1 + 1 < $_SESSION['size'] && $_i2 - 1 > -1){
+        $_i1Temp = $_i1;
+        $_i2Temp = $_i2;
+        $_i1Temp++;
+        $_i2Temp--;
+        $_fieldTemp = $_i1Temp . ',' . $_i2Temp;
+        if(GetFieldValue($_fieldTemp) == 'mine') $_neighbMineCount++;
+    }
 
-    $_i1Temp = $_i1;
-    $_i2Temp = $_i2;
-    $_i1Temp--;
-    $_i2Temp++;
-    $_fieldTemp = $_i1Temp . ',' . $_i2Temp;
-    if(GetFieldValue($_fieldTemp) == 'mine') $_neighbMineCount++;
+    if($_i2 + 1 < $_SESSION['size'] && $_i1 - 1 > -1){
+        $_i1Temp = $_i1;
+        $_i2Temp = $_i2;
+        $_i1Temp--;
+        $_i2Temp++;
+        $_fieldTemp = $_i1Temp . ',' . $_i2Temp;
+        if(GetFieldValue($_fieldTemp) == 'mine') $_neighbMineCount++;
+    }
 
-    $_i1Temp = $_i1;
-    $_i2Temp = $_i2;
-    $_i1Temp++;
-    $_i2Temp++;
-    $_fieldTemp = $_i1Temp . ',' . $_i2Temp;
-    if(GetFieldValue($_fieldTemp) == 'mine') $_neighbMineCount++;
+    if($_i2 + 1 < $_SESSION['size'] && $_i1 + 1 < $_SESSION['size']){
+        $_i1Temp = $_i1;
+        $_i2Temp = $_i2;
+        $_i1Temp++;
+        $_i2Temp++;
+        $_fieldTemp = $_i1Temp . ',' . $_i2Temp;
+        if(GetFieldValue($_fieldTemp) == 'mine') $_neighbMineCount++;
+    }    
 
     return($_neighbMineCount);
 }

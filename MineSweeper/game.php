@@ -69,7 +69,6 @@ $_SESSION['gameStatus'] = "inactive";
                 });
             }
         }
-
         function CreateTable(_size) {
             let _td = document.createElement('td');
             let _button = document.createElement('button');
@@ -91,19 +90,15 @@ $_SESSION['gameStatus'] = "inactive";
 
 
             for (let index = 0; index < _fields.length; index++) {
-                _fields[index].innerHTML = index;
+                _fields[index].innerHTML = '&nbsp;';
                 _fields[index].id = index;
                 _fields[index].addEventListener('click', async (e) => {
                     e.preventDefault();
 
                     let _moveRes = await SendMove(e.target.id);
-                    if (_moveRes == 'MoveOK') {
-                        let _gameStatus = await GetGameStatus();
-                        if (_gameStatus == "InProgress") {
-                            // GetFieldData();
-                        } else if (_gameStatus == "Inactive") {
-                            _newGameForm.style.visibility = 'visible';
-                        }
+                    if (_moveRes >= 0 && _moveRes < 9 || _moveRes == 'mine') {
+                        e.target.innerHTML = _moveRes
+                        e.target.style.backgroundColor = "#ddd";
                     }
 
                 });
