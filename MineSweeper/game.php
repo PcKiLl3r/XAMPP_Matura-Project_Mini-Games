@@ -29,9 +29,12 @@ $_SESSION['gameStatus'] = "inactive";
         <button id="BigField">Big Field</button>
     </form>
 
+    <div class="scene">
     <table id="mineField">
-
     </table>
+    </div>
+
+    
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous">
     </script>
@@ -97,7 +100,14 @@ $_SESSION['gameStatus'] = "inactive";
 
                     let _moveRes = await SendMove(e.target.id);
                     if (_moveRes >= 0 && _moveRes < 9 || _moveRes == 'mine') {
-                        e.target.innerHTML = _moveRes
+                        if(_moveRes == 0){
+                            e.target.innerHTML = '&nbsp;'
+                        } else if(_moveRes == 'mine'){
+                            e.target.innerHTML = '<i class="fas fa-bomb"></i>';
+                        } else {
+                            e.target.innerHTML = _moveRes
+                        }
+                        
                         e.target.style.backgroundColor = "#ddd";
                     }
 

@@ -80,7 +80,6 @@ function MoveFigureToField($_startField, $_endField)
         $_SESSION['fields'][$_endField] = $_SESSION['fields'][$_startField];
         $_SESSION['fields'][$_startField] = 'empty';
     }
-    
 }
 function MoveFigureToGrave($_field)
 {
@@ -117,14 +116,110 @@ function GetPawnPromotionField()
 }
 function CanTogglePlayer()
 {
+    $_SESSION['breakOption'] = "";
     // TODO
     // 1. CHECK FOR CHECK
     // 2. CHECK FOR PROMOTION - inPROG
     // 3. CHECK FOR END
-
+    $_check = CheckForCheck();
+    $_playerTurn = $_SESSION['playerTurn'];
     // CHECK FOR PROMOTION
     if (GetPawnPromotionField() != null) $_SESSION['breakOption'] = "Promotion";
-    else $_SESSION['breakOption'] = "ToggleOK";
+    /* else if (($_check[0] == "1" && $_playerTurn == 2) || ($_check[2] == "1" && $_playerTurn == 1)){
+        
+        $_hasMoves = 0;
+    
+        if ($_check[0] == "1") {
+            if ($_playerTurn == 2) {
+                //WhiteCheck
+                for ($i = 0; $i < count($_SESSION['fields']); $i++) {
+                    if (CheckIfFieldEmpty($i) == 0) {
+                        if (GetFieldFigureColor($i) == 1) {
+                            $_whiteCanAttack = PerformAttackCheck($i, 1);
+                            if (count($_whiteCanAttack) > 0) {
+                                for ($i=0; $i < count($_whiteCanAttack); $i++) { 
+                                    $_tmpFields = $_SESSION['fields'];
+                                    MoveFigureToField($i, $_whiteCanAttack[$i]);
+                                    $_check2 = CheckForCheck();
+                                    if ($_check2[0] == "1") {
+    
+                                    } else {
+                                        $_hasMoves++;
+                                    }
+                                    $_SESSION['fields'] = $_tmpFields;
+                                }
+                            }
+                            $_whiteCanMove = PerformMoveCheck($i, 1);
+                            if (count($_whiteCanMove) > 0) {
+                                for ($i=0; $i < count($_whiteCanMove); $i++) { 
+                                    $_tmpFields = $_SESSION['fields'];
+                                    MoveFigureToField($i, $_whiteCanMove[$i]);
+                                    $_check2 = CheckForCheck();
+                                    if ($_check2[0] == "1") {
+    
+                                    } else {
+                                        $_hasMoves++;
+                                    }
+                                    $_SESSION['fields'] = $_tmpFields;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        } else if ($_check[2] == "1") {
+            if ($_playerTurn == 1) {
+                //BlackCheck
+                for ($i = 0; $i < count($_SESSION['fields']); $i++) {
+                    if (CheckIfFieldEmpty($i) == 0) {
+                        if (GetFieldFigureColor($i) == 0) {
+                            $_blackCanAttack = PerformAttackCheck($i, 0);
+                            if (count($_blackCanAttack) > 0) {
+                                for ($i=0; $i < count($_blackCanAttack); $i++) { 
+                                    $_tmpFields = $_SESSION['fields'];
+                                    MoveFigureToField($i, $_blackCanAttack[$i]);
+                                    $_check2 = CheckForCheck();
+                                    if ($_check2[2] == "1") {
+    
+                                    } else {
+                                        $_hasMoves++;
+                                    }
+                                    $_SESSION['fields'] = $_tmpFields;
+                                }
+                            }
+                            $_blackCanMove = PerformMoveCheck($i, 0);
+                            if (count($_blackCanMove) > 0) {
+                                for ($i=0; $i < count($_blackCanMove); $i++) { 
+                                    $_tmpFields = $_SESSION['fields'];
+                                    MoveFigureToField($i, $_blackCanMove[$i]);
+                                    $_check2 = CheckForCheck();
+                                    if ($_check2[2] == "1") {
+    
+                                    } else {
+                                        $_hasMoves++;
+                                    }
+                                    $_SESSION['fields'] = $_tmpFields;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    
+        if(($_playerTurn == 1 && $_check[2] == "1" && $_hasMoves < 1) || ($_playerTurn == 2 && $_check[0] == "1" && $_hasMoves < 1)){
+            $_SESSION['breakOption'] = "";
+            if ($_playerTurn == 1 && $_check[2] == "1" && $_hasMoves < 1) $_SESSION['breakOption'] .= "WhiteWin";
+            if ($_playerTurn == 2 && $_check[0] == "1" && $_hasMoves < 1) $_SESSION['breakOption'] .= "BlackWin";
+        } else {
+            $_SESSION['breakOption'] = "ToggleOK";
+        }
+
+    } */ else {
+        $_SESSION['breakOption'] = "ToggleOK";
+    }
+    // CHECK FOR END
+    
     return ($_SESSION['breakOption']);
 }
 #endregion END UTILITY METHODS
@@ -306,10 +401,11 @@ function GetBreakOption()
 {
     echo ($_SESSION['breakOption']);
 }
-function GetCheckStatus(){
+function GetCheckStatus()
+{
     $_check = CheckForCheck();
 
-    echo($_check);
+    echo ($_check);
 }
 #endregion ServerHandle REQUEST
 
@@ -771,7 +867,6 @@ if (filter_has_var(INPUT_POST, 'process')) {
     unset($_POST);
     exit();
 }
-#region HandleFigureMoves
 function HandleFigureMove($_moveToField, $_moveFromField, $_isWhite = 1)
 {
     $_canMoveToFields = [];
@@ -825,29 +920,41 @@ function HandleFigureMove($_moveToField, $_moveFromField, $_isWhite = 1)
     // TODO FIX TO CHECK IF YOU CAN MOVE ON FIELD WITHOUT HAVING CHECK
     // IF  MOVE BAD
 
-    $_fieldsCopy = $_SESSION['fields'];
-    MoveFigureToField($_moveFromField, $_moveToField);
+    
+    if($_moveOK == "MoveOK"){
+        $_fieldsCopy = $_SESSION['fields'];
+        MoveFigureToField($_moveFromField, $_moveToField);
 
-    $_check = CheckForCheck();
-    if($_check[0] == "1"){
-        if($_isWhite == 1){
-            $_moveOK = "MoveBAD";
+        $_check = CheckForCheck();
+        if ($_check[0] == "1") {
+            if ($_isWhite == 1) {
+                $_moveOK = "MoveBAD";
+            }
         }
-    }
-    if($_check[2] == "1"){
-        if($_isWhite == 0){
-            $_moveOK = "MoveBAD";
+        if ($_check[2] == "1") {
+            if ($_isWhite == 0) {
+                $_moveOK = "MoveBAD";
+            }
         }
+        $_SESSION['fields'] = $_fieldsCopy;
     }
+
+    
 
     echo ($_moveOK);
-    $_SESSION['fields'] = $_fieldsCopy;
-    if ($_moveOK == "MoveBAD"){
+    
+    if ($_moveOK == "MoveBAD") {
         exit();
     }
     MoveFigureToField($_moveFromField, $_moveToField);
     $_canTogglePlayer = CanTogglePlayer();
     switch ($_canTogglePlayer) {
+        case 'WhiteWin':
+            # code...
+            break;
+        case 'BlackWin':
+            # code...
+            break;
         case 'Promotion':
             # code...
             break;
@@ -860,7 +967,6 @@ function HandleFigureMove($_moveToField, $_moveFromField, $_isWhite = 1)
             break;
     }
 }
-#endregion HandleFigureMoves
 
 // TODO do this in check all figures method
 // array_push($_SESSION['whiteAttackFields'], $_fields[$index])
@@ -877,22 +983,22 @@ function CheckForCheck()
 
     for ($i = 0; $i < count($_SESSION['fields']); $i++) {
         if (CheckIfFieldEmpty($i) == 0) {
-            
+
             if (GetFieldFigureColor($i) == 1) {
 
                 $_whiteCanAttack = PerformAttackCheck($i, 1);
-                
-                if(count($_whiteCanAttack) > 0){
+
+                if (count($_whiteCanAttack) > 0) {
                     $_SESSION['whiteCanAttack'] = array_merge($_SESSION['whiteCanAttack'], PerformAttackCheck($i, 1));
                 }
-                
+
 
                 if (GetFieldFigure($i) == "king") $_whiteKing = $i;
             } else if (GetFieldFigureColor($i) == 0) {
 
                 $_blackCanAttack = PerformAttackCheck($i, 0);
 
-                if(count($_blackCanAttack) > 0){
+                if (count($_blackCanAttack) > 0) {
                     $_SESSION['blackCanAttack'] = array_merge($_SESSION['blackCanAttack'], $_blackCanAttack);
                 }
 
@@ -914,7 +1020,7 @@ function CheckForCheck()
         if ($_whiteKing == $_SESSION['blackCanAttack'][$i]) $_whiteHasCheck = 1;
     }
 
-    return($_whiteHasCheck . "," . $_blackHasCheck);
+    return ($_whiteHasCheck . "," . $_blackHasCheck);
 }
 
 // Must return all fields a figure can attack
@@ -923,7 +1029,7 @@ function PerformAttackCheck($_field, $_isWhite)
     $_figure = GetFieldFigure($_field);
     switch ($_figure) {
         case 'pawn':
-            return(GetPawnAttackFields($_field, $_isWhite));
+            return (GetPawnAttackFields($_field, $_isWhite));
             break;
         case 'rook':
             return GetRookAttackFields($_field, $_isWhite);
@@ -942,7 +1048,36 @@ function PerformAttackCheck($_field, $_isWhite)
             break;
 
         default:
-        return null;
+            return null;
+            break;
+    }
+}
+
+function PerformMoveCheck($_field, $_isWhite)
+{
+    $_figure = GetFieldFigure($_field);
+    switch ($_figure) {
+        case 'pawn':
+            return (GetPawnMoveFields($_field, $_isWhite));
+            break;
+        case 'rook':
+            return GetRookMoveFields($_field, $_isWhite);
+            break;
+        case 'bishop':
+            return GetBishopMoveFields($_field, $_isWhite);
+            break;
+        case 'knight':
+            return GetKnightMoveFields($_field, $_isWhite);
+            break;
+        case 'queen':
+            return GetQueenMoveFields($_field, $_isWhite);
+            break;
+        case 'king':
+            return GetKingMoveFields($_field, $_isWhite);
+            break;
+
+        default:
+            return null;
             break;
     }
 }

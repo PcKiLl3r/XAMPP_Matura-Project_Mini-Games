@@ -196,7 +196,7 @@ if(!isset($msg)) { $msg = "No Error messages..."; }
         </div>
     </button>
 
-    <div class="tic-tac-container-out mt-5">
+    <div class="tic-tac-container-out">
         <div class="tic-tac-container">
             <div class="tic-tac-row">
 

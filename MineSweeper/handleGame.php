@@ -102,12 +102,25 @@ function CreatMineField($_size)
 {
     // Size also defines amount of mines
     $_SESSION['mineField'] = [];
-    $_mineCount = 0;
-    $_fieldCount = 0;
+    $_mineCount = $_size;
+    $_fieldCount = $_size * $_size - $_size;
 
-    for ($i = 0; $i < $_size; $i++) {
+    $_fieldArray = [];
+    $_mineArray = [];
+
+    for ($i=0; $i < $_fieldCount; $i++) { 
+        $_fieldArray[$i] = 'hide-empty';
+    }
+
+    for ($i=0; $i < $_mineCount; $i++) { 
+        $_mineArray[$i] = 'hide-mine';
+    }
+
+    $_SESSION['mineField'] = array_merge($_fieldArray, $_mineArray);
+    shuffle($_SESSION['mineField']);
+
+    /* for ($i = 0; $i < $_size; $i++) {
         for ($i2 = 0; $i2 < $_size; $i2++) {
-            $_rand = rand(0, $_size);
             if($_mineCount < $_size){
                 if($_rand == 1){
                     $_SESSION['mineField'][$i][$i2] = 'hide-mine';
@@ -125,7 +138,7 @@ function CreatMineField($_size)
                 $_fieldCount++;
             }
         }
-    }
+    } */
 
     $_SESSION['gameStatus'] = 'inprogress';
     $_SESSION['size'] = $_size;
@@ -136,13 +149,19 @@ function HandlePlayerMove()
 
         $_field = trim(htmlspecialchars($_POST['field']));
 
-        if ($_field < count($_SESSION['mineField']) * count($_SESSION['mineField']) && $_field >= 0) {
+        if ($_field < count($_SESSION['mineField']) && $_field >= 0) {
 
-            $_remapedNum = RemapFieldNum($_field);
+            /* $_remapedNum = RemapFieldNum($_field); */
             
-            if(GetFieldStatus($_remapedNum) == 0){
+            /* if(GetFieldStatus($_remapedNum) == 0){
                 // Field hidden => can be reavealed!
                 echo GetComputedFieldValue($_remapedNum);
+            } else {
+                echo("Field already revealed!");
+            } */
+
+            if(GetFieldStatus($_field) == 0){
+                echo GetComputedFieldValue($_field);
             } else {
                 echo("Field already revealed!");
             }
@@ -155,7 +174,7 @@ function HandlePlayerMove()
         $_SESSION['msg'] .= "Error: Some data was not sent/set in session! \r\n";
     }
 }
-function RemapFieldNum($_field){
+/* function RemapFieldNum($_field){
     $_count = 0;
     $_remapedFieldNum = null;
 
@@ -168,12 +187,10 @@ function RemapFieldNum($_field){
         }
     }
     return($_remapedFieldNum);
-}
+} */
 function GetFieldStatus($_field){
-    $_i1 = substr($_field, 0, 1);
-    $_i2 = substr($_field, 2, 1);
     $_status = 'undefined';
-    $_status = substr($_SESSION['mineField'][$_i1][$_i2], 0, 5);
+    $_status = substr($_SESSION['mineField'][$_field], 0, 5);
 
     if ($_status == "hide") {
         $_status = 0;
@@ -183,18 +200,14 @@ function GetFieldStatus($_field){
     return ($_status);
 }
 function GetFieldValue($_field){
-    $_i1 = substr($_field, 0, 1);
-    $_i2 = substr($_field, 2, 1);
     $_value = 'undefined';
-    $_value = substr($_SESSION['mineField'][$_i1][$_i2], 5);
+    $_value = substr($_SESSION['mineField'][$_field], 5);
 
     return ($_value);
 }
 function GetComputedFieldValue($_field){
-    $_i1 = substr($_field, 0, 1);
-    $_i2 = substr($_field, 2, 1);
     $_value = 'undefined';
-    $_value = substr($_SESSION['mineField'][$_i1][$_i2], 5);
+    $_value = substr($_SESSION['mineField'][$_field], 5);
 
     if($_value == 'empty'){
         // TODO Check for neighbours for number return
@@ -204,76 +217,77 @@ function GetComputedFieldValue($_field){
     return ($_value);
 }
 function CheckNeighboursForMine($_field){
-    $_i1 = substr($_field, 0, 1);
-    $_i2 = substr($_field, 2, 1);
 
     $_neighbMineCount = 0;
 
-    //Check for max size min size offset
+    $_size = $_SESSION['size'];
 
-    if($_i1 - 1 > -1){
-        $_i1Temp = $_i1;
-        $_i1Temp--;
-        $_fieldTemp = $_i1Temp . ',' . $_i2;
-        if(GetFieldValue($_fieldTemp) == 'mine') $_neighbMineCount++;
+    $_allFields = $_size * $_size;
+
+    $_isLeftEdge = ($_field % $_size == 0);
+    $_isRightEdge = ($_field % $_size == $_size - 1);
+
+    if($_field - 1 > -1 )
+
+    if($_field - 1 > -1 && !$_isLeftEdge && GetFieldValue($_field - 1) == 'mine'){
+        $_neighbMineCount++;
+    }
+    if($_field - $_size + 1 > -1 && !$_isRightEdge && GetFieldValue($_field - $_size + 1) == 'mine'){
+        $_neighbMineCount++;
+    }
+    if($_field - $_size > -1 && GetFieldValue($_field - $_size) == 'mine'){
+        $_neighbMineCount++;
+    }
+    if($_field - $_size - 1 > -1 && !$_isLeftEdge && GetFieldValue($_field - $_size - 1) == 'mine'){
+        $_neighbMineCount++;
     }
 
-    if($_i2 - 1 > -1){
-        $_i2Temp = $_i2;
-        $_i2Temp--;
-        $_fieldTemp = $_i1 . ',' . $_i2Temp;
-        if(GetFieldValue($_fieldTemp) == 'mine') $_neighbMineCount++;
+    if($_field + 1 < $_allFields && !$_isRightEdge && GetFieldValue($_field + 1) == 'mine'){
+        $_neighbMineCount++;
+    }
+    if($_field + $_size + 1 < $_allFields && !$_isRightEdge && GetFieldValue($_field + $_size + 1) == 'mine'){
+        $_neighbMineCount++;
+    }
+    if($_field + $_size < $_allFields && GetFieldValue($_field + $_size) == 'mine'){
+        $_neighbMineCount++;
+    }
+    if($_field + $_size - 1 < $_allFields && !$_isLeftEdge && GetFieldValue($_field + $_size - 1) == 'mine'){
+        $_neighbMineCount++;
     }
 
-    if($_i1 + 1 < $_SESSION['size']){
-        $_i1Temp = $_i1;
-        $_i1Temp++;
-        $_fieldTemp = $_i1Temp . ',' . $_i2;
-        if(GetFieldValue($_fieldTemp) == 'mine') $_neighbMineCount++;
-    }
-
-    if($_i2 + 1 < $_SESSION['size']){
-        $_i2Temp = $_i2;
-        $_i2Temp++;
-        $_fieldTemp = $_i1 . ',' . $_i2Temp;
-        if(GetFieldValue($_fieldTemp) == 'mine') $_neighbMineCount++;
-    }
-
-    if($_i1 - 1 > -1 && $_i2 - 1 > -1){
-        $_i1Temp = $_i1;
-        $_i2Temp = $_i2;
-        $_i1Temp--;
-        $_i2Temp--;
-        $_fieldTemp = $_i1Temp . ',' . $_i2Temp;
-        if(GetFieldValue($_fieldTemp) == 'mine') $_neighbMineCount++;
-    }
-
-    if($_i1 + 1 < $_SESSION['size'] && $_i2 - 1 > -1){
-        $_i1Temp = $_i1;
-        $_i2Temp = $_i2;
-        $_i1Temp++;
-        $_i2Temp--;
-        $_fieldTemp = $_i1Temp . ',' . $_i2Temp;
-        if(GetFieldValue($_fieldTemp) == 'mine') $_neighbMineCount++;
-    }
-
-    if($_i2 + 1 < $_SESSION['size'] && $_i1 - 1 > -1){
-        $_i1Temp = $_i1;
-        $_i2Temp = $_i2;
-        $_i1Temp--;
-        $_i2Temp++;
-        $_fieldTemp = $_i1Temp . ',' . $_i2Temp;
-        if(GetFieldValue($_fieldTemp) == 'mine') $_neighbMineCount++;
-    }
-
-    if($_i2 + 1 < $_SESSION['size'] && $_i1 + 1 < $_SESSION['size']){
-        $_i1Temp = $_i1;
-        $_i2Temp = $_i2;
-        $_i1Temp++;
-        $_i2Temp++;
-        $_fieldTemp = $_i1Temp . ',' . $_i2Temp;
-        if(GetFieldValue($_fieldTemp) == 'mine') $_neighbMineCount++;
-    }    
+        /* if($_field - $_SESSION['size'] + 1 > -1){
+            if(($_field - $_SESSION['size'] + 1) % $_SESSION['size'] != 0){
+                if(GetFieldValue($_field - $_SESSION['size'] + 1) == 'mine') $_neighbMineCount++;
+            }
+            if($_field - $_SESSION['size'] > -1){
+                
+                if(GetFieldValue($_field - $_SESSION['size']) == 'mine') $_neighbMineCount++;
+                if($_field - $_SESSION['size'] - 1 > -1){
+                    if(($_field - $_SESSION['size'] - 1) % ($_SESSION['size'] - 1) != 0){
+                        if(GetFieldValue($_field - $_SESSION['size'] - 1) == 'mine') $_neighbMineCount++;
+                    }
+                } 
+            } 
+        }
+    } if($_field + 1 < $_SESSION['size'] * $_SESSION['size']){
+        if(($_field + 1) % $_SESSION['size'] != 0){
+            if(GetFieldValue($_field + 1) == 'mine') $_neighbMineCount++;
+        }
+        if($_field + $_SESSION['size'] - 1 < $_SESSION['size'] * $_SESSION['size']){
+            if(($_field + $_SESSION['size'] - 1) % ($_SESSION['size'] - 1) != 0){
+                if(GetFieldValue($_field + $_SESSION['size'] - 1) == 'mine') $_neighbMineCount++;
+            }
+            
+            if($_field + $_SESSION['size'] < $_SESSION['size'] * $_SESSION['size']){
+                if(GetFieldValue($_field + $_SESSION['size']) == 'mine') $_neighbMineCount++;
+                if($_field + $_SESSION['size'] + 1 < $_SESSION['size'] * $_SESSION['size']){
+                    if(($_field + $_SESSION['size'] + 1) % $_SESSION['size'] != 0){
+                        if(GetFieldValue($_field + $_SESSION['size'] + 1) == 'mine') $_neighbMineCount++;
+                    }
+                }
+            }
+        }
+    } */
 
     return($_neighbMineCount);
 }

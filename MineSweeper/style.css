@@ -18,6 +18,7 @@
 table{
     border-spacing: 0;
     margin-top: 5em;
+    transform-style: preserve-3d !important;
 }
 
 body{
@@ -27,11 +28,40 @@ body{
     align-content: center;
     justify-content: center;
     justify-items: center;
+    perspective: 160em;
+    perspective-origin: 50% calc(50% - 35em);
+    overflow: hidden;
 }
 
 td{
-    width: 2.5em; 
-    height: 2.5em; 
+    width: 2.0em; 
+    height: 2.0em; 
     margin: 0;
     padding: 0;
+    transform-style: preserve-3d !important;
+}
+
+tr{
+    transform-style: preserve-3d !important;
+}
+
+button{
+    transform-style: preserve-3d !important;
+}
+
+#mineField{
+    border: 3px solid #aaa;
+    
+    transform:
+    /* translate(-50%, -50%) */
+    translateY(-375px)
+    rotateX(90deg);
+    transform-style: preserve-3d !important;
+}
+
+.scene {
+    top: -13em;
+    position: absolute;
+    transform-style: preserve-3d !important;
+    transform: translateZ(2250px) translateX(0px) rotateY(0deg);
 }

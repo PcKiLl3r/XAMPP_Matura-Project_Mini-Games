@@ -1,5 +1,6 @@
 <?php
-session_start();
+include '../includes/sessSt_gameCount.php';
+// TODO games won chess session
 /* unset($_SESSION['gameStatus']); *//* 
 $_SESSION['playerTurn'] = 1; */
 /* $_SESSION['playerTurn'] = '1'; */

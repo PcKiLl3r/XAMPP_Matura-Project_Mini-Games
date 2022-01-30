@@ -433,15 +433,15 @@ button::before {
 }
 
 .box-2 .cover::after {
-    background-image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/945546/3433202-964edcf0f07211b0.png');
+    background-image: url('../../Memory.png');
 }
 
 .box-3 .cover::after {
-    background-image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/945546/3433202-2ebb2b6f93add843.png');
+    background-image: url('../../Chess.png');
 }
 
 .box-4 .cover::after {
-    background-image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/945546/3433202-f79c4cc8de2f84ae.png');
+    background-image: url('../../MineSweeper.png');
 }
 
 .box-1 button div::before {
@@ -473,7 +473,7 @@ button::before {
 }
 
 .box-3 button div::before {
-    content: 'DeepKnow';
+    content: 'Chess';
     position: relative;
     top: -44px;
     left: 3px;
@@ -487,7 +487,7 @@ button::before {
 }
 
 .box-4 button div::before {
-    content: 'Scanner';
+    content: 'MineSweeper';
     position: relative;
     top: -44px;
     left: -9px;

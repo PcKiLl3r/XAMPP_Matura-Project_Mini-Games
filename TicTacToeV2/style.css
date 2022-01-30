@@ -1,5 +1,5 @@
 .tic-tac-container-out{
-    margin-top: -100px;
+    margin-top: 12em;
     justify-self: center;
     border: 5px solid #00d4ad;
     padding: 25px;
@@ -8,7 +8,7 @@
     box-shadow: 0px 10px 5px #00997d,
                 10px 0px 5px #00725d,
                 10px 10px 5px #00836b;
-
+    transform: scale(1.5);
     /* animation: slideInFromTop 2s ease-out; */
 }
 
@@ -347,13 +347,12 @@ padding-bottom: 4px;
     top: 0px;
     width: 100px;
     height: 100px;
-    border: 3px solid black;
-    background-color: #aaa;
+    border: 2px solid white;
     border-radius: 5px;
     -webkit-transform: rotateY(-90deg) translateZ(49px) translateX(0px);
 
-    background-image: url(../assets/svg/dice-two-solid.svg);
-    background-color: #000;
+    background-image: url(../assets/svg/dice-black/dice-two-solid.svg);
+    background-color: #fff;
     background-size: 120%;
     background-position: -7px -9px;
 }
@@ -365,13 +364,12 @@ padding-bottom: 4px;
     margin: 5px;
     width: 100px;
     height: 100px;
-    border: 3px solid black;
-    background-color: #aaa;
+    border: 2px solid white;
     border-radius: 5px;
     -webkit-transform: translateZ(49px);
 
-    background-image: url(../assets/svg/dice-one-solid.svg);
-    background-color: #000;
+    background-image: url(../assets/svg/dice-black/dice-one-solid.svg);
+    background-color: #fff;
     background-size: 120%;
     background-position: -7px -9px;
 /*     text-align: center;
@@ -385,13 +383,12 @@ padding-bottom: 4px;
     margin: 5px;
     width: 100px;
     height: 100px;
-    border: 3px solid black;
-    background-color: #aaa;
+    border: 2px solid white;
     border-radius: 5px;
     -webkit-transform: translateZ(-49px) rotateY(180deg);
 
-    background-image: url(../assets/svg/dice-six-solid.svg);
-    background-color: #000;
+    background-image: url(../assets/svg/dice-black/dice-six-solid.svg);
+    background-color: #fff;
     background-size: 120%;
     background-position: -7px -9px;
 }
@@ -402,15 +399,14 @@ padding-bottom: 4px;
     top: 0px;
     width: 100px;
     height: 100px;
-    border: 3px solid black;
-    background-color: #aaa;
+    border: 2px solid white;
     border-radius: 5px;
     -webkit-transform: rotateY(450deg) translateZ(49px) translateX(0px);
 
-    background-image: url(../assets/svg/dice-five-solid.svg);
-    background-color: #000;
+    background-image: url(../assets/svg/dice-black/dice-five-solid.svg);
+    background-color: #fff;
     background-size: 120%;
-    background-position: -7px -9px;
+    background-position: -7px -15px;
 }
 
 .dice-top{
@@ -419,13 +415,12 @@ padding-bottom: 4px;
     top: 0px;
     width: 100px;
     height: 100px;
-    border: 3px solid black;
-    background-color: #aaa;
+    border: 2px solid white;
     border-radius: 5px;
     -webkit-transform: rotateX(-270deg) rotateZ(0deg) translateZ(49px) translateY(0px);
 
-    background-image: url(../assets/svg/dice-four-solid.svg);
-    background-color: #000;
+    background-image: url(../assets/svg/dice-black/dice-four-solid.svg);
+    background-color: #fff;
     background-size: 120%;
     background-position: -7px -9px;
 }
@@ -436,16 +431,15 @@ padding-bottom: 4px;
     top: 0px;
     width: 100px;
     height: 100px;
-    border: 3px solid black;
-    background-color: #aaa;
+    border: 2px solid white;
     border-radius: 5px;
     -webkit-transform: rotateX(-90deg) translateZ(49px) translateY(0px);
     transform: rotateX(-90deg) translateZ(49px) translateY(0px);
 
-    background-image: url(../assets/svg/dice-three-solid.svg);
-    background-color: #000;
+    background-image: url(../assets/svg/dice-black/dice-three-solid.svg);
+    background-color: #fff;
     background-size: 120%;
-    background-position: -7px -9px;
+    background-position: -7px -15px;
 }
 
 .dices > .dice1 {
@@ -488,7 +482,9 @@ padding-bottom: 4px;
     width: 110px;
     height: 110px;
     border-radius: 10px;
-    background-color: #666;
+    background-color: #00BF9C;
+
+    transform: scale(0.75);
 }
 
 
@@ -508,8 +504,8 @@ padding-bottom: 4px;
 .dice:focus > .dice-top,
 .dice:hover > .dice-bot,
 .dice:focus > .dice-bot {
-    background-color: #bbb;
-    
+    background-color: rgb(255, 81, 0);
+    border: 2px solid rgb(255, 81, 0);
 }
 
 @keyframes sneakPeak {

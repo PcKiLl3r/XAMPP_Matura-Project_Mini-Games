@@ -1271,9 +1271,36 @@ function switchToPlayer1(){
                             switch (_breakOption) {
                                 case 'Promotion':
                                     // Popup Promotion UI
-                                    let _promotionPickForm = document.querySelector('#sendPromotionPickForm');
+                                    
                                     _promotionPickForm.style.visibility = 'visible';
-                                    /* let _promotionFigure = prompt("Select Figure:\r\n- queen,\r\n- knight", "queen");
+                                    /* let _promotionFigure = await prompt("Select Figure:\r\n- queen,\r\n- knight", "queen");
+                                    let _promotionRes = await PromotePawn(_remapedFieldNumber, _promotionFigure);
+                                    if(_promotionRes == "PromotionOK"){
+                                        togglePlayer();
+                                    } */
+                                break;
+                                case 'WhiteWin':
+                                    // Popup Promotion UI
+                                    _promotionPickForm.style.visibility = 'visible';
+                                    /* let _promotionFigure = await prompt("Select Figure:\r\n- queen,\r\n- knight", "queen");
+                                    let _promotionRes = await PromotePawn(_remapedFieldNumber, _promotionFigure);
+                                    if(_promotionRes == "PromotionOK"){
+                                        togglePlayer();
+                                    } */
+                                break;
+                                case 'BlackWin':
+                                    // Popup Promotion UI
+                                    _promotionPickForm.style.visibility = 'visible';
+                                    /* let _promotionFigure = await prompt("Select Figure:\r\n- queen,\r\n- knight", "queen");
+                                    let _promotionRes = await PromotePawn(_remapedFieldNumber, _promotionFigure);
+                                    if(_promotionRes == "PromotionOK"){
+                                        togglePlayer();
+                                    } */
+                                break;
+                                case 'BlackWinWhiteWin':
+                                    // Popup Promotion UI
+                                    _promotionPickForm.style.visibility = 'visible';
+                                    /* let _promotionFigure = await prompt("Select Figure:\r\n- queen,\r\n- knight", "queen");
                                     let _promotionRes = await PromotePawn(_remapedFieldNumber, _promotionFigure);
                                     if(_promotionRes == "PromotionOK"){
                                         togglePlayer();
@@ -1321,7 +1348,34 @@ function switchToPlayer1(){
                             switch (_breakOption) {
                                 case 'Promotion':
                                     // Popup Promotion UI
-                                    let _promotionPickForm = document.querySelector('#sendPromotionPickForm');
+                                    
+                                    _promotionPickForm.style.visibility = 'visible';
+                                    /* let _promotionFigure = await prompt("Select Figure:\r\n- queen,\r\n- knight", "queen");
+                                    let _promotionRes = await PromotePawn(_remapedFieldNumber, _promotionFigure);
+                                    if(_promotionRes == "PromotionOK"){
+                                        togglePlayer();
+                                    } */
+                                break;
+                                case 'WhiteWin':
+                                    // Popup Promotion UI
+                                    _promotionPickForm.style.visibility = 'visible';
+                                    /* let _promotionFigure = await prompt("Select Figure:\r\n- queen,\r\n- knight", "queen");
+                                    let _promotionRes = await PromotePawn(_remapedFieldNumber, _promotionFigure);
+                                    if(_promotionRes == "PromotionOK"){
+                                        togglePlayer();
+                                    } */
+                                break;
+                                case 'BlackWin':
+                                    // Popup Promotion UI
+                                    _promotionPickForm.style.visibility = 'visible';
+                                    /* let _promotionFigure = await prompt("Select Figure:\r\n- queen,\r\n- knight", "queen");
+                                    let _promotionRes = await PromotePawn(_remapedFieldNumber, _promotionFigure);
+                                    if(_promotionRes == "PromotionOK"){
+                                        togglePlayer();
+                                    } */
+                                break;
+                                case 'BlackWinWhiteWin':
+                                    // Popup Promotion UI
                                     _promotionPickForm.style.visibility = 'visible';
                                     /* let _promotionFigure = await prompt("Select Figure:\r\n- queen,\r\n- knight", "queen");
                                     let _promotionRes = await PromotePawn(_remapedFieldNumber, _promotionFigure);
@@ -1372,9 +1426,36 @@ function switchToPlayer1(){
                             switch (_breakOption) {
                                 case 'Promotion':
                                     // Popup Promotion UI
-                                    let _promotionPickForm = document.querySelector('#sendPromotionPickForm');
+                                    
                                     _promotionPickForm.style.visibility = 'visible';
-                                    /* let _promotionFigure = prompt("Select Figure:\r\n- queen,\r\n- knight", "queen");
+                                    /* let _promotionFigure = await prompt("Select Figure:\r\n- queen,\r\n- knight", "queen");
+                                    let _promotionRes = await PromotePawn(_remapedFieldNumber, _promotionFigure);
+                                    if(_promotionRes == "PromotionOK"){
+                                        togglePlayer();
+                                    } */
+                                break;
+                                case 'WhiteWin':
+                                    // Popup Promotion UI
+                                    _promotionPickForm.style.visibility = 'visible';
+                                    /* let _promotionFigure = await prompt("Select Figure:\r\n- queen,\r\n- knight", "queen");
+                                    let _promotionRes = await PromotePawn(_remapedFieldNumber, _promotionFigure);
+                                    if(_promotionRes == "PromotionOK"){
+                                        togglePlayer();
+                                    } */
+                                break;
+                                case 'BlackWin':
+                                    // Popup Promotion UI
+                                    _promotionPickForm.style.visibility = 'visible';
+                                    /* let _promotionFigure = await prompt("Select Figure:\r\n- queen,\r\n- knight", "queen");
+                                    let _promotionRes = await PromotePawn(_remapedFieldNumber, _promotionFigure);
+                                    if(_promotionRes == "PromotionOK"){
+                                        togglePlayer();
+                                    } */
+                                break;
+                                case 'BlackWinWhiteWin':
+                                    // Popup Promotion UI
+                                    _promotionPickForm.style.visibility = 'visible';
+                                    /* let _promotionFigure = await prompt("Select Figure:\r\n- queen,\r\n- knight", "queen");
                                     let _promotionRes = await PromotePawn(_remapedFieldNumber, _promotionFigure);
                                     if(_promotionRes == "PromotionOK"){
                                         togglePlayer();
@@ -1419,10 +1500,38 @@ function switchToPlayer1(){
                         if(_getPlayer == currentPlayer){
                             let _breakOption = await GetBreakOption();
                             console.log("Break option data recieved!");
+                            let _promotionPickForm = document.querySelector('#sendPromotionPickForm');
                             switch (_breakOption) {
                                 case 'Promotion':
                                     // Popup Promotion UI
-                                    let _promotionPickForm = document.querySelector('#sendPromotionPickForm');
+                                    
+                                    _promotionPickForm.style.visibility = 'visible';
+                                    /* let _promotionFigure = await prompt("Select Figure:\r\n- queen,\r\n- knight", "queen");
+                                    let _promotionRes = await PromotePawn(_remapedFieldNumber, _promotionFigure);
+                                    if(_promotionRes == "PromotionOK"){
+                                        togglePlayer();
+                                    } */
+                                break;
+                                case 'WhiteWin':
+                                    // Popup Promotion UI
+                                    _promotionPickForm.style.visibility = 'visible';
+                                    /* let _promotionFigure = await prompt("Select Figure:\r\n- queen,\r\n- knight", "queen");
+                                    let _promotionRes = await PromotePawn(_remapedFieldNumber, _promotionFigure);
+                                    if(_promotionRes == "PromotionOK"){
+                                        togglePlayer();
+                                    } */
+                                break;
+                                case 'BlackWin':
+                                    // Popup Promotion UI
+                                    _promotionPickForm.style.visibility = 'visible';
+                                    /* let _promotionFigure = await prompt("Select Figure:\r\n- queen,\r\n- knight", "queen");
+                                    let _promotionRes = await PromotePawn(_remapedFieldNumber, _promotionFigure);
+                                    if(_promotionRes == "PromotionOK"){
+                                        togglePlayer();
+                                    } */
+                                break;
+                                case 'BlackWinWhiteWin':
+                                    // Popup Promotion UI
                                     _promotionPickForm.style.visibility = 'visible';
                                     /* let _promotionFigure = await prompt("Select Figure:\r\n- queen,\r\n- knight", "queen");
                                     let _promotionRes = await PromotePawn(_remapedFieldNumber, _promotionFigure);
@@ -1446,6 +1555,16 @@ function switchToPlayer1(){
                                 }
                             }
                             togglePlayer();
+                            /* // Check for end game
+                            let _getEndedRes = await GetHasEnded();
+                            if(_getEndedRes == 'WhiteWin'){
+
+                            } else if(_getEndedRes == 'BlackWin'){
+                                
+                            } else {
+                                console.log("No victory yet proceed playing.");
+                                togglePlayer();
+                            } */
                         }
                         console.log("Black player attacked:\r\nFrom: " + _remapedLastFieldNumber + "\r\nTo: " + _remapedFieldNumber);
                         /* let _canTogglePlayer = await GetBreakOption();
@@ -2130,6 +2249,17 @@ async function GetPromotedPick(){
 
     if(_res == null) infoMsg += "No response for Get Promoted Pick!\r\n";
     else infoMsg += "Get Promoted Pick data recieved!\r\n";
+    return(_res);
+}
+async function GetHasEnded(){
+    let _getHasEndedForm = document.createElement('form');
+            let _formattedFormData = new FormData(_getHasEndedForm);
+            _formattedFormData.append("process", 'getHasEnded');
+            let _res = await PostData(_formattedFormData);
+    if(_res == null){
+        infoMsg += "No response for Get Has Ended Status!\r\n";
+        /* gameStatus = "No response for Player Move!"; */
+    }/*  else if(_res == "MoveBAD") infoMsg += "Player Move Response: Bad Move!\r\n"; */
     return(_res);
 }
 function Setup(){
