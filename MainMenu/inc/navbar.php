@@ -11,7 +11,7 @@
                     </span>
                 </a>
             </li>
-            <li>
+            <!-- <li>
                 <a class="three-d" href="">
                     O nas
                     <span aria-hidden="true" class="three-d-box">
@@ -19,7 +19,7 @@
                         <span class="back">O nas</span>
                     </span>
                 </a>
-            </li>
+            </li> -->
         </ul>
         </nav>
         <nav style="margin-left: auto;">

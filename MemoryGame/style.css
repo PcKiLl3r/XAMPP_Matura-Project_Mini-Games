@@ -12,18 +12,22 @@
     grid-column-start: 1;
     grid-column-end: 3;
 
-    transform: rotateX(45deg) rotateZ(45deg);
+    transform: rotateX(45deg) rotateZ(45deg) translateX(-25px);
 }
 
 body{
     width: 100% !important;
     overflow: hidden;
-    background-color: rgb(145, 0, 120);
+    background-color: #653EE6;
 }
 
-/* .d-lvl1{
-    flex-basis: 19.2%;
-} */
+.modal-backdrop{
+    z-index: -10000;
+}
+
+.modal{
+    position: relative !important;
+}
 
 .d-menu{
     display: flex;
@@ -46,14 +50,14 @@ body{
 }
 
 .revealed-card{
-    -webkit-transform: rotateY(180deg) translateY(0px) translateX(-30px);
-    transform: rotateY(180deg) translateY(0px) translateX(-30px);
+    -webkit-transform: rotateY(180deg) translateY(-15px) translateX(-15px);
+    transform: rotateY(180deg) translateY(-15px) translateX(-15px);
 
 }
 
 .won-card{
-    -webkit-transform: rotateY(180deg) rotateX(-45deg) rotateZ(-45deg) translateY(-20px) translateX(-15px);
-    transform: rotateY(180deg) rotateX(-45deg) rotateZ(-45deg) translateY(-20px) translateX(-15px);
+    -webkit-transform: rotateY(180deg) rotateX(-45deg) rotateZ(-45deg) translateY(-20px) translateX(10px);
+    transform: rotateY(180deg) rotateX(-45deg) rotateZ(-45deg) translateY(-20px) translateX(10px);
 }
 
 .memory-card-left {
@@ -64,7 +68,7 @@ body{
     width: 10px;
     height: 100px;
     border: 3px solid black;
-    background-color: #bfacff;
+    background-color: #653EE6;
     color: #fff;
     border-radius: 5px;
     -webkit-transform: rotateY(-90deg) translateZ(4px) translateX(15px);
@@ -81,7 +85,7 @@ body{
     width: 100px;
     height: 100px;
     border: 3px solid black;
-    background-color: #bfacff;
+    background-color: #653EE6;
     color: rgb(68, 0, 40);
     border-radius: 5px;
     -webkit-transform: translateZ(18px);
@@ -117,7 +121,7 @@ body{
     width: 100px;
     height: 100px;
     border: 3px solid black;
-    background-color: #bfacff;
+    background-color: #653EE6;
     color: rgb(68, 0, 40);
     border-radius: 5px;
     -webkit-transform: translateZ(12px) rotateY(180deg);
@@ -134,7 +138,7 @@ body{
     width: 10px;
     height: 100px;
     border: 3px solid black;
-    background-color: #bfacff;
+    background-color: #653EE6;
     color: #000;
     border-radius: 5px;
     -webkit-transform: rotateY(-90deg) translateZ(-94px) translateX(15px);
@@ -148,7 +152,7 @@ body{
     width: 100px;
     height: 10px;
     border: 3px solid black;
-    background-color: #bfacff;
+    background-color: #653EE6;
     color: #000;
     border-radius: 5px;
     -webkit-transform: rotateX(-90deg) translateZ(-4px) translateY(-15px);
@@ -162,7 +166,7 @@ body{
     width: 100px;
     height: 10px;
     border: 3px solid black;
-    background-color: #bfacff;
+    background-color: #653EE6;
     color: #000;
     border-radius: 5px;
     -webkit-transform: rotateX(-90deg) translateZ(94px) translateY(-15px);
@@ -170,12 +174,17 @@ body{
 
 .memory-cards {
     margin: 50px;
-    padding: 5px;
+    padding-left: 25px;
+    padding-top: 45px;
     display: flex;
     justify-content: space-between;
     align-content: space-between;
     
     transform-style: preserve-3d;
+}
+
+.modal-content {
+    background-color: #AE7BFF;
 }
 
 .row{
@@ -185,13 +194,15 @@ body{
 }
 
 .memory-cards-main {
+    border-radius: 5px;
     margin: 50px;
-    padding: 5px;
+    padding: 25px;
+    padding-top: 45px;
     /* display: grid; */
     justify-content: space-between;
     align-content: space-between;
     transform-style: preserve-3d;
-    
+    background-color: #AE7BFF;
 }
 
 .scene{
@@ -223,12 +234,12 @@ body{
 .memory-card:focus > .memory-card-top,
 .memory-card:hover > .memory-card-bot,
 .memory-card:focus > .memory-card-bot {
-    background-color: #a184ff;
+    background-color: #0098FF
 }
 
 @keyframes sneakPeak {
-    0% {transform: rotateX(45deg) rotateZ(45deg) rotateY(0deg);}
-    50% {transform: rotateX(45deg) rotateZ(45deg) rotateY(25deg);}
+    0% {transform: rotateX(45deg) rotateZ(45deg) rotateY(0deg) translateX(-25px);}
+    50% {transform: rotateX(45deg) rotateZ(45deg) rotateY(25deg) translateX(-25px);}
   }
 
 /* @keyframes sneakPeak {
@@ -239,20 +250,20 @@ body{
   } */
 
   @keyframes sneakPeakMenu {
-    0% {transform: rotateX(45deg) rotateZ(45deg) rotateY(0deg);}
-    25% {transform: rotateX(0deg) rotateZ(0deg) rotateY(0deg);}
-    50% {transform: rotateX(45deg) rotateZ(-45deg) rotateY(0deg);}
-    75% {transform: rotateX(0deg) rotateZ(0deg) rotateY(0deg);}
+    0% {transform: rotateX(45deg) rotateZ(45deg) rotateY(0deg) translateX(-25px);}
+    25% {transform: rotateX(0deg) rotateZ(0deg) rotateY(0deg) translateX(-25px);}
+    50% {transform: rotateX(45deg) rotateZ(-45deg) rotateY(0deg) translateX(-25px);}
+    75% {transform: rotateX(0deg) rotateZ(0deg) rotateY(0deg) translateX(-25px);}
   }
 
   .btn-purple{
-    background-color: #bfacff;
+    background-color: #0066ff;
     color: white;
     padding: 0.75em;
   }
 
   .btn-purple:hover,.btn-purple:focus{
-    background-color: #4b2eac;
+    background-color: #0051ff;
     color: rgba(255, 255, 255, 1);
   }
 
@@ -409,18 +420,18 @@ body{
 
 .back-btn{
     position: absolute;
-    left: 25px;
-    top: 25px;
+    left: 5px;
+    top: 5px;
     width: 110px;
     height: 110px;
     border-radius: 10px;
-    background-color: #bfacff;
+    background-color: #AE7BFF;
 
     transform: scale(0.75);
 }
 
 .back-btn:hover{
-    background-color: #a184ff;
+    background-color: #0098FF;
 }
 
 
@@ -440,8 +451,8 @@ body{
 .dice:focus > .dice-top,
 .dice:hover > .dice-bot,
 .dice:focus > .dice-bot {
-    background-color: rgb(0, 217, 255);
-    border: 2px solid rgb(0, 217, 255);
+    background-color: #00D0FF;
+    border: 2px solid #00D0FF;
 }
 
 @keyframes sneakPeakDice {

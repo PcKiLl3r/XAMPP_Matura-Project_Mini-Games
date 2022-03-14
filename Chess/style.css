@@ -17,7 +17,7 @@
     --blackMarksTextColor: #aaa;
     --whiteMarksTextColor: #555;
 
-    --bgColor: gray;
+    --bgColor: #008BFF;
     --chessStructureColor: #000;
 
     --rotateSpeed: 30s;
@@ -278,25 +278,25 @@ body {
 .figure-white:hover > .chessCard > .card-back, .figure-white:hover > .chessCard > .card-bot, .figure-white:hover > .chessCard > .card-front, .figure-white:hover > .chessCard > .card-left, .figure-white:hover > .chessCard > .card-right, .figure-white:hover > .chessCard > .card-top 
 {
     background-color: var(--whiteFigureHoverColor);
-    border: solid 1px var(--blackFigureHoverColor);
+    border: solid 5px var(--blackFigureHoverColor);
 }
 
 .figure-black:hover > .chessCard > .card-back, .figure-black:hover > .chessCard > .card-bot, .figure-black:hover > .chessCard > .card-front, .figure-black:hover > .chessCard > .card-left, .figure-black:hover > .chessCard > .card-right, .figure-black:hover > .chessCard > .card-top 
 {
     background-color: var(--blackFigureHoverColor);
-    border: solid 1px var(--whiteFigureHoverColor);
+    border: solid 5px var(--whiteFigureHoverColor);
 }
 
 .figure-white:focus > .chessCard > .card-back, .figure-white:focus > .chessCard > .card-bot, .figure-white:focus > .chessCard > .card-front, .figure-white:focus > .chessCard > .card-left, .figure-white:focus > .chessCard > .card-right, .figure-white:focus > .chessCard > .card-top 
 {
     background-color: var(--whiteFigureHoverColor);
-    border: solid 1px var(--blackFigureHoverColor);
+    border: solid 5px var(--blackFigureHoverColor);
 }
 
 .figure-black:focus > .chessCard > .card-back, .figure-black:focus > .chessCard > .card-bot, .figure-black:focus > .chessCard > .card-front, .figure-black:focus > .chessCard > .card-left, .figure-black:focus > .chessCard > .card-right, .figure-black:focus > .chessCard > .card-top 
 {
     background-color: var(--blackFigureHoverColor);
-    border: solid 1px var(--whiteFigureHoverColor);
+    border: solid 5px var(--whiteFigureHoverColor);
 }
 
 .whiteQuickActions{
@@ -524,7 +524,7 @@ body {
     justify-content: space-around;
     display: flex;
     flex-direction: column-reverse;
-    border: solid 3px var(--chessStructureColor);
+    border: solid 5px var(--chessStructureColor);
 }
 
 .fieldMarksHorizontal{
@@ -536,7 +536,7 @@ body {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
-    border: solid 3px var(--chessStructureColor);
+    border: solid 5px var(--chessStructureColor);
 }
 
 .fieldMarksVertical2{
@@ -548,7 +548,7 @@ body {
     justify-content: space-around;
     display: flex;
     flex-direction: column;
-    border: solid 3px var(--chessStructureColor);
+    border: solid 5px var(--chessStructureColor);
     transform: rotateZ(180deg);
 }
 
@@ -561,7 +561,7 @@ body {
     display: flex;
     flex-direction: row-reverse;
     justify-content: space-around;
-    border: solid 3px var(--chessStructureColor);
+    border: solid 5px var(--chessStructureColor);
     transform: rotateZ(180deg);
 }
 
@@ -838,8 +838,8 @@ to { transform: translateZ(0px) rotateX(var(--figureRotateAmount)) rotateY(0deg)
 
 .chessCard > .card-left {
     position: absolute;
-    top: 50%;
-    left: -6%;
+    top: 51.5%;
+    left: -11.5%;
     height: calc(var(--fieldHeight) / 1.5);
     width: calc(var(--fieldWidth) / 16);
     transform: rotateY(90deg) translate(-50%, -50%);
@@ -847,7 +847,7 @@ to { transform: translateZ(0px) rotateX(var(--figureRotateAmount)) rotateY(0deg)
 
 .chessCard > .card-right {
     position: absolute;
-    top: 50%;
+    top: 51.5%;
     right: -6%;
     height: calc(var(--fieldHeight) / 1.5);
     width: calc(var(--fieldWidth) / 16);
@@ -857,8 +857,8 @@ to { transform: translateZ(0px) rotateX(var(--figureRotateAmount)) rotateY(0deg)
 .chessCard > .card-back {
     position: absolute;
     top: -50%;
-    left: -5%;
-    height: calc(var(--fieldHeight) / 1.5);
+    left: -12%;
+    height: calc(calc(var(--fieldHeight) / 1.5) + 3px);
     width: calc(var(--fieldWidth) / 16);
     transform: rotateY(90deg) rotateX(-90deg) translate(-50%, -50%);
 }
@@ -866,8 +866,8 @@ to { transform: translateZ(0px) rotateX(var(--figureRotateAmount)) rotateY(0deg)
 .chessCard > .card-front {
     position: absolute;
     top: 50%;
-    right: -5%;
-    height: calc(var(--fieldHeight) / 1.5);
+    right: -7%;
+    height: calc(calc(var(--fieldHeight) / 1.5) + 3px);
     width: calc(var(--fieldWidth) / 16);
     transform: rotateY(90deg) rotateX(90deg) translate(-50%, -50%);
 }
@@ -879,7 +879,7 @@ to { transform: translateZ(0px) rotateX(var(--figureRotateAmount)) rotateY(0deg)
     right: -1px;
     height: calc(calc(var(--fieldHeight) / 1.5) - 1px);
     width: calc(calc(var(--fieldWidth) / 1.5) + 3px);
-    transform: translateZ(calc(calc(var(--fieldWidth) / 16) + 2px ));
+    transform: translateZ(calc(calc(var(--fieldWidth) / 16) + 10px ));
     text-align: center;
     line-height: calc(var(--fieldHeight) / 1.5);
 }
@@ -1075,12 +1075,12 @@ to { transform: translateZ(0px) rotateX(var(--figureRotateAmount)) rotateY(0deg)
 
 .figure-white > .chessCard > .card-back, .figure-white > .chessCard > .card-bot, .figure-white > .chessCard > .card-front, .figure-white > .chessCard > .card-left, .figure-white > .chessCard > .card-right, .figure-white > .chessCard > .card-top{
     background-color: var(--whiteFigureColor);
-    border: solid 1px var(--blackFigureColor);
+    border: solid 5px var(--blackFigureColor);
 }
 
 .figure-black > .chessCard > .card-back, .figure-black > .chessCard > .card-bot, .figure-black > .chessCard > .card-front, .figure-black > .chessCard > .card-left, .figure-black > .chessCard > .card-right, .figure-black > .chessCard > .card-top{
     background-color: var(--blackFigureColor);
-    border: solid 1px var(--whiteFigureColor);
+    border: solid 5px var(--whiteFigureColor);
 }
 
 /* .chessCard:hover .card-back, .chessCard:hover .card-bot, .chessCard:hover .card-front, .chessCard:hover .card-left, .chessCard:hover .card-right, .chessCard:hover .card-top {
@@ -1090,25 +1090,25 @@ to { transform: translateZ(0px) rotateX(var(--figureRotateAmount)) rotateY(0deg)
 .field:hover > .figure-white > .chessCard > .card-back, .field:hover > .figure-white > .chessCard > .card-bot, .field:hover > .figure-white > .chessCard > .card-front, .field:hover > .figure-white > .chessCard > .card-left, .field:hover > .figure-white > .chessCard > .card-right, .field:hover > .figure-white > .chessCard > .card-top 
 {
     background-color: var(--whiteFigureHoverColor);
-    border: solid 1px var(--blackFigureHoverColor);
+    border: solid 5px var(--blackFigureHoverColor);
 }
 
 .field:hover > .figure-black > .chessCard > .card-back, .field:hover > .figure-black > .chessCard > .card-bot, .field:hover > .figure-black > .chessCard > .card-front, .field:hover > .figure-black > .chessCard > .card-left, .field:hover > .figure-black > .chessCard > .card-right, .field:hover > .figure-black > .chessCard > .card-top 
 {
     background-color: var(--blackFigureHoverColor);
-    border: solid 1px var(--whiteFigureHoverColor);
+    border: solid 5px var(--whiteFigureHoverColor);
 }
 
 .field:focus > .figure-white > .chessCard > .card-back, .field:focus > .figure-white > .chessCard > .card-bot, .field:focus > .figure-white > .chessCard > .card-front, .field:focus > .figure-white > .chessCard > .card-left, .field:focus > .figure-white > .chessCard > .card-right, .field:focus > .figure-white > .chessCard > .card-top 
 {
     background-color: var(--whiteFigureHoverColor);
-    border: solid 1px var(--blackFigureHoverColor);
+    border: solid 5px var(--blackFigureHoverColor);
 }
 
 .field:focus > .figure-black > .chessCard > .card-back, .field:focus > .figure-black > .chessCard > .card-bot, .field:focus > .figure-black > .chessCard > .card-front, .field:focus > .figure-black > .chessCard > .card-left, .field:focus > .figure-black > .chessCard > .card-right, .field:focus > .figure-black > .chessCard > .card-top 
 {
     background-color: var(--blackFigureHoverColor);
-    border: solid 1px var(--whiteFigureHoverColor);
+    border: solid 5px var(--whiteFigureHoverColor);
 }
 
 /* --whiteFieldHoverColor: #999; 

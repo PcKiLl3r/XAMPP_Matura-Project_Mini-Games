@@ -38,11 +38,12 @@ if (filter_has_var(INPUT_POST, 'process')) {
     }
     // End of Reset
 
-    else {
+    if (isset($_SESSION['msg'])) {
         echo $_SESSION['msg'];
-        unset($_POST);
-        exit();
-    } 
+        unset($_SESSION['msg']);
+    }
+    unset($_POST);
+    exit();
 }
 function NewConn()
 {
@@ -75,6 +76,7 @@ function NewGame()
         $_type = trim(htmlspecialchars($_POST['type']));
 
         if ($_type == 'small' || $_type == 'med' || $_type == 'big') {
+            $_SESSION['isFirstClick'] = true;
             if ($_type == 'small') {
 
                 CreatMineField(5);
@@ -108,11 +110,11 @@ function CreatMineField($_size)
     $_fieldArray = [];
     $_mineArray = [];
 
-    for ($i=0; $i < $_fieldCount; $i++) { 
+    for ($i = 0; $i < $_fieldCount; $i++) {
         $_fieldArray[$i] = 'hide-empty';
     }
 
-    for ($i=0; $i < $_mineCount; $i++) { 
+    for ($i = 0; $i < $_mineCount; $i++) {
         $_mineArray[$i] = 'hide-mine';
     }
 
@@ -150,23 +152,26 @@ function HandlePlayerMove()
         $_field = trim(htmlspecialchars($_POST['field']));
 
         if ($_field < count($_SESSION['mineField']) && $_field >= 0) {
-
-            /* $_remapedNum = RemapFieldNum($_field); */
-            
-            /* if(GetFieldStatus($_remapedNum) == 0){
-                // Field hidden => can be reavealed!
-                echo GetComputedFieldValue($_remapedNum);
+            if ($_SESSION['isFirstClick'] == true) {
+                if (GetFieldStatus($_field) == 0) {
+                    if (GetComputedFieldValue($_field) == 0) {
+                        $_firstFields = [];
+                        $_firstFields = CheckSurroundingFieldsForZero($_field);
+                        print_r(json_encode(/* [ *//* 0,1,2,3] */ $_firstFields));
+                        $_SESSION['isFirstClick'] = false;
+                    } else {
+                        echo GetComputedFieldValue($_field);
+                    }
+                } else {
+                    $_SESSION['msg'] .= "Field already revealed!";
+                }
             } else {
-                echo("Field already revealed!");
-            } */
-
-            if(GetFieldStatus($_field) == 0){
-                echo GetComputedFieldValue($_field);
-            } else {
-                echo("Field already revealed!");
+                if (GetFieldStatus($_field) == 0) {
+                    echo GetComputedFieldValue($_field);
+                } else {
+                    $_SESSION['msg'] .= "Field already revealed!";
+                }
             }
-            
-
         } else {
             $_SESSION['msg'] .= "Error: Player Move Field data was wrong! \r\n";
         }
@@ -188,7 +193,8 @@ function HandlePlayerMove()
     }
     return($_remapedFieldNum);
 } */
-function GetFieldStatus($_field){
+function GetFieldStatus($_field)
+{
     $_status = 'undefined';
     $_status = substr($_SESSION['mineField'][$_field], 0, 5);
 
@@ -199,24 +205,27 @@ function GetFieldStatus($_field){
     }
     return ($_status);
 }
-function GetFieldValue($_field){
+function GetFieldValue($_field)
+{
     $_value = 'undefined';
     $_value = substr($_SESSION['mineField'][$_field], 5);
 
     return ($_value);
 }
-function GetComputedFieldValue($_field){
+function GetComputedFieldValue($_field)
+{
     $_value = 'undefined';
     $_value = substr($_SESSION['mineField'][$_field], 5);
 
-    if($_value == 'empty'){
+    if ($_value == 'empty') {
         // TODO Check for neighbours for number return
         $_value = CheckNeighboursForMine($_field);
     }
 
     return ($_value);
 }
-function CheckNeighboursForMine($_field){
+function CheckNeighboursForMine($_field)
+{
 
     $_neighbMineCount = 0;
 
@@ -227,67 +236,115 @@ function CheckNeighboursForMine($_field){
     $_isLeftEdge = ($_field % $_size == 0);
     $_isRightEdge = ($_field % $_size == $_size - 1);
 
-    if($_field - 1 > -1 )
-
-    if($_field - 1 > -1 && !$_isLeftEdge && GetFieldValue($_field - 1) == 'mine'){
+    if ($_field - 1 > -1 && !$_isLeftEdge && GetFieldValue($_field - 1) == 'mine') {
         $_neighbMineCount++;
     }
-    if($_field - $_size + 1 > -1 && !$_isRightEdge && GetFieldValue($_field - $_size + 1) == 'mine'){
+    if ($_field - $_size + 1 > -1 && !$_isRightEdge && GetFieldValue($_field - $_size + 1) == 'mine') {
         $_neighbMineCount++;
     }
-    if($_field - $_size > -1 && GetFieldValue($_field - $_size) == 'mine'){
+    if ($_field - $_size > -1 && GetFieldValue($_field - $_size) == 'mine') {
         $_neighbMineCount++;
     }
-    if($_field - $_size - 1 > -1 && !$_isLeftEdge && GetFieldValue($_field - $_size - 1) == 'mine'){
+    if ($_field - $_size - 1 > -1 && !$_isLeftEdge && GetFieldValue($_field - $_size - 1) == 'mine') {
         $_neighbMineCount++;
     }
-
-    if($_field + 1 < $_allFields && !$_isRightEdge && GetFieldValue($_field + 1) == 'mine'){
+    if ($_field + 1 < $_allFields && !$_isRightEdge && GetFieldValue($_field + 1) == 'mine') {
         $_neighbMineCount++;
     }
-    if($_field + $_size + 1 < $_allFields && !$_isRightEdge && GetFieldValue($_field + $_size + 1) == 'mine'){
+    if ($_field + $_size + 1 < $_allFields && !$_isRightEdge && GetFieldValue($_field + $_size + 1) == 'mine') {
         $_neighbMineCount++;
     }
-    if($_field + $_size < $_allFields && GetFieldValue($_field + $_size) == 'mine'){
+    if ($_field + $_size < $_allFields && GetFieldValue($_field + $_size) == 'mine') {
         $_neighbMineCount++;
     }
-    if($_field + $_size - 1 < $_allFields && !$_isLeftEdge && GetFieldValue($_field + $_size - 1) == 'mine'){
+    if ($_field + $_size - 1 < $_allFields && !$_isLeftEdge && GetFieldValue($_field + $_size - 1) == 'mine') {
         $_neighbMineCount++;
     }
 
-        /* if($_field - $_SESSION['size'] + 1 > -1){
-            if(($_field - $_SESSION['size'] + 1) % $_SESSION['size'] != 0){
-                if(GetFieldValue($_field - $_SESSION['size'] + 1) == 'mine') $_neighbMineCount++;
-            }
-            if($_field - $_SESSION['size'] > -1){
-                
-                if(GetFieldValue($_field - $_SESSION['size']) == 'mine') $_neighbMineCount++;
-                if($_field - $_SESSION['size'] - 1 > -1){
-                    if(($_field - $_SESSION['size'] - 1) % ($_SESSION['size'] - 1) != 0){
-                        if(GetFieldValue($_field - $_SESSION['size'] - 1) == 'mine') $_neighbMineCount++;
-                    }
-                } 
-            } 
-        }
-    } if($_field + 1 < $_SESSION['size'] * $_SESSION['size']){
-        if(($_field + 1) % $_SESSION['size'] != 0){
-            if(GetFieldValue($_field + 1) == 'mine') $_neighbMineCount++;
-        }
-        if($_field + $_SESSION['size'] - 1 < $_SESSION['size'] * $_SESSION['size']){
-            if(($_field + $_SESSION['size'] - 1) % ($_SESSION['size'] - 1) != 0){
-                if(GetFieldValue($_field + $_SESSION['size'] - 1) == 'mine') $_neighbMineCount++;
-            }
-            
-            if($_field + $_SESSION['size'] < $_SESSION['size'] * $_SESSION['size']){
-                if(GetFieldValue($_field + $_SESSION['size']) == 'mine') $_neighbMineCount++;
-                if($_field + $_SESSION['size'] + 1 < $_SESSION['size'] * $_SESSION['size']){
-                    if(($_field + $_SESSION['size'] + 1) % $_SESSION['size'] != 0){
-                        if(GetFieldValue($_field + $_SESSION['size'] + 1) == 'mine') $_neighbMineCount++;
-                    }
-                }
-            }
-        }
+    return ($_neighbMineCount);
+}
+function CheckSurroundingFieldsForZero($_field)
+{
+    $_field = intval($_field, $base = 10);
+    ini_set('memory_limit', '128MB');
+    $_size = $_SESSION['size'];
+
+    $_allFields = $_size * $_size;
+
+    $_isLeftEdge = ($_field % $_size == 0);
+    $_isRightEdge = ($_field % $_size == $_size - 1);
+
+    $_openFields = [];
+
+    if ($_field > -1 && $_field < $_allFields && GetFieldValue($_field) != 'mine' && CheckNeighboursForMine($_field) == 0) {
+        array_push($_openFields, $_field);
+    }
+
+    if ($_field - 1 > -1 && !$_isLeftEdge && GetFieldValue($_field - 1) != 'mine' && CheckNeighboursForMine($_field - 1) == 0) {
+        array_push($_openFields, $_field - 1);
+        $_openFields2 = CheckSurroundingFieldsForZero($_field - 1);
+        array_merge($_openFields, $_openFields2);
+    }
+    if ($_field - $_size + 1 > -1 && !$_isRightEdge && GetFieldValue($_field - $_size + 1) != 'mine' && CheckNeighboursForMine($_field - $_size + 1) == 0) {
+        array_push($_openFields, $_field - $_size + 1);
+        /* $_openFields2 = CheckSurroundingFieldsForZero($_field - $_size + 1);
+        if ($_openFields2 == []) {
+        } else {
+            $_openFields = array_merge($_openFields, $_openFields2);
+        } */
+    }
+    if ($_field - $_size > -1 && GetFieldValue($_field - $_size) != 'mine' && CheckNeighboursForMine($_field - $_size) == 0) {
+        array_push($_openFields, $_field - $_size);
+        /* $_openFields2 = CheckSurroundingFieldsForZero($_field - $_size);
+        if ($_openFields2 == false) {
+        } else {
+            $_openFields = array_merge($_openFields, $_openFields2);
+        } */
+    }
+    if ($_field - $_size - 1 > -1 && !$_isLeftEdge && GetFieldValue($_field - $_size - 1) != 'mine' && CheckNeighboursForMine($_field - $_size - 1) == 0) {
+        array_push($_openFields, $_field - $_size - 1);
+        /* $_openFields2 = CheckSurroundingFieldsForZero($_field - $_size - 1);
+        if ($_openFields2 == false) {
+        } else {
+            $_openFields = array_merge($_openFields, $_openFields2);
+        } */
+    }
+    if ($_field + 1 < $_allFields && !$_isRightEdge && GetFieldValue($_field + 1) != 'mine' && CheckNeighboursForMine($_field + 1) == 0) {
+        array_push($_openFields, $_field + 1);
+        /* $_openFields2 = CheckSurroundingFieldsForZero($_field + 1);
+        if ($_openFields2 == false) {
+        } else {
+            $_openFields = array_merge($_openFields, $_openFields2);
+        } */
+    }
+    if ($_field + $_size + 1 < $_allFields && !$_isRightEdge && GetFieldValue($_field + $_size + 1) != 'mine' && CheckNeighboursForMine($_field + $_size + 1) == 0) {
+        array_push($_openFields, $_field + $_size + 1);
+        /* $_openFields2 = CheckSurroundingFieldsForZero($_field + $_size + 1);
+        if ($_openFields2 == false) {
+        } else {
+            $_openFields = array_merge($_openFields, $_openFields2);
+        } */
+    }
+    if ($_field + $_size < $_allFields && GetFieldValue($_field + $_size) != 'mine' && CheckNeighboursForMine($_field + $_size) == 0) {
+        array_push($_openFields, $_field + $_size);
+        /* $_openFields2 = CheckSurroundingFieldsForZero($_field + $_size);
+        if ($_openFields2 == false) {
+        } else {
+            $_openFields = array_merge($_openFields, $_openFields2);
+        } */
+    }
+    if ($_field + $_size - 1 < $_allFields && !$_isLeftEdge && GetFieldValue($_field + $_size - 1) != 'mine' && CheckNeighboursForMine($_field + $_size - 1) == 0) {
+        array_push($_openFields, $_field + $_size - 1);
+        /* $_openFields2 = CheckSurroundingFieldsForZero($_field + $_size - 1);
+        if ($_openFields2 == false) {
+        } else {
+            $_openFields = array_merge($_openFields, $_openFields2);
+        } */
+    }
+
+    /* if(count($_openFields) < 1){
+        $_openFields = [];
     } */
 
-    return($_neighbMineCount);
+    return ($_openFields);
 }

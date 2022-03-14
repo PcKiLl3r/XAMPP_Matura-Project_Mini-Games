@@ -22,11 +22,11 @@ include '../includes/sessSt_gameCount.php';
 include './inc/navbar.php';
 ?>
 
-<p class="text-white">
+<!-- <p class="text-white">
     <?php
     echo "Games played:<br>TicTacToe: " . $_SESSION['gamesPlayedTicTacToe'] . " times<br>Memory game: " . $_SESSION['gamesPlayedMemoryGame'] . " times";
     ?>
-</p>
+</p> -->
 
 <div class="MainMenu">
 <div class="container">
@@ -39,7 +39,7 @@ include './inc/navbar.php';
             <button onclick="location.href = '../MemoryGame/index.php';"><div></div></button>
         </div>
         <div class="box box-3">
-            <div onclick="location.href = '../Chess/index.php';" class="cover"><img src="./Chess.png" alt=""></div>
+            <div onclick="location.href = '../Chess/chess.php';" class="cover"><img src="./Chess.png" alt=""></div>
             <button onclick="location.href = '../Chess/index.php';"><div></div></button>
         </div>
         <div class="box box-4">

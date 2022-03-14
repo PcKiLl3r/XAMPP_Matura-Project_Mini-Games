@@ -1,4 +1,5 @@
 .Field{
+    border-radius: 5px;
     padding: 0;
     margin: 0;
     border: 0;
@@ -8,16 +9,15 @@
 }
 
 .Field:hover{
-    background-color: #aaa;
+    background-color: #ff5100;
 }
 
 .HiddenField{
-    background-color: gray;
+    background-color: #FF6500;
 }
 
 table{
     border-spacing: 0;
-    margin-top: 5em;
     transform-style: preserve-3d !important;
 }
 
@@ -28,40 +28,55 @@ body{
     align-content: center;
     justify-content: center;
     justify-items: center;
-    perspective: 160em;
-    perspective-origin: 50% calc(50% - 35em);
+/*     perspective: 160em;
+    perspective-origin: 50% calc(50% - 35em); */
     overflow: hidden;
+    background-color: #FF9C8E;
 }
 
 td{
-    width: 2.0em; 
-    height: 2.0em; 
+    width: 4.0em; 
+    height: 4.0em; 
     margin: 0;
     padding: 0;
     transform-style: preserve-3d !important;
 }
 
-tr{
+/* tr{
     transform-style: preserve-3d !important;
 }
 
 button{
     transform-style: preserve-3d !important;
+} */
+
+#newGameForm{
+    margin-top: 2em;
 }
 
 #mineField{
-    border: 3px solid #aaa;
+    /* border: 3px solid #aaa; */
     
-    transform:
-    /* translate(-50%, -50%) */
+    /* transform:
     translateY(-375px)
     rotateX(90deg);
-    transform-style: preserve-3d !important;
+    transform-style: preserve-3d !important; */
 }
 
 .scene {
-    top: -13em;
+    background-color: #FF7D54;
+    border-radius: 5px;
+    padding: 2.5%;
+    margin-top: 1em;
+    /* top: -13em;
     position: absolute;
     transform-style: preserve-3d !important;
-    transform: translateZ(2250px) translateX(0px) rotateY(0deg);
+    transform: translateZ(2250px) translateX(0px) rotateY(0deg); */
+}
+
+
+
+.btn{
+    border-radius: 5px;
+    background-color: #ff5100;
 }

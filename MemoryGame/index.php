@@ -313,7 +313,7 @@ if (!isset($msg)) {
         </div>
     </button>
 
-    <div style="margin-top: 12em !important;" class="scene text-center mt-5 mb-5">
+    <div style="margin-top: 10em !important;" class="scene text-center mt-5 mb-5">
 
         <?php
         if (isset($_SESSION['hasStarted'])) {
@@ -323,7 +323,7 @@ if (!isset($msg)) {
         <div class="modal fade" id="gameMode" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
             <div class="modal-dialog" role="document">
-                <div style="width: max-content; height: fit-content; margin: auto; margin-top: 40vh;"
+                <div style="width: max-content; height: fit-content; margin: auto;"
                     class="modal-content p-1">
     
     
@@ -412,7 +412,7 @@ if (!isset($msg)) {
         <div class="modal fade" id="gameMode" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
             <div class="modal-dialog" role="document">
-                <div style="width: max-content; height: fit-content; margin: auto; margin-top: 40vh;"
+                <div style="width: max-content; height: fit-content; margin: auto;"
                     class="modal-content p-1">
     
     

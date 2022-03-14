@@ -1,13 +1,13 @@
 function revealCard(memoryCard){
     this.animate([
- {transform: 'rotateX(45deg) rotateZ(45deg) rotateY(0deg)'},
- {transform: 'rotateX(45deg) rotateZ(45deg) rotateY(160deg)'},
- {transform: 'rotateX(0deg) rotateZ(0deg) rotateY(160deg) translateY(-0px) translateX(-30px)'}
+ {transform: 'rotateX(45deg) rotateZ(45deg) rotateY(0deg) translateX(-25px)'},
+ {transform: 'rotateX(45deg) rotateZ(45deg) rotateY(160deg) translateX(-25px)'},
+ {transform: 'rotateX(0deg) rotateZ(0deg) rotateY(160deg) translateY(-15px) translateX(-15px)'}
     ], {
         duration: 1000,
         iterations: 1
     });
-    this.style.transform = 'rotateY(180deg) translateY(-0px) translateX(-30px)';
+    this.style.transform = 'rotateY(180deg) translateY(-15px) translateX(-15px)';
     this.classList.remove("memory-card-hoverable");
 }
 
