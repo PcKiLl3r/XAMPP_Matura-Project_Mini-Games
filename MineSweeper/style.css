@@ -1,82 +1,100 @@
-.Field{
-    border-radius: 5px;
-    padding: 0;
-    margin: 0;
-    border: 0;
-    width: 100%;
-    height: 100%; 
-    border: 1px solid black;
-}
-
-.Field:hover{
-    background-color: #ff5100;
-}
-
-.HiddenField{
-    background-color: #FF6500;
-}
-
-table{
-    border-spacing: 0;
-    transform-style: preserve-3d !important;
+:root{
+    --fieldSize: 400px;
+    /* --boxSize: 40px; */
 }
 
 body{
     display: flex;
     flex-direction: column;
-    align-items: center;
-    align-content: center;
-    justify-content: center;
-    justify-items: center;
-/*     perspective: 160em;
-    perspective-origin: 50% calc(50% - 35em); */
-    overflow: hidden;
     background-color: #FF9C8E;
 }
 
-td{
-    width: 4.0em; 
-    height: 4.0em; 
-    margin: 0;
-    padding: 0;
-    transform-style: preserve-3d !important;
+.valid:hover{
+    background-color: #ff5100;
 }
 
-/* tr{
-    transform-style: preserve-3d !important;
+.valid{
+    background-color: #FF6500;
+    border: 1px solid black;
+    border-radius: 3px;
 }
 
-button{
-    transform-style: preserve-3d !important;
+.mine{
+    background-color: #FF6500;
+    border: 1px solid black;
+    border-radius: 3px;
+}
+
+.mine:hover{
+    background-color: #ff5100;
+}
+
+.mine.checked{
+    background-image: url('./bomb-solid.svg');
+    background-size: 75% 75%;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+}
+
+.grid{
+    margin-left: auto;
+    margin-right: auto;
+    height: var(--fieldSize) !important;
+    width: var(--fieldSize) !important;
+    display: flex;
+    flex-wrap: wrap;
+    background-color: #FF7D54;
+}
+
+.timer{
+    margin-left: auto;
+    margin-right: auto;
+    width: min-content;
+    margin-bottom: 1em;
+    white-space: nowrap;
+}
+
+.flag{
+    background-image: url('./flag-regular.svg');
+    background-size: 75% 75%;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+}
+
+.grid div{
+    height: var(--boxSize);
+    width: var(--boxSize);
+    border: 1px solid black;
+}
+
+.checked{
+    background-color: rgb(255, 200, 129);
+    text-align: center;
+}
+
+.grid div:before {
+    content: "";
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+
+/* .mine{
+    background-image: url('./bomb-solid.svg');
+    background-size: 0%;
+    background-position: center;
+    background-repeat: no-repeat;
 } */
 
-#newGameForm{
-    margin-top: 2em;
+.mine-shown{
+    background-image: url('./bomb-solid.svg');
+    background-size: 65%;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
-#mineField{
-    /* border: 3px solid #aaa; */
-    
-    /* transform:
-    translateY(-375px)
-    rotateX(90deg);
-    transform-style: preserve-3d !important; */
-}
-
-.scene {
-    background-color: #FF7D54;
-    border-radius: 5px;
-    padding: 2.5%;
-    margin-top: 1em;
-    /* top: -13em;
-    position: absolute;
-    transform-style: preserve-3d !important;
-    transform: translateZ(2250px) translateX(0px) rotateY(0deg); */
-}
-
-
-
-.btn{
-    border-radius: 5px;
-    background-color: #ff5100;
+#gameForm{
+    border: 2px solid black;
+    padding: 1em;
+    margin-bottom: 2em;
 }

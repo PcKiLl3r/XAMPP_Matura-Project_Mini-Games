@@ -1,182 +1,262 @@
-const _mineField = document.querySelector('#mineField');
-const _newGameForm = document.querySelector('#newGameForm');
+document.addEventListener('DOMContentLoaded', () => {
 
-const formActionURL = './handleGame.php';
+    const grid = document.querySelector('.grid');
+    let squares = [];
+    let isGameOver = false;
+    let width;
+    let mineAmount;
+    let flags = 0;
 
-let infoMsg;
+    // Create board
+    function CreateBoard(boardSize) {
+        width = boardSize;
+        mineAmount = Math.round(boardSize * 1.5);
 
-function Setup() {
-    let _newGameButtons = _newGameForm.querySelectorAll('button');
-    for (let index = 0; index < _newGameButtons.length; index++) {
-        _newGameButtons[index].addEventListener('click', async (e) => {
-            e.preventDefault();
-            let _newGameRes;
-            if (e.target.id == 'SmallField') {
-                _newGameRes = await StartNewGame('small');
-            } else if (e.target.id == 'MedField') {
-                _newGameRes = await StartNewGame('med');
-            } else if (e.target.id == 'BigField') {
-                _newGameRes = await StartNewGame('big');
+        // Set proper button size based on size of field set in style.css
+        let fieldSize = getComputedStyle(document.documentElement)
+            .getPropertyValue('--fieldSize');
+        fieldSize = fieldSize.substring(0, fieldSize.length - 2);
+        fieldSize = parseInt(fieldSize);
+        let boxSize = (fieldSize / boardSize) - 2;
+        document.documentElement.style.setProperty('--boxSize', boxSize + 'px');
+
+        /* // Set font size based on boardSize
+        let fontSize = (boardSize / 1.5);
+        grid.style.fontSize = fontSize + "px"; */
+
+        // Get shuffled array with random bombs
+        const minesArray = Array(mineAmount).fill('mine');
+        const emptyArray = Array(width * width - mineAmount).fill('valid');
+        const gameArray = emptyArray.concat(minesArray);
+        const shuffledArray = gameArray.sort(() => Math.random() - 0.5)
+
+        for (let i = 0; i < width * width; i++) {
+            const square = document.createElement('div');
+            square.setAttribute('id', i);
+            square.classList.add(shuffledArray[i]);
+            grid.appendChild(square);
+            squares.push(square);
+
+            square.addEventListener('click', () => {
+                FieldClick(square);
+            });
+
+            square.oncontextmenu = function(e) {
+                e.preventDefault()
+                AddFlag(square);
             }
-
-            if (_newGameRes == 'NewSmallOK') {
-                CreateTable(5);
-            } else if (_newGameRes == 'NewMedOK') {
-                CreateTable(7);
-            } else if (_newGameRes == 'NewBigOK') {
-                CreateTable(9);
-            }
-            _newGameForm.style.visibility = 'hidden';
-        });
-    }
-}
-function CreateTable(_size) {
-    let _td = document.createElement('td');
-    let _button = document.createElement('button');
-    _button.classList.add('Field');
-    _button.classList.add('HiddenField');
-    _td.appendChild(_button.cloneNode(1));
-
-    for (let index = 0; index < _size; index++) {
-        let _tr = document.createElement('tr');
-        for (let index2 = 0; index2 < _size; index2++) {
-
-            _tr.appendChild(_td.cloneNode(1));
-
         }
-        _mineField.appendChild(_tr.cloneNode(1));
+
+        // Add numbers
+        for (let i = 0; i < width * width; i++) {
+
+            const isLeftEdge = (i % width === 0);
+            const isRightEdge = (i % width === width - 1);
+
+            if (squares[i].classList.contains('mine')) continue;
+
+            let total = 0;
+
+            if (i > 0 && !isLeftEdge && squares[i - 1].classList.contains('mine')) total++;
+            if (i > width - 1 && !isRightEdge && squares[i + 1 - width].classList.contains('mine')) total++;
+            if (i > width && squares[i - width].classList.contains('mine')) total++;
+            if (i > width + 1 && !isLeftEdge && squares[i - 1 - width].classList.contains('mine')) total++;
+
+            if (i < width * width - 2 && !isRightEdge && squares[i + 1].classList.contains('mine')) total++;
+            if (i < width * width - width && !isLeftEdge && squares[i - 1 + width].classList.contains('mine')) total++;
+            if (i < width * width - width - 2 && !isRightEdge && squares[i + 1 + width].classList.contains('mine')) total++;
+            if (i < width * width - width && squares[i + width].classList.contains('mine')) total++;
+
+            squares[i].setAttribute('data', total);
+        }
     }
 
-    const _fields = document.querySelectorAll('.Field');
+    const startBtn = document.querySelector('#startButton');
+    const fieldSizeInput = document.querySelector('#fieldSizeInput');
 
+    const timer = document.querySelector('.timer');
 
-    for (let index = 0; index < _fields.length; index++) {
-        _fields[index].innerHTML = '&nbsp;';
-        _fields[index].id = index;
-        _fields[index].addEventListener('click', async (e) => {
-            e.preventDefault();
+    startBtn.addEventListener("click", StartGame);
 
-            let _moveRes = await SendMove(e.target.id);
-            if(/* Array.isArray(_moveRes) */ 0){
+    function StartGame() {
 
+        if (fieldSizeInput.value < 5 /* || fieldSizeInput.value > 20 */ /* || isNaN(parseInt(fieldSizeInput.value)) */) {
+            return;
+        }
+
+        isGameOver = false;
+        squares = [];
+        flags = 0;
+
+        StartTimer();
+        grid.innerHTML = '';
+        let boardSize = parseInt(fieldSizeInput.value);
+
+        CreateBoard(boardSize);
+    }
+
+    function AddFlag(square){
+        if(isGameOver) return;
+        if(!square.classList.contains('checked') && (flags < mineAmount)){
+            if(!square.classList.contains('flag')){
+                square.classList.add('flag');
+                flags++;
+                checkForWin();
             } else {
-                if (_moveRes >= 0 && _moveRes < 9 || _moveRes == 'mine') {
-                    if(_moveRes == 0){
-                        e.target.innerHTML = '&nbsp;'
-                    } else if(_moveRes == 'mine'){
-                        e.target.innerHTML = '<i class="fas fa-bomb"></i>';
-                    } else {
-                        e.target.innerHTML = _moveRes
-                    }
-                    
-                    e.target.style.backgroundColor = "#ddd";
-                } else {
-                    /* console.log(_moveRes); */
-                }
+                square.classList.remove('flag');
+                flags--;
+                checkForWin();
             }
-        });
-        
-        _fields[index].addEventListener('contextmenu', function(el) {
-        el.preventDefault();
-
-        if(_fields[index].innerHTML == '<i class="fas fa-flag-checkered"></i>'){
-            _fields[index].innerHTML = _fields[index].data;
-            _fields[index].data = '<i class="fas fa-flag-checkered"></i>';
-        } else {
-            _fields[index].data = _fields[index].innerHTML;
-            _fields[index].innerHTML = '<i class="fas fa-flag-checkered"></i>';
         }
-
-        return false;
-        }, false);
     }
-}
-async function PostData(formattedFormData) {
-    const response = await fetch(formActionURL, {
-        method: 'POST',
-        body: formattedFormData,
-        mode: "cors"
-    });
-    const data = await response.text();
-    if (Array.isArray(data)) {
-        data.forEach(el => {
-            console.log(el);
+
+    function StartTimer() {
+        if (typeof myTimer !== 'undefined') {
+            clearInterval(myTimer);
+        }
+        let time = 0;
+
+        let mins = 0;
+
+        timer.innerHTML = time + 's';
+
+        myTimer = setInterval(() => {
+            time++;
+            if (time > 59 || mins > 0) {
+                if (time % 60 == 0) {
+                    mins++;
+                    time = 0;
+
+                    if (time < 10) {
+                        timer.innerHTML = mins + ':0' + time;
+                    } else {
+                        timer.innerHTML = mins + ':' + time;
+                    }
+                } else {
+                    if (time < 10) {
+                        timer.innerHTML = mins + ':0' + time;
+                    } else {
+                        timer.innerHTML = mins + ':' + time;
+                    }
+                }
+            } else {
+                timer.innerHTML = time + 's';
+            }
+
+        }, 1000);
+    }
+
+    function FieldClick(square){
+        let currentId = square.id;
+        if(isGameOver) return;
+        if(square.classList.contains('checked') || square.classList.contains('flag')) return;
+        if(square.classList.contains('mine')){
+            GameOver();
+            return;
+        }
+        else {
+            let total = square.getAttribute('data');
+            if(total != 0){
+                square.classList.add('checked');
+                square.innerHTML = total;
+                return;
+            }
+            CheckSquare(square, currentId);
+        }
+        square.classList.add('checked');
+    }
+    // BUG: failed to recursively open last field
+    //      failed to recursively open first field
+    
+    //      failed to check for bomb in last field
+    //      potentially first field as well
+    function CheckSquare(square, currentId){
+        
+        const isLeftEdge = (currentId % width === 0);
+        const isRightEdge = (currentId % width === width - 1);
+
+        setTimeout(() => {
+            if(currentId > 0 && !isLeftEdge){
+                const newId = squares[parseInt(currentId) - 1].id;
+                const newSquare = document.getElementById(newId);
+                FieldClick(newSquare);
+            }
+            if(currentId > width - 1 && !isRightEdge){
+                const newId = squares[parseInt(currentId) + 1 - width].id;
+                const newSquare = document.getElementById(newId);
+                FieldClick(newSquare);
+            }
+            if(currentId > width){
+                const newId = squares[parseInt(currentId) - width].id;
+                const newSquare = document.getElementById(newId);
+                FieldClick(newSquare);
+            }
+            if(currentId > width + 1 && !isLeftEdge){
+                const newId = squares[parseInt(currentId) - width - 1].id;
+                const newSquare = document.getElementById(newId);
+                FieldClick(newSquare);
+            }
+
+            if(currentId < width*width - 2 && !isRightEdge){
+                const newId = squares[parseInt(currentId) + 1].id;
+                const newSquare = document.getElementById(newId);
+                FieldClick(newSquare);
+            }
+            if(currentId < width*width - width && !isLeftEdge){
+                const newId = squares[parseInt(currentId) + width - 1].id;
+                const newSquare = document.getElementById(newId);
+                FieldClick(newSquare);
+            }
+            if(currentId < width*width - width - 2 && !isRightEdge){
+                const newId = squares[parseInt(currentId) + width + 1].id;
+                const newSquare = document.getElementById(newId);
+                FieldClick(newSquare);
+            }
+            if(currentId < width*width - width){
+                const newId = squares[parseInt(currentId) + width].id;
+                const newSquare = document.getElementById(newId);
+                FieldClick(newSquare);
+            }
+
+        }, 10);
+    }
+
+    function GameOver()
+    {
+        isGameOver = true;
+
+        // Show all the bombs
+        squares.forEach(square => {
+            if(square.classList.contains('mine'))
+            square.classList.add("checked");
         });
-    } else {
-        console.log(data);
+
+        clearInterval(myTimer);
+
+        timer.innerHTML += " - Game Over - You Lost!";
     }
-    return (data);
-}
-async function PostDataArray(formattedFormData) {
-    const response = await fetch(formActionURL, {
-        method: 'POST',
-        body: formattedFormData,
-        mode: "cors"
-    });
-    const data = await response.json();
-    console.log(data);
-    if(Array.isArray(data)){
-        data.forEach(el => {
-            console.log(el);
-        });
-    } else {
-        console.log(data);
-    }
-    return (data);
-}
-async function GetGameStatus() {
-    let _getGameStatusForm = document.createElement('form');
-    let _formattedFormData = new FormData(_getGameStatusForm);
-    _formattedFormData.append("process", 'getGameStatus');
-    let _res = await PostData(_formattedFormData);
 
-    if (_res == null) infoMsg += "No response for Get Game Status!\r\n";
-    else infoMsg += "Current Game Status data recieved!\r\n";
-    return (_res);
-}
-async function GetConnStatus() {
-    let _newConnForm = document.createElement('form');
-    let _formattedFormData = new FormData(_newConnForm);
-    _formattedFormData.append("process", 'newConn');
-    let _res = await PostData(_formattedFormData);
+    function checkForWin(){
+        let matches = 0;
+        let matchWon = false;
+        for(let i = 0; i < squares.length; i++){
+            if(squares[i].classList.contains('flag') && squares[i].classList.contains('mine')){
+                matches++;
+            }
+            if(matches === mineAmount){
+                isGameOver = true;
+                matchWon = true;
+            }
+        }
+        if(matchWon == true){
+            clearInterval(myTimer);
 
-    if (_res == null) infoMsg += "No response for Conn Test!\r\n";
-    else infoMsg += "Conn Test data recieved!\r\n";
-    return (_res);
-}
-async function StartNewGame(_selection) {
-    let _newGameForm = document.createElement('form');
-    let _formattedFormData = new FormData(_newGameForm);
-    _formattedFormData.append("process", 'newGame');
-    _formattedFormData.append("type", _selection);
-    let _res = await PostData(_formattedFormData);
-
-    if (_res == null) infoMsg += "No response for New Game!\r\n";
-    else infoMsg += "New Game response data recieved!\r\n";
-    return (_res);
-}
-async function SendMove(_field) {
-    let _moveForm = document.createElement('form');
-    let _formattedFormData = new FormData(_moveForm);
-    _formattedFormData.append("process", 'playerMove');
-    _formattedFormData.append("field", _field);
-    let _res = await PostData(_formattedFormData);
-
-    if (_res == null) infoMsg += "No response for Player Move!\r\n";
-    else infoMsg += "Player Move response data recieved!\r\n";
-    return (_res);
-}
-
-document.addEventListener("DOMContentLoaded", async () => {
-
-    Setup();
-    let _connOK = await GetConnStatus();
-    if (_connOK == 'ConnOK') {
-        let _gameStatus = await GetGameStatus();
-        if (_gameStatus == "InProgress") {
-            // GetFieldData();
-        } else if (_gameStatus == "Inactive") {
-            _newGameForm.style.visibility = 'visible';
+            timer.innerHTML += " - Game Over - You Won!";
+            for(let i = 0; i < squares.length; i++){
+            if(!squares[i].classList.contains('checked') && !squares[i].classList.contains('flag')){
+                squares[i].classList.add('checked');
+            }
+        }
         }
     }
 

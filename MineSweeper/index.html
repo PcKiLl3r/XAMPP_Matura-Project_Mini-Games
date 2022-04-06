@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MineSweeper</title>
+
+
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+    <div id="gameForm">
+        <div id="msg">
+
+        </div>
+        <p>
+            Enter desired Minefield size (min: 5, max: 20):
+        </p>
+        <input min="5" max="20" type="number" name="fieldSizeInput" value="20" id="fieldSizeInput">
+        <button id="startButton">Start</button>
+    </div>
+
+    <div class="timer">0</div>
+
+    <div class="grid"></div>
+
+
+
+    <script src="./game.js"></script>
+
+</body>
+
+</html>

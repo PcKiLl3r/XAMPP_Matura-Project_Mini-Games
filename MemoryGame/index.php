@@ -45,7 +45,15 @@ function GetUniqueRandomIcon($_usedIcons)
 
 function Start($_cardCount = 6)
 {
-
+    if (isset($_SESSION['hasStarted'])) {
+        unset($_SESSION['board']);
+        unset($_SESSION['boardNums']);
+        unset($_SESSION['hasStarted']);
+        unset($_SESSION['won-cards']);
+        unset($_SESSION['first-pick']);
+        unset($_SESSION['pick1']);
+        unset($_SESSION['pick2']);
+    }
     $_icons = [];
     $_usedIcons = [];
 
@@ -316,8 +324,8 @@ if (!isset($msg)) {
     <div style="margin-top: 10em !important;" class="scene text-center mt-5 mb-5">
 
         <?php
-        if (isset($_SESSION['hasStarted'])) {
-            if ($_SESSION['hasStarted'] == false) {
+        /* if (isset($_SESSION['hasStarted'])) {
+            if ($_SESSION['hasStarted'] == false) { */
                 echo '<button class="button btn btn-purple" data-bs-toggle="modal" data-bs-target="#gameMode">New Game</button>
 
         <div class="modal fade" id="gameMode" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -405,7 +413,7 @@ if (!isset($msg)) {
                 </div>
             </div>
         </div>';
-            }
+            /* }
         } else {
             echo '<button class="button btn btn-purple" data-bs-toggle="modal" data-bs-target="#gameMode">New Game</button>
 
@@ -494,7 +502,7 @@ if (!isset($msg)) {
                 </div>
             </div>
         </div>';
-        }
+        } */
         ?>
 
 

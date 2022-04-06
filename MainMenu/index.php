@@ -40,11 +40,11 @@ include './inc/navbar.php';
         </div>
         <div class="box box-3">
             <div onclick="location.href = '../Chess/chess.php';" class="cover"><img src="./Chess.png" alt=""></div>
-            <button onclick="location.href = '../Chess/index.php';"><div></div></button>
+            <button onclick="location.href = '../Chess/chess.php';"><div></div></button>
         </div>
         <div class="box box-4">
-            <div onclick="location.href = '../MineSweeper/game.php';" class="cover"><img src="./MineSweeper.png" alt=""></div>
-            <button onclick="location.href = '../MineSweeper/game.php';"><div></div></button>
+            <div onclick="location.href = '../MineSweeper/index.html';" class="cover"><img src="./MineSweeper.png" alt=""></div>
+            <button onclick="location.href = '../MineSweeper/index.html';"><div></div></button>
         </div>
     </div>
     </div>

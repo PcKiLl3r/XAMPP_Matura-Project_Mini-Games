@@ -2295,7 +2295,8 @@ blackGrave.innerHTML = "Black Graveyard";
     });
 
     quickActWhite.children[0].addEventListener('click', () => {
-        toggleUIMenu();
+        window.location.replace("../MainMenu");
+        //toggleUIMenu();
     });
 
     quickActBlack.children[1].addEventListener('click', () => {
@@ -2303,7 +2304,8 @@ blackGrave.innerHTML = "Black Graveyard";
     });
 
     quickActBlack.children[0].addEventListener('click', () => {
-        toggleUIMenu();
+        window.location.replace("../MainMenu");
+        //toggleUIMenu();
     });
 
     /* resetBoard(); */

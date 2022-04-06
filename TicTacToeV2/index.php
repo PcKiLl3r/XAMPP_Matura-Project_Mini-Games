@@ -891,12 +891,12 @@ if(!isset($msg)) { $msg = "No Error messages..."; }
     </div>
 
     <?php
-    if($winnerMsg != null) {
+    /* if($winnerMsg != null) { */
 ?>
     <div class="container text-center mt-3">
         <form style="justify-content: center;" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
 
-            <button type="submit" class="tic-tac-col win-btn mt-1">
+            <button style="margin-top: 1em !important;" type="submit" class="tic-tac-col win-btn mt-5">
             <i class="fas fa-sync-alt"></i>
             <div class="win-btn-bot">
             </div>
@@ -909,7 +909,7 @@ if(!isset($msg)) { $msg = "No Error messages..."; }
         </form>
     </div>
     <?php
-    }
+    /* } */
     ?>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
